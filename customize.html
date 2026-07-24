@@ -163,6 +163,62 @@
   #wizModal .rim-label { margin-top:12px; }
   @media (max-width:700px){ #propGrid { grid-template-columns:1fr; } }
 </style>
+<style id="noir-skin">
+  /* ===== Noir 換膚（2026-07-24 Yodezeen 式改版）：深色底＋暖白字＋金色點綴，與新首頁銜接 ===== */
+  body { background:#131211; color:#ece7dc; }
+  /* 導覽列（原為米白玻璃，改深色玻璃；蓋過 inline style 需 !important） */
+  body > nav { background:rgba(19,18,17,.82) !important; border-bottom:1px solid #2a2723 !important; backdrop-filter:blur(14px); }
+  body > nav a { color:#cfc7b6 !important; }
+  body > nav a[href="index.html"] { color:#ece7dc !important; }
+  body > nav a[href="customize.html"] { color:#e6c98a !important; }
+  body > nav a[href="contact.html"] { background:transparent !important; border:1px solid #9a7b43 !important; color:#e6c98a !important; }
+  #langSel { border:1px solid #3a352e !important; color:#cfc7b6 !important; background:#131211 !important; }
+  /* 標題帶 */
+  .studio-strip { background:#131211; border-bottom:1px solid #2a2723; }
+  .studio-strip h1 { color:#f4efe4; }
+  .studio-strip .sub { color:#9b937f; }
+  .studio-strip .eyebrow { color:#9a7b43; }
+  .btn-upl { border:1px solid #4a4438; color:#cfc7b6; background:transparent; }
+  .btn-dxf { background:#9a7b43; color:#131211; }
+  .btn-json { background:#ece7dc; color:#131211; }
+  /* 左側面板 */
+  #panel { background:#191714; border-right:1px solid #2a2723; }
+  .group, details.group { background:#201d19; border:1px solid #2e2a24; }
+  .group h3, details.group summary { color:#ece7dc; }
+  .row label, .rim-label, .chk, .chk label { color:#b5ac9c; }
+  .row .val input { background:#131211; border:1px solid #3a352e; color:#ece7dc; }
+  .row .val span, .tip, .desc { color:#8f8776; }
+  .shape-btns button, .drain-btns button { background:#191714; border:1px solid #3a352e; color:#cfc7b6; }
+  .shape-btns button.active, .drain-btns button.active { background:#ece7dc; border-color:#ece7dc; color:#131211; }
+  .preset { background:#241f18; border:1px dashed #9a7b43; color:#e6c98a; }
+  .preset:hover { background:#2c261d; }
+  input[type=text], input[type=email] { background:#131211 !important; border:1px solid #3a352e !important; color:#ece7dc !important; }
+  #spec td { color:#b5ac9c; border-bottom:1px dashed #2e2a24; }
+  #spec td:last-child { color:#ece7dc; }
+  .flow { background:#191714; color:#8f8776; }
+  .flow b { color:#e6c98a; }
+  #warn { color:#e08a5e; }
+  select#shipDest { background:#131211 !important; border:1px solid #3a352e !important; color:#ece7dc !important; }
+  #quoteBtn { background:#9a7b43 !important; color:#131211 !important; }
+  #priceRows span { color:#b5ac9c !important; }
+  #priceRows div span:last-child { color:#ece7dc !important; }
+  /* 價格區 inline 深色文字反白 */
+  #tierName, #fromTotal, #totVal { color:#e6c98a !important; }
+  .group label span { color:#cfc7b6; }
+  .group b { color:#ece7dc; }
+  /* 對話框（手繪／精靈） */
+  .sk-box { background:#1c1a17; }
+  .sk-box h2, #wizModal h2 { color:#ece7dc; }
+  .sk-box .sk-sub, #wizModal .sk-sub { color:#8f8776; }
+  .sk-col h4 { color:#e6c98a; }
+  .sk-tools button, .sk-tools label.upl { background:#191714; border:1px solid #3a352e; color:#cfc7b6; }
+  .sk-actions .ok { background:#9a7b43; color:#131211; }
+  .sk-actions .cancel { background:#2a2723; color:#cfc7b6; }
+  .prop-card { background:#191714; border-color:#3a352e; }
+  .pc-body b { color:#ece7dc; }
+  .pc-body span { color:#8f8776; }
+  canvas.pad { border:2px solid #3a352e; }   /* 手繪畫布維持白底好作畫 */
+</style>
 </head>
 <body>
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
@@ -732,7 +788,7 @@ const canvas = document.getElementById('canvas3d');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
 renderer.setPixelRatio(window.devicePixelRatio);
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xefece3);   // Atelier 暖米白
+scene.background = new THREE.Color(0x131211);   // Noir 近黑（與新首頁銜接）
 
 const camera = new THREE.PerspectiveCamera(42, 1, 10, 30000);
 let orbit = { theta: Math.PI/4, phi: Math.PI/3.2, radius: 3400, target: new THREE.Vector3(0, 280, 0) };
@@ -762,11 +818,11 @@ scene.add(dir2);
 // 深色底座：與白色缸體拉開對比，細節（缸緣、收縮、斜底）看得清楚
 const floor = new THREE.Mesh(
   new THREE.CircleGeometry(5000, 64),
-  new THREE.MeshStandardMaterial({color:0x4a463d, roughness:0.95})
+  new THREE.MeshStandardMaterial({color:0x1d1b18, roughness:0.95})
 );
 floor.rotation.x = -Math.PI/2;
 scene.add(floor);
-const grid = new THREE.GridHelper(6000, 30, 0x6b675c, 0x5a564c);
+const grid = new THREE.GridHelper(6000, 30, 0x2e2a24, 0x24211d);
 grid.position.y = 1;
 scene.add(grid);
 
