@@ -2824,33 +2824,8 @@ document.getElementById('uplTop').addEventListener('change', e=>{
   e.target.value = '';
 });
 
-function traceImage(img){
-  const MAXW = 400;
-  const sc = Math.min(1, MAXW / img.width);
-  const w = Math.round(img.width * sc), h = Math.round(img.height * sc);
-  const oc = document.createElement('canvas'); oc.width = w; oc.height = h;
-  const ctx = oc.getContext('2d');
-  ctx.drawImage(img, 0, 0, w, h);
-  const data = ctx.getImageData(0, 0, w, h).data;
-  // 灰階 + Otsu 閾值
-  const gray = new Uint8Array(w*h), hist = new Array(256).fill(0);
-  for(let i=0;i<w*h;i++){
-    const g = Math.round(0.299*data[i*4] + 0.587*data[i*4+1] + 0.114*data[i*4+2]);
-    gray[i] = g; hist[g]++;
-  }
-  let sum=0, total=w*h;
-  for(let i=0;i<256;i++) sum += i*hist[i];
-  let sumB=0, wB=0, maxVar=0, thresh=128;
-  for(let i=0;i<256;i++){
-    wB += hist[i]; if(!wB) continue;
-    const wF = total - wB; if(!wF) break;
-    sumB += i*hist[i];
-    const mB = sumB/wB, mF = (sum-sumB)/wF, v = wB*wF*(mB-mF)*(mB-mF);
-    if(v > maxVar){ maxVar = v; thresh = i; }
-  }
-  const ink = new Uint8Array(w*h);
-  for(let i=0;i<w*h;i++) ink[i] = gray[i] < thresh ? 1 : 0;
-  // 從邊界 flood 背景 → 未被淹到的 = 形狀內部（含筆跡與被包圍區域）
+// 給定「ink」二值遮罩 → 邊界 flood 背景 → 最大連通塊。回傳 {label,best,bestSize}，抽出供 Otsu 版/邊框亮度版共用。
+function floodAndLabel(ink, w, h){
   const visited = new Uint8Array(w*h), queue = [];
   for(let x=0;x<w;x++){ queue.push(x, (h-1)*w+x); }
   for(let y=0;y<h;y++){ queue.push(y*w, y*w+w-1); }
@@ -2868,7 +2843,6 @@ function traceImage(img){
   }
   const solid = new Uint8Array(w*h);
   for(let i=0;i<w*h;i++) solid[i] = (ink[i] || !visited[i]) ? 1 : 0;
-  // 取最大連通塊
   const label = new Int32Array(w*h).fill(-1);
   let best = -1, bestSize = 0, nl = 0;
   for(let i0=0;i0<w*h;i0++){
@@ -2887,6 +2861,60 @@ function traceImage(img){
       if(bfs.length > bestSize){ bestSize = bfs.length; best = nl; }
       nl++;
     }
+  }
+  return {label, best, bestSize};
+}
+// Otsu 閾值（給定任意灰階/梯度直方圖）
+function otsuThreshold(hist, total){
+  let sum=0; for(let i=0;i<256;i++) sum += i*hist[i];
+  let sumB=0, wB=0, maxVar=0, thresh=128;
+  for(let i=0;i<256;i++){
+    wB += hist[i]; if(!wB) continue;
+    const wF = total - wB; if(!wF) break;
+    sumB += i*hist[i];
+    const mB = sumB/wB, mF = (sum-sumB)/wF, v = wB*wF*(mB-mF)*(mB-mF);
+    if(v > maxVar){ maxVar = v; thresh = i; }
+  }
+  return thresh;
+}
+function traceImage(img){
+  const MAXW = 400;
+  const sc = Math.min(1, MAXW / img.width);
+  const w = Math.round(img.width * sc), h = Math.round(img.height * sc);
+  const oc = document.createElement('canvas'); oc.width = w; oc.height = h;
+  const ctx = oc.getContext('2d');
+  ctx.drawImage(img, 0, 0, w, h);
+  const data = ctx.getImageData(0, 0, w, h).data;
+  // 灰階 + Otsu 閾值
+  const gray = new Uint8Array(w*h), hist = new Array(256).fill(0);
+  for(let i=0;i<w*h;i++){
+    const g = Math.round(0.299*data[i*4] + 0.587*data[i*4+1] + 0.114*data[i*4+2]);
+    gray[i] = g; hist[g]++;
+  }
+  const total = w*h;
+  const thresh = otsuThreshold(hist, total);
+  const ink = new Uint8Array(w*h);
+  for(let i=0;i<w*h;i++) ink[i] = gray[i] < thresh ? 1 : 0;
+  let {label, best, bestSize} = floodAndLabel(ink, w, h);
+  // 低對比補救：主體與背景亮度太接近時（如白缸配白底棚拍／透視矯正warp後的合成白背景），
+  // 全域 Otsu 會把主體本身較亮的部位（缸緣高光）跟背景歸在同一類，即使沒有把整個主體
+  // 都吃掉，也常在亮部位置留下缺口，使描邊輪廓出現局部凹陷（凸包比檢查會擋下這種結果）。
+  // 修法：改用「邊框亮度」當背景基準——邊框本身理論上就是純背景（原圖四角本來就沒有
+  // 主體，或是 perspWarp() 合成填色的區域），只有背景明顯偏亮（>150）時才啟用；
+  // 暗背景（含手繪草圖常見的白紙已被上面 Otsu 正確處理，或本就非本情境）維持原本Otsu
+  // 邏輯不變，不影響既有行為。
+  const borderBrightness = (()=>{
+    let sum=0, n=0;
+    for(let x=0;x<w;x++){ sum+=gray[x]; sum+=gray[(h-1)*w+x]; n+=2; }
+    for(let y=0;y<h;y++){ sum+=gray[y*w]; sum+=gray[y*w+w-1]; n+=2; }
+    return sum/n;
+  })();
+  if(borderBrightness > 150){
+    const BORDER_MARGIN = 15;
+    const inkB = new Uint8Array(w*h);
+    for(let i=0;i<w*h;i++) inkB[i] = gray[i] < (borderBrightness - BORDER_MARGIN) ? 1 : 0;
+    const br = floodAndLabel(inkB, w, h);
+    if(br.bestSize > bestSize){ label = br.label; best = br.best; bestSize = br.bestSize; }
   }
   if(bestSize < total*0.005) return null;   // 形狀太小
   const mask = i => label[i] === best;
