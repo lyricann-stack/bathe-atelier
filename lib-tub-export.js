@@ -488,7 +488,8 @@ async function sendQuote(btn){
     banner.style.background = bg; banner.style.border = '1px solid ' + border; banner.style.color = color;
     banner.textContent = msg;
   };
-  if(!email || email.indexOf('@') < 1){
+  // 頁面設 window.PAGE_EMAIL_OPTIONAL=true（medium.html）→ Email 非必填，不擋送出
+  if(!window.PAGE_EMAIL_OPTIONAL && (!email || email.indexOf('@') < 1)){
     show('#fdf3ee', '#e0b39a', '#8a4a2b', t('Please enter your email under "Order Info" so our designer can reply with your quote and 3D render.'));
     return;
   }
@@ -498,7 +499,7 @@ async function sendQuote(btn){
   try {
     const fd = new FormData();
     fd.append('name', name || '(not given)');
-    fd.append('email', email);
+    fd.append('email', email || '(not given)');
     fd.append('material', P.material === 'solid' ? 'Solid surface' : 'Premium acrylic');
     fd.append('silhouette', P.shape === 'custom' ? 'Custom sketch' : P.shape);
     fd.append('size', P.L + 'x' + P.W + 'x' + P.H + ' mm (rim rear ' + (P.H + P.dH) + ')');
