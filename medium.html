@@ -3370,7 +3370,7 @@ if(EDIT_MODE){ (function(){
   })();
 
   // ---- 邊定義 ----
-  const SIDE_IDX = [0, 24, 48, 72];
+  let SIDE_IDX = [0, 24, 48, 72];   // 預設四條在各面中心；雙擊牆面可在任意位置新增（2026-08-20）
   const EDGE_DEF = {
     outer:  { color:0xc9a227, label:'Outer rim edge' },
     inner:  { color:0xb0703c, label:'Inner bowl edge' },
@@ -3649,7 +3649,7 @@ if(EDIT_MODE){ (function(){
 
   // ---- 面板 ----
   const $ = id=>document.getElementById(id);
-  const TIP0 = 'Editable edges — <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green, skirt-style).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click a node deletes it</b> and the curve springs back.';
+  const TIP0 = 'Editable edges — <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b> — not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
   function showNodePanel(){
     $('nodePanel').style.display = selNode ? 'block' : 'none';
     if(selNode){
@@ -3826,10 +3826,12 @@ if(EDIT_MODE){ (function(){
         const rTarget = _hitPt.x*ux + _hitPt.z*uz;
         const others = nodes.filter(n=>n.edge==='side' && n!==nd)
           .reduce((s,n)=>s + n.dk*Math.exp(-((nd.v-n.v)**2)/(2*n.sigma**2)), 0);
-        const p={dk:nd.dk};
+        const zt = rimTopAt(po[0], nd.i0);
+        const p={dk:nd.dk, v:nd.v};
         applyChecked(
-          ()=>{ nd.dk = Math.max(-0.5, Math.min(2, rTarget/rr - 1 - others)); },
-          ()=>{ nd.dk=p.dk; }
+          ()=>{ nd.dk = Math.max(-0.5, Math.min(2, rTarget/rr - 1 - others));
+                nd.v = Math.max(0.05, Math.min(0.95, _hitPt.y/Math.max(1, zt))); },   // 上下拖＝移動凸肚高度位置
+          ()=>{ nd.dk=p.dk; nd.v=p.v; }
         );
       }
       requestBuild(); syncNodePanel();
@@ -3860,8 +3862,8 @@ if(EDIT_MODE){ (function(){
       selNode = nd; selectedEdge = nd.edge==='side' ? 'side_'+nd.i0 : nd.edge;
       buildNodes(); showNodePanel();
       const p3 = nodePos3(nd);
-      if(nd.edge==='outer'){
-        // 相機面板：垂直分量＝缸緣高度
+      if(nd.edge==='outer' || nd.edge==='side'){
+        // 相機面板：outer 垂直分量＝缸緣高度；side 垂直分量＝凸肚高度位置
         const camDir = new THREE.Vector3(); camera.getWorldDirection(camDir);
         _dragPlane.setFromNormalAndCoplanarPoint(camDir, p3);
       } else {
@@ -3887,10 +3889,30 @@ if(EDIT_MODE){ (function(){
   window.addEventListener('dblclick', e=>{
     if(e.target!==canvas || !nodeGrp) return;
     const nh = pickAt(e, nodeGrp.children);
-    if(!nh) return;
-    const nd = nh.object.userData.node;
-    if(performance.now() - (nd.createdAt||0) < 600) return;
-    deleteNode(nd);
+    if(nh){
+      const nd = nh.object.userData.node;
+      if(performance.now() - (nd.createdAt||0) < 600) return;
+      deleteNode(nd);
+      e.stopPropagation(); e.preventDefault();
+      return;
+    }
+    // 雙擊浴缸牆面任意位置 → 在該角度新增一條側面線（不再限於四個面中心）
+    if(!tubGroup || !tubGroup.children.length || (typeof extGroup!=='undefined' && extGroup)) return;
+    const r = canvas.getBoundingClientRect();
+    _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+    _ray.setFromCamera(_mv, camera);
+    const wh = _ray.intersectObjects(tubGroup.children, true)[0];
+    if(!wh) return;
+    const o = outMM(), ha = Math.atan2(wh.point.z, wh.point.x);
+    let best=0, bd=1e9;
+    o.forEach((p,i)=>{ const da=Math.atan2(p[1],p[0])-ha; const w=Math.abs(Math.atan2(Math.sin(da),Math.cos(da))); if(w<bd){bd=w;best=i;} });
+    let d0=1e9; SIDE_IDX.forEach(i=>{ let d=Math.abs(i-best); d=Math.min(d, N_SEG-d); if(d<d0) d0=d; });
+    let key;
+    if(d0 <= 3){ const nearest = SIDE_IDX.reduce((a,i)=>{ let d=Math.abs(i-best); d=Math.min(d,N_SEG-d); let da=Math.abs(a-best); da=Math.min(da,N_SEG-da); return d<da?i:a; }); key='side_'+nearest; }
+    else { SIDE_IDX.push(best); key='side_'+best; buildEdges(); }
+    selectedEdge = key;
+    Object.keys(hiTubes).forEach(k=>{ hiTubes[k].material.opacity = k===key?0.95:0; });
+    addNode(key, wh.point);
     e.stopPropagation(); e.preventDefault();
   }, true);
   window.addEventListener('pointerup', ()=>{
