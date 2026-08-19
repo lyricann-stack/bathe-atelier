@@ -1,0 +1,206 @@
+/* studio.css — 由 customize.html 的三個 <style> 區塊（基礎＋atelier-skin＋noir-skin）逐字抽出，供 basic/medium/pro 三版本頁共用 */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; }
+  body { display:flex; flex-direction:column; height:100vh; overflow:hidden; background:#f0f2f5; }
+  header { background:#1a2b3c; color:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  header h1 { font-size:17px; font-weight:600; }
+  header .sub { font-size:12px; color:#9db4cc; }
+  .lang-sw { display:flex; gap:4px; margin-right:14px; }
+  .lang-sw button { padding:4px 10px; font-size:12px; border:1px solid #46617c; background:transparent; color:#9db4cc; border-radius:5px; cursor:pointer; }
+  .lang-sw button.active { background:#e67e22; border-color:#e67e22; color:#fff; font-weight:600; }
+  .rim-label { font-size:12.5px; color:#444; margin:10px 0 6px; }
+  .btns { display:flex; gap:8px; }
+  .btn { border:none; border-radius:6px; padding:8px 14px; font-size:13px; cursor:pointer; font-weight:600; }
+  .btn-dxf { background:#e67e22; color:#fff; }
+  .btn-json { background:#2980b9; color:#fff; }
+  .btn-upl { background:#27ae60; color:#fff; }
+  #extBanner { position:absolute; top:12px; left:50%; transform:translateX(-50%); background:rgba(39,174,96,.9); color:#fff; font-size:12px; padding:6px 16px; border-radius:20px; display:none; }
+  .btn:hover { filter:brightness(1.1); }
+  main { flex:1; display:flex; min-height:0; }
+  #panel { width:330px; background:#fff; overflow-y:auto; border-right:1px solid #dde3ea; padding:14px; flex-shrink:0; }
+  #viewer { flex:1; position:relative; min-width:0; }
+  #canvas3d { width:100%; height:100%; display:block; }
+  .group { margin-bottom:16px; border:1px solid #e5eaf0; border-radius:8px; padding:12px; }
+  .group h3 { font-size:13px; color:#1a2b3c; margin-bottom:10px; border-left:3px solid #e67e22; padding-left:8px; }
+  /* 兩行式排版：第一行＝標籤＋數值，第二行＝滑桿（長標籤/各語言都不會擠出面板） */
+  .row { display:flex; flex-wrap:wrap; align-items:center; margin-bottom:12px; gap:4px 8px; }
+  .row label { font-size:12.5px; color:#444; flex:1; order:1; min-width:0; }
+  .row .val { order:2; display:flex; align-items:center; gap:3px; flex-shrink:0; }
+  .row input[type=range] { order:3; flex-basis:100%; width:100%; accent-color:#e67e22; margin:0; }
+  .row .val input { width:52px; font-size:12px; padding:2px 4px; border:1px solid #ccc; border-radius:4px; text-align:right; }
+  .row .val span { font-size:11px; color:#888; }
+  .shape-btns, .drain-btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .shape-btns button, .drain-btns button { flex:1; min-width:60px; padding:7px 4px; font-size:12px; border:1px solid #ccc; background:#fafafa; border-radius:6px; cursor:pointer; }
+  .shape-btns button.active, .drain-btns button.active { background:#1a2b3c; color:#fff; border-color:#1a2b3c; }
+  .preset { width:100%; margin-top:8px; padding:8px; font-size:12.5px; border:1px dashed #e67e22; color:#e67e22; background:#fff7f0; border-radius:6px; cursor:pointer; font-weight:600; }
+  .preset:hover { background:#ffeede; }
+  .swatches { display:flex; gap:8px; align-items:center; }
+  .sw { width:26px; height:26px; border-radius:50%; border:2px solid #ddd; cursor:pointer; }
+  .sw.active { border-color:#e67e22; box-shadow:0 0 0 2px rgba(230,126,34,.3); }
+  .chk { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#444; margin-bottom:6px; }
+  .tip { font-size:11px; color:#888; line-height:1.5; margin-top:4px; }
+  input[type=text] { width:100%; padding:6px 8px; font-size:12.5px; border:1px solid #ccc; border-radius:5px; margin-bottom:8px; }
+  #spec { font-size:12.5px; width:100%; border-collapse:collapse; }
+  #spec td { padding:4px 2px; border-bottom:1px dashed #e8e8e8; color:#333; }
+  #spec td:last-child { text-align:right; font-weight:600; color:#1a2b3c; }
+  .flow { font-size:11.5px; color:#666; line-height:1.7; background:#f7f9fb; border-radius:6px; padding:10px; }
+  .flow b { color:#e67e22; }
+  #hint { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(26,43,60,.75); color:#fff; font-size:11.5px; padding:6px 14px; border-radius:20px; pointer-events:none; }
+  #warn { color:#c0392b; font-size:12px; margin-top:4px; display:none; }
+  /* 手繪模式 */
+  #sketchModal { display:none; position:fixed; inset:0; background:rgba(15,25,35,.55); z-index:100; align-items:center; justify-content:center; }
+  #sketchModal.open { display:flex; }
+  .sk-box { background:#fff; border-radius:12px; padding:18px 20px; width:min(760px, 94vw); max-height:92vh; overflow-y:auto; }
+  .sk-box h2 { font-size:16px; color:#1a2b3c; margin-bottom:4px; }
+  .sk-box .sk-sub { font-size:12px; color:#777; margin-bottom:12px; }
+  .sk-flex { display:flex; gap:18px; flex-wrap:wrap; }
+  .sk-col h4 { font-size:13px; color:#e67e22; margin-bottom:6px; }
+  .sk-col .desc { font-size:11.5px; color:#666; line-height:1.5; margin-bottom:6px; max-width:340px; }
+  canvas.pad { border:2px solid #dde3ea; border-radius:8px; background:#fff; cursor:crosshair; touch-action:none; display:block; }
+  .sk-tools { display:flex; gap:8px; margin-top:8px; align-items:center; flex-wrap:wrap; }
+  .sk-tools button, .sk-tools label.upl { padding:6px 12px; font-size:12px; border:1px solid #ccc; background:#fafafa; border-radius:6px; cursor:pointer; }
+  .sk-tools label.upl { color:#2980b9; border-color:#2980b9; }
+  .sk-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
+  .sk-actions .ok { background:#e67e22; color:#fff; border:none; padding:9px 22px; border-radius:6px; font-weight:600; cursor:pointer; }
+  .sk-actions .cancel { background:#eee; border:none; padding:9px 18px; border-radius:6px; cursor:pointer; }
+  #skErr { color:#c0392b; font-size:12px; margin-top:8px; display:none; }
+  /* 手機版排版：3D 檢視固定在上方、控制面板在下方捲動（電商配置器慣例） */
+  @media (max-width: 700px){
+    body { height:100dvh; }
+    nav a[href="contact.html"] { display:none; }               /* 省空間：CTA 交給面板內的詢價按鈕 */
+    .studio-strip { padding:10px 16px 8px; }
+    .studio-strip .sub { display:none; }
+    .studio-strip h1 { font-size:18px; }
+    .studio-strip .eyebrow { font-size:9.5px; margin-bottom:2px; }
+    .studio-strip .btns { width:100%; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:2px; }
+    .btn { padding:7px 12px; font-size:12px; white-space:nowrap; flex:none; }
+    main { flex-direction:column-reverse; }                     /* 視圖在上、面板在下 */
+    #viewer { flex:none; height:38vh; min-height:240px; border-bottom:1px solid #ddd8cc; }
+    #panel { flex:1; width:100%; min-height:0; max-height:none; border-right:none; padding:12px; }
+    #hint { font-size:10px; padding:4px 10px; bottom:8px; }
+    /* 手繪面板：畫布縮放至螢幕寬（座標已按 clientWidth 換算，功能不受影響） */
+    .sk-box { padding:14px; max-height:94vh; }
+    .sk-flex { gap:12px; }
+    canvas.pad { width:100%; height:auto; max-width:360px; }
+    .sk-col { width:100%; }
+    .sk-col .desc { max-width:none; }
+  }
+/* ===== atelier-skin ===== */
+  /* ===== Bathe Atelier 換膚：覆蓋工具風配色，向 B2C 站設計語言對齊 ===== */
+  * { font-family:"DM Sans","Noto Sans TC",system-ui,sans-serif; }
+  body { background:#f4f1ea; color:#1b1a16; }
+  header { background:rgba(244,241,234,.9); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid #ddd8cc; color:#1b1a16; padding:12px clamp(20px,3vw,40px); }
+  header h1 { font-family:'Playfair Display',serif; font-weight:600; font-size:21px; color:#1b1a16; letter-spacing:.01em; }
+  header .sub { color:#66614f; }
+  .brand { text-decoration:none; color:#1b1a16; display:flex; align-items:baseline; gap:8px; letter-spacing:.28em; font-size:14px; font-weight:600; margin-right:18px; }
+  .brand span { font-family:'Playfair Display',serif; font-style:italic; letter-spacing:.02em; font-weight:500; color:#9a7b43; font-size:15px; }
+  .backlink { color:#66614f; font-size:13px; text-decoration:none; margin-right:16px; white-space:nowrap; }
+  .backlink:hover { color:#9a7b43; }
+  .lang-sw button { border:1px solid #ddd8cc; color:#66614f; background:transparent; border-radius:999px; }
+  .lang-sw button.active { background:#1b1a16; border-color:#1b1a16; color:#fff; }
+  .btn { border-radius:999px; font-weight:600; }
+  .btn-dxf { background:#9a7b43; color:#fff; }
+  .btn-json { background:#1b1a16; color:#fff; }
+  .btn-upl { background:transparent; color:#1b1a16; border:1px solid #b9ab8b; }
+  #panel { background:#faf8f2; border-right:1px solid #ddd8cc; }
+  .group { background:#fbfaf6; border:1px solid #e6e1d5; border-radius:16px; }
+  .group h3 { color:#1b1a16; border-left:3px solid #9a7b43; }
+  .row label { color:#4a463d; }
+  .row input[type=range] { accent-color:#9a7b43; }
+  .row .val input { border:1px solid #ddd8cc; background:#fff; color:#1b1a16; }
+  .row .val span { color:#8a8478; }
+  .shape-btns button, .drain-btns button { background:#fff; border:1px solid #ddd8cc; color:#4a463d; border-radius:10px; }
+  .shape-btns button.active, .drain-btns button.active { background:#1b1a16; border-color:#1b1a16; color:#fff; }
+  .rim-label { color:#4a463d; }
+  .preset { border:1px dashed #c9b489; color:#9a7b43; background:#fdfaf3; border-radius:10px; }
+  .preset:hover { background:#f7f0e0; }
+  .tip, .desc { color:#8a8478; }
+  #spec td { color:#4a463d; border-bottom:1px dashed #e6e1d5; }
+  #spec td:last-child { color:#1b1a16; }
+  .flow { background:#f4f1ea; color:#66614f; border-radius:10px; }
+  .flow b { color:#9a7b43; }
+  #hint { background:rgba(27,26,22,.78); }
+  #extBanner { background:rgba(154,123,67,.92); }
+  input[type=text] { border:1px solid #ddd8cc; background:#fff; border-radius:8px; }
+  .sw.active { border-color:#9a7b43; box-shadow:0 0 0 2px rgba(154,123,67,.28); }
+  .sk-box { border-radius:18px; background:#fbfaf6; }
+  .sk-box h2 { font-family:'Playfair Display',serif; color:#1b1a16; }
+  .sk-col h4 { color:#9a7b43; }
+  canvas.pad { border:2px solid #ddd8cc; }
+  .sk-tools button, .sk-tools label.upl { border:1px solid #ddd8cc; background:#fff; color:#4a463d; border-radius:999px; }
+  .sk-tools label.upl { color:#9a7b43; border-color:#c9b489; }
+  .sk-actions .ok { background:#1b1a16; border-radius:999px; }
+  .sk-actions .cancel { background:#eee7db; border-radius:999px; color:#4a463d; }
+  #warn, #skErr { color:#a04b2e; }
+  /* 標題帶（與站上頁面開頭一致的語氣） */
+  .studio-strip { flex:none; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px 20px; padding:16px clamp(20px,5vw,56px) 14px; background:#f4f1ea; border-bottom:1px solid #e6e1d5; }
+  .studio-strip .eyebrow { font-size:11px; letter-spacing:.32em; text-transform:uppercase; color:#9a7b43; font-weight:600; margin-bottom:5px; }
+  .studio-strip h1 { font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(22px,2.4vw,30px); color:#1b1a16; line-height:1.15; }
+  .studio-strip .sub { color:#66614f; font-size:12.5px; margin-top:4px; }
+  .studio-strip .btns { display:flex; gap:8px; flex-wrap:wrap; }
+  @media (max-width:900px){ [data-nav-links]{ display:none !important; } }
+  /* 精靈（引導設計）視窗：四款提案卡片 */
+  #propGrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .prop-card { border:1px solid #ddd8cc; border-radius:14px; overflow:hidden; background:#fff; cursor:pointer; transition:box-shadow .15s, border-color .15s; }
+  .prop-card:hover { border-color:#9a7b43; box-shadow:0 4px 14px rgba(154,123,67,.18); }
+  .prop-card img { width:100%; display:block; aspect-ratio:4/3; object-fit:cover; }
+  .pc-body { padding:8px 10px 10px; display:flex; flex-direction:column; gap:2px; }
+  .pc-body b { font-size:13px; color:#1b1a16; }
+  .pc-body span { font-size:11px; color:#8a8478; }
+  .pc-body .pc-price { color:#9a7b43; font-weight:600; font-size:12px; margin-top:2px; }
+  #wizModal .rim-label { margin-top:12px; }
+  @media (max-width:700px){ #propGrid { grid-template-columns:1fr; } }
+/* ===== noir-skin ===== */
+  /* ===== Noir 換膚（2026-07-24 Yodezeen 式改版）：深色底＋暖白字＋金色點綴，與新首頁銜接 ===== */
+  body { background:#131211; color:#ece7dc; }
+  /* 導覽列（原為米白玻璃，改深色玻璃；蓋過 inline style 需 !important） */
+  body > nav { background:rgba(19,18,17,.82) !important; border-bottom:1px solid #2a2723 !important; backdrop-filter:blur(14px); }
+  body > nav a { color:#cfc7b6 !important; }
+  body > nav a[href="index.html"] { color:#ece7dc !important; }
+  body > nav a[href="customize.html"] { color:#e6c98a !important; }
+  body > nav a[href="contact.html"] { background:transparent !important; border:1px solid #9a7b43 !important; color:#e6c98a !important; }
+  #langSel { border:1px solid #3a352e !important; color:#cfc7b6 !important; background:#131211 !important; }
+  /* 標題帶 */
+  .studio-strip { background:#131211; border-bottom:1px solid #2a2723; }
+  .studio-strip h1 { color:#f4efe4; }
+  .studio-strip .sub { color:#9b937f; }
+  .studio-strip .eyebrow { color:#9a7b43; }
+  .btn-upl { border:1px solid #4a4438; color:#cfc7b6; background:transparent; }
+  .btn-dxf { background:#9a7b43; color:#131211; }
+  .btn-json { background:#ece7dc; color:#131211; }
+  /* 左側面板 */
+  #panel { background:#191714; border-right:1px solid #2a2723; }
+  .group, details.group { background:#201d19; border:1px solid #2e2a24; }
+  .group h3, details.group summary { color:#ece7dc; }
+  .row label, .rim-label, .chk, .chk label { color:#b5ac9c; }
+  .row .val input { background:#131211; border:1px solid #3a352e; color:#ece7dc; }
+  .row .val span, .tip, .desc { color:#8f8776; }
+  .shape-btns button, .drain-btns button { background:#191714; border:1px solid #3a352e; color:#cfc7b6; }
+  .shape-btns button.active, .drain-btns button.active { background:#ece7dc; border-color:#ece7dc; color:#131211; }
+  .preset { background:#241f18; border:1px dashed #9a7b43; color:#e6c98a; }
+  .preset:hover { background:#2c261d; }
+  input[type=text], input[type=email] { background:#131211 !important; border:1px solid #3a352e !important; color:#ece7dc !important; }
+  #spec td { color:#b5ac9c; border-bottom:1px dashed #2e2a24; }
+  #spec td:last-child { color:#ece7dc; }
+  .flow { background:#191714; color:#8f8776; }
+  .flow b { color:#e6c98a; }
+  #warn { color:#e08a5e; }
+  select#shipDest { background:#131211 !important; border:1px solid #3a352e !important; color:#ece7dc !important; }
+  #quoteBtn { background:#9a7b43 !important; color:#131211 !important; }
+  #priceRows span { color:#b5ac9c !important; }
+  #priceRows div span:last-child { color:#ece7dc !important; }
+  /* 價格區 inline 深色文字反白 */
+  #tierName, #fromTotal, #totVal { color:#e6c98a !important; }
+  .group label span { color:#cfc7b6; }
+  .group b { color:#ece7dc; }
+  /* 對話框（手繪／精靈） */
+  .sk-box { background:#1c1a17; }
+  .sk-box h2, #wizModal h2 { color:#ece7dc; }
+  .sk-box .sk-sub, #wizModal .sk-sub { color:#8f8776; }
+  .sk-col h4 { color:#e6c98a; }
+  .sk-tools button, .sk-tools label.upl { background:#191714; border:1px solid #3a352e; color:#cfc7b6; }
+  .sk-actions .ok { background:#9a7b43; color:#131211; }
+  .sk-actions .cancel { background:#2a2723; color:#cfc7b6; }
+  .prop-card { background:#191714; border-color:#3a352e; }
+  .pc-body b { color:#ece7dc; }
+  .pc-body span { color:#8f8776; }
+  canvas.pad { border:2px solid #3a352e; }   /* 手繪畫布維持白底好作畫 */

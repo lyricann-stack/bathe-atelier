@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Design Studio — Three Ways In | Bathe Atelier</title>
+<meta name="description" content="Three ways to design your bathtub: answer five questions, sculpt it yourself, or take full parametric control.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { min-height:100vh; background:#131211; color:#ece7dc; font-family:"DM Sans",system-ui,sans-serif; display:flex; flex-direction:column; }
+  ::selection { background:#9a7b43; color:#131211; }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:26px clamp(20px,4vw,56px); }
+  nav .links { display:flex; gap:clamp(18px,3vw,44px); }
+  nav a { color:#ece7dc; text-decoration:none; font-size:11.5px; letter-spacing:.22em; text-transform:uppercase; opacity:.85; transition:opacity .2s; }
+  nav a:hover { opacity:1; }
+  nav .brand { font-family:'Anton',sans-serif; font-size:19px; letter-spacing:.08em; opacity:1; }
+  header { text-align:center; padding:clamp(28px,6vh,64px) 20px clamp(18px,3vh,30px); }
+  header h1 { font-family:'Anton',sans-serif; font-size:clamp(38px,6.5vw,92px); line-height:1; letter-spacing:.02em; text-transform:uppercase; color:#f4efe4; }
+  header p { margin-top:14px; font-size:clamp(11px,1.3vw,13.5px); letter-spacing:.3em; text-transform:uppercase; color:#b5ac9c; }
+  main { flex:1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(14px,2vw,26px);
+         padding:clamp(10px,2vh,20px) clamp(20px,4vw,56px) clamp(30px,5vh,54px); max-width:1480px; width:100%; margin:0 auto; }
+  .door { position:relative; display:flex; flex-direction:column; justify-content:flex-end; min-height:min(52vh,560px);
+          border:1px solid #2c2925; border-radius:18px; padding:clamp(20px,2.4vw,34px); text-decoration:none; color:#ece7dc;
+          background:linear-gradient(to top, rgba(19,18,17,.92) 0%, rgba(19,18,17,.35) 55%, rgba(19,18,17,.15) 100%);
+          overflow:hidden; transition:transform .25s ease, border-color .25s ease; }
+  .door:hover { transform:translateY(-6px); border-color:#9a7b43; }
+  .door .tag { position:absolute; top:22px; left:24px; font-size:10.5px; letter-spacing:.26em; text-transform:uppercase; color:#e6c98a;
+               border:1px solid rgba(154,123,67,.7); border-radius:999px; padding:6px 13px; }
+  .door .time { position:absolute; top:24px; right:24px; font-size:10.5px; letter-spacing:.18em; color:#8f8776; text-transform:uppercase; }
+  .door h2 { font-family:'Anton',sans-serif; font-size:clamp(26px,2.8vw,42px); letter-spacing:.03em; text-transform:uppercase; line-height:1.05; color:#f4efe4; }
+  .door .it { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(15px,1.5vw,19px); color:#cfc7b6; margin:10px 0 14px; }
+  .door ul { list-style:none; margin-bottom:18px; }
+  .door li { font-size:12.5px; letter-spacing:.04em; color:#b5ac9c; padding:3px 0 3px 16px; position:relative; }
+  .door li::before { content:'—'; position:absolute; left:0; color:#9a7b43; }
+  .door .go { align-self:flex-start; border:1px solid rgba(236,231,220,.55); border-radius:999px; padding:11px 22px;
+              font-size:11px; letter-spacing:.2em; text-transform:uppercase; transition:all .25s; }
+  .door:hover .go { background:#ece7dc; color:#131211; border-color:#ece7dc; }
+  footer { text-align:center; padding:0 20px 26px; font-size:10.5px; letter-spacing:.18em; color:#6f695d; text-transform:uppercase; }
+  footer a { color:#8f8776; text-decoration:none; }
+  @media (max-width:900px){
+    main { grid-template-columns:1fr; }
+    .door { min-height:auto; padding-top:74px; }
+    nav .links { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="links">
+    <a href="materials.html">Materials</a>
+    <a href="how-it-works.html">How it works</a>
+    <a href="guides.html">Guides</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <a class="brand" href="index.html" style="text-decoration:none;color:#ece7dc">BATHE&nbsp;ATELIER</a>
+  <div></div>
+</nav>
+
+<header>
+  <h1>Three ways in</h1>
+  <p>Same atelier &nbsp;·&nbsp; same craft &nbsp;·&nbsp; choose how deep you go</p>
+</header>
+
+<main>
+  <a class="door" href="basic.html">
+    <span class="tag">Basic</span>
+    <span class="time">≈ 2 minutes</span>
+    <h2>Designed<br>around you</h2>
+    <div class="it">Answer five questions — we design four tubs for your space and body.</div>
+    <ul>
+      <li>No tools to learn</li>
+      <li>Four proposals, ergonomically sized</li>
+      <li>Adjust size &amp; colour, then get your quote</li>
+    </ul>
+    <span class="go">Start with 5 questions →</span>
+  </a>
+
+  <a class="door" href="medium.html">
+    <span class="tag">Medium</span>
+    <span class="time">≈ 10 minutes</span>
+    <h2>Sculpt it<br>yourself</h2>
+    <div class="it">Drag the gold arrows on the tub and watch it turn — every shape stays buildable.</div>
+    <ul>
+      <li>Live 3D sculpting, 360° view</li>
+      <li>Shapes, rims, drains, colours</li>
+      <li>Instant price as you shape</li>
+    </ul>
+    <span class="go">Open the studio →</span>
+  </a>
+
+  <a class="door" href="pro.html">
+    <span class="tag">Pro</span>
+    <span class="time">No limits</span>
+    <h2>Full parametric<br>control</h2>
+    <div class="it">For designers — factory arcs, hand-sketch, CAD import, dimensioned DXF.</div>
+    <ul>
+      <li>Factory-grade mould parameters</li>
+      <li>Sketch or import your own CAD</li>
+      <li>Manufacturing CAD pack with your firm quote</li>
+    </ul>
+    <span class="go">Enter Pro →</span>
+  </a>
+</main>
+
+<footer><a href="mailto:hello@batheatelier.com">hello@batheatelier.com</a> &nbsp;·&nbsp; © 2026 Bathe Atelier</footer>
+
+</body>
+</html>

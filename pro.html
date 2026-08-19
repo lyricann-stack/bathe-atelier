@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Design Studio · Pro — Factory-Grade Parametric Control | Bathe Atelier</title>
+<meta name="description" content="Full parametric control: factory arcs, hand-sketch, CAD import, dimensioned DXF. The manufacturing CAD pack ships with your firm quote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="shipping-rates.js"></script>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+<!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
+<nav style="flex:none;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
+  <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:20px">
+    <a href="index.html" style="text-decoration:none;color:#1b1a16;display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-family:'Playfair Display',serif;font-style:italic;letter-spacing:.02em;font-weight:500;color:#9a7b43;font-size:16px">Atelier</span></a>
+    <div style="display:flex;align-items:center;gap:26px" data-nav-links>
+      <a href="materials.html" style="text-decoration:none;color:#4a463d;font-size:14px;letter-spacing:.01em">Materials</a>
+      <a href="how-it-works.html" style="text-decoration:none;color:#4a463d;font-size:14px">How it works</a>
+      <a href="designers.html" style="text-decoration:none;color:#4a463d;font-size:14px">For designers</a>
+      <a href="portfolio.html" style="text-decoration:none;color:#4a463d;font-size:14px">Portfolio</a>
+      <a href="guides.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">Guides</a>
+      <a href="start.html" style="text-decoration:none;color:#9a7b43;font-size:14px;font-weight:600">Design studio</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <select id="langSel" aria-label="Language" style="appearance:none;-webkit-appearance:none;background:transparent;border:1px solid #ddd8cc;border-radius:999px;padding:7px 14px;font-size:12.5px;font-family:inherit;color:#4a463d;cursor:pointer">
+        <option value="en">EN</option>
+        <option value="zh">简中</option>
+        <option value="th">ไทย</option>
+      </select>
+      <a href="contact.html" style="text-decoration:none;background:#1b1a16;color:#f4f1ea;padding:11px 20px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.01em">Get free sample kit</a>
+    </div>
+  </div>
+</nav>
+<!-- 標題帶：沿用原 Design Studio 的頁面語氣 -->
+<div class="studio-strip">
+  <div>
+    <div class="eyebrow">The Design Studio — Pro</div>
+    <h1>Shape it. Watch it turn.</h1>
+    <div class="sub">Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there</div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
+    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+    <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
+    <button class="btn btn-upl" onclick="openPhoto()">📷 Site photo notes</button>
+    <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
+  </div>
+</div>
+<main>
+  <div id="panel">
+    <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <div class="group">
+      <h3>① Tub Shape (Freestanding)</h3>
+      <div class="shape-btns">
+        <button data-shape="rect" onclick="setShape('rect',this)">Rounded Rect</button>
+        <button data-shape="stadium" onclick="setShape('stadium',this)">Rounded Ends</button>
+        <button data-shape="ellipse" class="active" onclick="setShape('ellipse',this)">Oval</button>
+        <button data-shape="custom" onclick="openSketch()">✏️ Sketch</button>
+      </div>
+      <div class="rim-label">Rim profile</div>
+      <div class="drain-btns rim-btns">
+        <button data-rim="flat" onclick="setRim('flat',this)">Flat</button>
+        <button data-rim="round" class="active" onclick="setRim('round',this)">Rounded</button>
+        <button data-rim="bevel" onclick="setRim('bevel',this)">Beveled</button>
+      </div>
+      <button class="preset" onclick="applyPhotoPreset()">★ Photo preset: asymmetric egg tub</button>
+      <div class="rim-label" style="margin-top:10px">Factory classics (production-proven)</div>
+      <div class="drain-btns">
+        <button onclick="applyClassic('marbella',this)">Marbella</button>
+        <button onclick="applyClassic('victoria',this)">Victoria</button>
+        <button onclick="applyClassic('darwin',this)">Darwin</button>
+      </div>
+    </div>
+    <div class="group">
+      <h3>② Dimensions (mm)</h3>
+      <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
+      <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
+      <div class="row"><label>Rim height (front)</label><input type="range" id="rH" min="400" max="750" step="10" value="580"><div class="val"><input id="nH" value="580"><span>mm</span></div></div>
+      <div class="row"><label>Wall thickness</label><input type="range" id="rT" min="5" max="40" step="1" value="20"><div class="val"><input id="nT" value="20"><span>mm</span></div></div>
+      <div class="row"><label>Base thickness</label><input type="range" id="rB" min="20" max="200" step="5" value="130"><div class="val"><input id="nB" value="130"><span>mm</span></div></div>
+      <div class="row" id="radiusRow" style="display:none"><label>Corner radius</label><input type="range" id="rR" min="50" max="300" step="10" value="150"><div class="val"><input id="nR" value="150"><span>mm</span></div></div>
+      <div class="row" id="lipRow"><label>Rim edge width</label><input type="range" id="rLip" min="10" max="40" step="1" value="20"><div class="val"><input id="nLip" value="20"><span>mm</span></div></div>
+      <div class="row" id="ibLRow"><label>Inner base length</label><input type="range" id="rIbL" min="500" max="1900" step="2" value="1108"><div class="val"><input id="nIbL" value="1108"><span>mm</span></div></div>
+      <div class="row" id="ibWRow"><label>Inner base width</label><input type="range" id="rIbW" min="250" max="950" step="2" value="518"><div class="val"><input id="nIbW" value="518"><span>mm</span></div></div>
+      <div class="row" id="obLRow"><label>Outer base length</label><input type="range" id="rObL" min="600" max="2000" step="2" value="1190"><div class="val"><input id="nObL" value="1190"><span>mm</span></div></div>
+      <div class="row" id="obWRow"><label>Outer base width</label><input type="range" id="rObW" min="300" max="1000" step="2" value="600"><div class="val"><input id="nObW" value="600"><span>mm</span></div></div>
+      <div id="warn">⚠ Invalid parameters: interior space too small, please adjust</div>
+      <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
+      <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
+    </div>
+    <div class="group">
+      <h3>③ Asymmetry Parameters</h3>
+      <div class="row"><label>Backrest rise (rear)</label><input type="range" id="rDH" min="0" max="250" step="10" value="0"><div class="val"><input id="nDH" value="0"><span>mm</span></div></div>
+      <div class="row"><label>Rise curvature</label><input type="range" id="rArc" min="0" max="100" step="5" value="60"><div class="val"><input id="nArc" value="60"><span>%</span></div></div>
+      <div class="row"><label>Egg factor</label><input type="range" id="rE" min="0" max="30" step="1" value="0"><div class="val"><input id="nE" value="0"><span>%</span></div></div>
+      <div class="row"><label>Base taper</label><input type="range" id="rS" min="60" max="100" step="1" value="100"><div class="val"><input id="nS" value="100"><span>%</span></div></div>
+      <div class="tip">Backrest rise = how much higher the rear rim is (sloped rim) | Egg factor = narrower front, wider rear | Base taper = footprint vs rim opening; smaller = more inward-curving walls</div>
+      <div class="rim-label" style="margin-top:10px">Side wall profile</div>
+      <div class="drain-btns wallmode-btns">
+        <button data-wallmode="factory" class="active" onclick="setWallMode('factory',this)">Factory arcs (per-side R)</button>
+        <button data-wallmode="curve" onclick="setWallMode('curve',this)">Default curve</button>
+        <button data-wallmode="arc" onclick="setWallMode('arc',this)">Arc R</button>
+        <button data-wallmode="s" onclick="setWallMode('s',this)">S-curve (2 arcs)</button>
+      </div>
+      <div class="row" id="riLRow" style="margin-top:10px"><label>Inner wall R — length section</label><input type="range" id="rRiL" min="300" max="5000" step="1" value="1001"><div class="val"><input id="nRiL" value="1001"><span>mm</span></div></div>
+      <div class="row" id="riWRow"><label>Inner wall R — width section</label><input type="range" id="rRiW" min="300" max="5000" step="1" value="1152"><div class="val"><input id="nRiW" value="1152"><span>mm</span></div></div>
+      <div class="row" id="roLRow"><label>Outer wall R — length section</label><input type="range" id="rRoL" min="300" max="5000" step="1" value="887"><div class="val"><input id="nRoL" value="887"><span>mm</span></div></div>
+      <div class="row" id="roWRow"><label>Outer wall R — width section</label><input type="range" id="rRoW" min="300" max="5000" step="1" value="1743"><div class="val"><input id="nRoW" value="1743"><span>mm</span></div></div>
+      <div class="row" id="wallRRow" style="display:none;margin-top:10px"><label>Side wall arc R</label><input type="range" id="rWR" min="600" max="4000" step="50" value="2000"><div class="val"><input id="nWR" value="2000"><span>mm</span></div></div>
+      <div class="row" id="wallR1Row" style="display:none;margin-top:10px"><label>Lower arc R1</label><input type="range" id="rWR1" min="600" max="4000" step="50" value="2000"><div class="val"><input id="nWR1" value="2000"><span>mm</span></div></div>
+      <div class="row" id="wallR2Row" style="display:none"><label>Upper arc R2 (reversed)</label><input type="range" id="rWR2" min="600" max="4000" step="50" value="1200"><div class="val"><input id="nWR2" value="1200"><span>mm</span></div></div>
+      <div class="row" id="wallMidRow" style="display:none"><label>S join height</label><input type="range" id="rWM" min="20" max="80" step="5" value="55"><div class="val"><input id="nWM" value="55"><span>%</span></div></div>
+      <div class="tip">Arc / S-curve run from the tapered base edge up to the rim (width section as reference). Smaller R = more curved. All R values are annotated on the CAD drawing — the factory reads them straight off. Sketched profiles are auto-fitted to arcs where possible.</div>
+      <div class="chk" id="skirtChk" style="margin-top:10px"><input type="checkbox" id="skirtToggle"><label for="skirtToggle">Pedestal skirt base (Oneida-style)</label></div>
+      <div class="row" id="skirtHRow" style="display:none;margin-top:10px"><label>Skirt height</label><input type="range" id="rSkH" min="80" max="300" step="10" value="180"><div class="val"><input id="nSkH" value="180"><span>mm</span></div></div>
+      <div class="row" id="skirtWRow" style="display:none"><label>Waist width</label><input type="range" id="rSkW" min="45" max="90" step="1" value="58"><div class="val"><input id="nSkW" value="58"><span>%</span></div></div>
+      <div class="row" id="skirtRRow" style="display:none"><label>Skirt arc R</label><input type="range" id="rSkR" min="300" max="1500" step="25" value="400"><div class="val"><input id="nSkR" value="400"><span>mm</span></div></div>
+      <div class="tip" id="skirtTip" style="display:none">Outer shell only: skirt foot width = Base taper, tucks in to the waist, then the wall profile continues to the rim. The inner bowl stays a normal bowl.</div>
+      <div class="chk" style="margin-top:10px"><input type="checkbox" id="undercutToggle"><label for="undercutToggle">Allow undercut (bulge beyond rim — split mould: stone resin / premium)</label></div>
+      <div class="tip">Vertical demoulding cannot have undercuts. Unchecked = walls auto-limited to never bulge beyond the rim (standard acrylic)</div>
+      <div id="undercutWarn" class="tip" style="display:none;color:#b3541e">⚠ Undercut on acrylic needs a split mould and hand-finished seams — high cost. Consider solid surface, or continue as premium bespoke.</div>
+    </div>
+    <div class="group">
+      <h3>④ Drain & Floor Slope</h3>
+      <div class="drain-btns">
+        <button data-drain="center" class="active" onclick="setDrain('center',this)">Center</button>
+        <button data-drain="back" onclick="setDrain('back',this)">End · rear</button>
+        <button data-drain="front" onclick="setDrain('front',this)">End · front</button>
+        <button data-drain="side" onclick="setDrain('side',this)">Short edge</button>
+        <button data-drain="side2" onclick="setDrain('side2',this)">Short edge · opposite</button>
+      </div>
+      <div class="row" style="margin-top:12px"><label>Floor drain slope</label><input type="range" id="rSlope" min="1.3" max="1.5" step="0.05" value="1.5"><div class="val"><input id="nSlope" value="1.5"><span>°</span></div></div>
+      <div class="tip">Tub floor slopes towards the drain, drain at the lowest point (factory standard 1.3–1.5°). Drain detail follows the factory standard fitting, applied at mould stage.</div>
+      <div class="chk" id="ovfChk" style="margin-top:10px"><input type="checkbox" id="ovfToggle"><label for="ovfToggle">Overflow drain (factory standard, 75mm below rim)</label></div>
+    </div>
+    <div class="group">
+      <h3>⑤ Material & Colour</h3>
+      <div class="drain-btns mat-btns" style="margin-bottom:10px">
+        <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
+        <button data-mat="solid" onclick="setMaterial('solid',this)">Solid surface (matte)</button>
+      </div>
+      <div class="swatches">
+        <div class="sw active" style="background:#f5f5f0" data-c="#f5f5f0" title="Classic White"></div>
+        <div class="sw" style="background:#2b2b2b" data-c="#2b2b2b" title="Matte Black"></div>
+        <div class="sw" style="background:#9aa5ad" data-c="#9aa5ad" title="Stone Grey"></div>
+        <div class="sw" style="background:#e8dcc8" data-c="#e8dcc8" title="Cream"></div>
+        <div class="sw" style="background:#5d7b6f" data-c="#5d7b6f" title="Morandi Green"></div>
+        <input type="color" id="customColor" value="#f5f5f0" style="width:32px;height:28px;border:none;background:none;cursor:pointer" title="Custom colour">
+      </div>
+      <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level (translucent blue = water)</label></div>
+    </div>
+    <div class="group">
+      <h3>⑥ Order Info (exported to CAD / spec)</h3>
+      <input type="text" id="custName" placeholder="Customer name">
+      <input type="email" id="custEmail" placeholder="Email *">
+      <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
+    </div>
+    <div class="group">
+      <h3>⑦ Live Specifications</h3>
+      <table id="spec"></table>
+    </div>
+    <div class="group">
+      <h3>⑧ Price & Quote</h3>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
+        <span style="font-size:12.5px;color:#8a8478">Tier</span>
+        <b id="tierName" style="font-family:'Playfair Display',serif;font-size:18px;color:#9a7b43"></b>
+      </div>
+      <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer">
+        <input type="checkbox" id="optOneOfOne" style="margin-top:2px;accent-color:#9a7b43">
+        <span>Make it One-of-One (mold retired + certificate)</span>
+      </label>
+      <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Options</div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:5px;cursor:pointer">
+        <input type="checkbox" id="optBackrest" style="accent-color:#9a7b43">
+        <span>Heated backrest</span>
+        <b style="margin-left:auto">+$1,690</b>
+      </label>
+      <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:10px;cursor:pointer">
+        <input type="checkbox" id="optBasin" style="accent-color:#9a7b43">
+        <span>Matching basin</span>
+        <b id="basinPriceLbl" style="margin-left:auto">+$990</b>
+      </label>
+      <div id="priceRows" style="font-size:13px;border-top:1px solid #ddd8cc;padding-top:7px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 10px;border-bottom:2px solid #1b1a16;margin-bottom:10px">
+        <span style="font-size:12.5px;color:#8a8478">Estimated price</span>
+        <b id="fromTotal" style="font-family:'Playfair Display',serif;font-size:20px;color:#9a7b43"></b>
+      </div>
+      <div style="margin:2px 0 12px">
+        <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Ship to</div>
+        <select id="shipDest" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid #ddd8cc;border-radius:8px;background:#fff;color:#1b1a16"></select>
+        <div id="shipEst" style="display:none;margin-top:9px;font-size:13.5px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#8a8478">Est. shipping</span><b id="shipVal"></b></div>
+          <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="color:#8a8478">Est. total</span><b id="totVal" style="color:#9a7b43"></b></div>
+          <div class="tip" style="margin-top:6px">Door-to-door estimate — confirmed on your firm quote.</div>
+        </div>
+      </div>
+      <div class="tip" style="margin-bottom:10px">USD $399 design fee — fully credited to any tier. Final price is confirmed on your firm quote.</div>
+      <button id="quoteBtn" onclick="sendQuote(this)" style="width:100%;background:#1b1a16;color:#f4f1ea;border:none;padding:14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer">Submit design & get a firm quote →</button>
+      <div id="quoteBanner" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5"></div>
+    </div>
+    <div class="group">
+      <h3>Production Flow</h3>
+      <div class="flow" id="flowBox">
+        <b>Customer</b>: adjust shape &amp; parameters here with live 3D preview<br><b>↓ One-click export</b><br><b>Designer</b>: DXF 3-view drawing (editable in AutoCAD) + JSON spec sheet<br><b>↓ Designer review / fine-tune</b><br><b>Factory</b>: acrylic = mould + thermoforming; solid surface = CNC shaping + hand finishing
+      </div>
+    </div>
+  </div>
+  <div id="viewer">
+    <canvas id="canvas3d"></canvas>
+    <div id="extBanner">Viewing external CAD model — adjust any parameter to return to the parametric model</div>
+    <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
+  </div>
+</main>
+<div id="sketchModal">
+  <div class="sk-box">
+    <h2>✏️ Sketch Your Bathtub Shape</h2>
+    <div class="sk-sub">Draw a one-of-a-kind bathtub — sketch lines are auto-smoothed into clean curves and built into a 3D model. All dimension parameters remain adjustable afterwards.</div>
+    <div class="sk-flex">
+      <div class="sk-col">
+        <h4>① Top-View Rim Shape (required)</h4>
+        <div class="desc" id="skDescTop">The rim outline seen from directly above. Draw a <b>closed</b> shape (ends auto-connect). You can also photograph a paper sketch and upload it (dark pen, white paper, even lighting).</div>
+        <canvas id="padTop" class="pad" width="360" height="260"></canvas>
+        <div class="sk-tools">
+          <button onclick="clearPad('top')">Clear</button>
+          <label class="upl">📷 Upload sketch photo<input type="file" id="uplTop" accept="image/*" style="display:none"></label>
+        </div>
+      </div>
+      <div class="sk-col">
+        <h4>② Side Wall Profile (optional)</h4>
+        <div class="desc" id="skDescSide">Dashed line on the left = tub centerline. Draw one side wall curve <b>from bottom to top</b> (e.g. tapered base, bulging middle). If skipped, the "Base taper" slider is used instead.</div>
+        <canvas id="padSide" class="pad" width="300" height="260"></canvas>
+        <div class="sk-tools">
+          <button onclick="clearPad('side')">Clear</button>
+          <button onclick="clearPad('side');useDefaultProfile=true">Use default profile</button>
+        </div>
+      </div>
+    </div>
+    <div id="skErr"></div>
+    <div class="sk-actions">
+      <button class="cancel" onclick="closeSketch()">Cancel</button>
+      <button class="ok" onclick="confirmSketch()">✔ Generate 3D Model</button>
+    </div>
+  </div>
+</div>
+<div id="wizModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(680px,94vw)">
+    <div id="wizQ">
+      <h2>✨ Guided design</h2>
+      <div class="sk-sub">Answer a few questions — we design four tubs around you, then you fine-tune the one you like.</div>
+      <div class="rim-label" style="margin-top:0">Installation space</div>
+      <div class="row"><label>Space length</label><input type="range" id="rSpL" min="1300" max="4000" step="50" value="2400"><div class="val"><input id="nSpL" value="2400"><span>mm</span></div></div>
+      <div class="row"><label>Space width</label><input type="range" id="rSpW" min="700" max="3000" step="50" value="1600"><div class="val"><input id="nSpW" value="1600"><span>mm</span></div></div>
+      <div class="tip">We keep at least 50mm clearance on each side for installation and cleaning.</div>
+      <div class="rim-label">Main bather's height</div>
+      <div class="row"><label>Height</label><input type="range" id="rBh" min="140" max="200" step="1" value="170"><div class="val"><input id="nBh" value="170"><span>cm</span></div></div>
+      <div class="rim-label">How do you like to soak?</div>
+      <div class="drain-btns" id="postureBtns">
+        <button data-pos="recline" class="active">Recline, knees relaxed</button>
+        <button data-pos="stretch">Lie flat, legs straight</button>
+        <button data-pos="deep">Deep soak, seated</button>
+      </div>
+      <div class="rim-label">Bathing for</div>
+      <div class="drain-btns" id="bathersBtns">
+        <button data-n="1" class="active">One person</button>
+        <button data-n="2">Two people</button>
+      </div>
+      <div class="rim-label">Which look speaks to you?</div>
+      <div class="drain-btns" id="lookBtns">
+        <button data-look="organic" class="active">Soft organic</button>
+        <button data-look="rounded">Rounded ends</button>
+        <button data-look="linear">Clean lines</button>
+      </div>
+      <div class="sk-actions">
+        <button class="cancel" onclick="closeWizard()">Cancel</button>
+        <button class="ok" onclick="generateProposals()">✨ Design my four tubs →</button>
+      </div>
+    </div>
+    <div id="wizP" style="display:none">
+      <h2>Your four proposals</h2>
+      <div class="sk-sub">Built around your space and body — pick one, then fine-tune it.</div>
+      <div id="propGrid"></div>
+      <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one — everything stays adjustable.</div>
+      <div class="sk-actions">
+        <button class="cancel" onclick="wizBack()">← Change answers</button>
+        <button class="cancel" onclick="closeWizard()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 照片分析（簡易版）：上傳現場照 → 手動圈出位置 → 隨詢價寄出（2026-08-17 會議 T5；不做 AI 自動辨識） -->
+<div id="photoModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(760px,94vw)">
+    <h2>📷 Site photo notes</h2>
+    <div class="sk-sub">Upload a photo of the space, then draw directly on it to circle where the tub goes or what we should know. It is attached to your inquiry.</div>
+    <div class="sk-tools" style="margin-bottom:8px">
+      <label class="upl">📷 Upload photo<input type="file" id="photoFile" accept="image/*" style="display:none"></label>
+      <button onclick="photoClearStrokes()">Clear markings</button>
+    </div>
+    <div style="max-height:56vh;overflow:auto;border:1px solid #ddd8cc;border-radius:8px;background:#faf8f3;text-align:center">
+      <canvas id="photoPad" style="max-width:100%;cursor:crosshair;touch-action:none"></canvas>
+    </div>
+    <input type="text" id="photoNote" placeholder="Note (e.g. tub goes here, window on the left)" style="width:100%;margin-top:10px">
+    <div id="photoStatus" class="tip" style="margin-top:6px"></div>
+    <div class="sk-actions">
+      <button class="cancel" onclick="closePhoto()">Cancel</button>
+      <button class="ok" onclick="attachPhoto()">✔ Attach to inquiry</button>
+    </div>
+  </div>
+</div>
+<script>
+  // 三版本設定（必須在 lib 之前）
+  window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true;
+</script>
+<script src="lib-tub-state.js"></script>
+<script src="lib-tub-i18n.js"></script>
+<script src="lib-tub-scene.js"></script>
+<script src="lib-tub-engine.js"></script>
+<script src="lib-tub-pricing.js"></script>
+<script src="lib-tub-export.js"></script>
+<script src="lib-tub-import.js"></script>
+<script src="lib-tub-ui.js"></script>
+<script src="lib-tub-sketch.js"></script>
+<script src="lib-tub-wizard.js"></script>
+<script src="lib-tub-handles.js"></script>
+<script src="lib-tub-orbit.js"></script>
+<script src="lib-tub-boot.js"></script>
+<script>
+// ===== 照片分析（簡易圈選版）=====
+const _ph = { img:null, strokes:[], cur:null, scale:1 };
+const phCv = document.getElementById('photoPad'), phCtx = phCv.getContext('2d');
+function openPhoto(){ document.getElementById('photoModal').style.display='flex'; }
+function closePhoto(){ document.getElementById('photoModal').style.display='none'; }
+function photoRedraw(){
+  if(!_ph.img) return;
+  phCtx.drawImage(_ph.img, 0, 0, phCv.width, phCv.height);
+  phCtx.strokeStyle='#e03b2f'; phCtx.lineWidth=Math.max(3, phCv.width/220); phCtx.lineCap='round'; phCtx.lineJoin='round';
+  _ph.strokes.concat(_ph.cur?[_ph.cur]:[]).forEach(s=>{
+    phCtx.beginPath(); s.forEach((p,i)=> i?phCtx.lineTo(p[0],p[1]):phCtx.moveTo(p[0],p[1])); phCtx.stroke();
+  });
+}
+function photoClearStrokes(){ _ph.strokes=[]; _ph.cur=null; photoRedraw(); }
+document.getElementById('photoFile').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const img = new Image();
+  img.onload = ()=>{
+    const MAXW = 1100;
+    const k = Math.min(1, MAXW/img.width);
+    phCv.width = Math.round(img.width*k); phCv.height = Math.round(img.height*k);
+    _ph.img = img; _ph.strokes=[]; _ph.cur=null;
+    document.getElementById('photoStatus').textContent='';
+    photoRedraw();
+  };
+  img.src = URL.createObjectURL(f);
+});
+function phPos(e){ const r = phCv.getBoundingClientRect(); return [(e.clientX-r.left)*phCv.width/r.width, (e.clientY-r.top)*phCv.height/r.height]; }
+phCv.addEventListener('pointerdown', e=>{ if(!_ph.img) return; _ph.cur=[phPos(e)]; phCv.setPointerCapture(e.pointerId); });
+phCv.addEventListener('pointermove', e=>{ if(!_ph.cur) return; _ph.cur.push(phPos(e)); photoRedraw(); });
+phCv.addEventListener('pointerup', ()=>{ if(_ph.cur && _ph.cur.length>1) _ph.strokes.push(_ph.cur); _ph.cur=null; photoRedraw(); });
+function attachPhoto(){
+  if(!_ph.img){ document.getElementById('photoStatus').textContent = '⚠ Upload a photo first.'; return; }
+  photoRedraw();
+  window.EXTRA_QUOTE_ATTACH = [[DESIGN_ID + '_site-photo.jpg', phCv.toDataURL('image/jpeg', 0.85)]];
+  window.EXTRA_QUOTE_NOTE = (document.getElementById('photoNote').value || '').replace(/[<>]/g,'');
+  document.getElementById('photoStatus').textContent = '✔ Attached — it will be sent with your design inquiry.';
+  setTimeout(closePhoto, 700);
+}
+</script>
+</body>

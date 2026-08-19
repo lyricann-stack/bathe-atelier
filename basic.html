@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Design Studio · Basic — Four Tubs Designed Around You | Bathe Atelier</title>
+<meta name="description" content="Answer five questions and get four bathtub proposals sized to your space and body. Pick one, adjust size and colour, get a firm quote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="shipping-rates.js"></script>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+<!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
+<nav style="flex:none;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
+  <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:20px">
+    <a href="index.html" style="text-decoration:none;color:#1b1a16;display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-family:'Playfair Display',serif;font-style:italic;letter-spacing:.02em;font-weight:500;color:#9a7b43;font-size:16px">Atelier</span></a>
+    <div style="display:flex;align-items:center;gap:26px" data-nav-links>
+      <a href="materials.html" style="text-decoration:none;color:#4a463d;font-size:14px;letter-spacing:.01em">Materials</a>
+      <a href="how-it-works.html" style="text-decoration:none;color:#4a463d;font-size:14px">How it works</a>
+      <a href="designers.html" style="text-decoration:none;color:#4a463d;font-size:14px">For designers</a>
+      <a href="portfolio.html" style="text-decoration:none;color:#4a463d;font-size:14px">Portfolio</a>
+      <a href="guides.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">Guides</a>
+      <a href="start.html" style="text-decoration:none;color:#9a7b43;font-size:14px;font-weight:600">Design studio</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <select id="langSel" aria-label="Language" style="appearance:none;-webkit-appearance:none;background:transparent;border:1px solid #ddd8cc;border-radius:999px;padding:7px 14px;font-size:12.5px;font-family:inherit;color:#4a463d;cursor:pointer">
+        <option value="en">EN</option>
+        <option value="zh">简中</option>
+        <option value="th">ไทย</option>
+      </select>
+      <a href="contact.html" style="text-decoration:none;background:#1b1a16;color:#f4f1ea;padding:11px 20px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.01em">Get free sample kit</a>
+    </div>
+  </div>
+</nav>
+<div class="studio-strip">
+  <div>
+    <div class="eyebrow">The Design Studio — Basic</div>
+    <h1>Answer 5 questions. Get 4 tubs designed around you.</h1>
+    <div class="sub">No tools to learn — we design four tubs for your space and body, you pick one and adjust size &amp; colour.</div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-upl" onclick="openWizard()">✨ Redesign — answer again</button>
+    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+  </div>
+</div>
+<main>
+  <div id="panel">
+    <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <div class="group">
+      <h3>② Dimensions (mm)</h3>
+      <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
+      <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
+      <div id="warn">⚠ Invalid parameters: interior space too small, please adjust</div>
+      <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
+      <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
+    </div>
+    <div class="group">
+      <h3>⑤ Material & Colour</h3>
+      <div class="drain-btns mat-btns" style="margin-bottom:10px">
+        <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
+        <button data-mat="solid" onclick="setMaterial('solid',this)">Solid surface (matte)</button>
+      </div>
+      <div class="swatches">
+        <div class="sw active" style="background:#f5f5f0" data-c="#f5f5f0" title="Classic White"></div>
+        <div class="sw" style="background:#2b2b2b" data-c="#2b2b2b" title="Matte Black"></div>
+        <div class="sw" style="background:#9aa5ad" data-c="#9aa5ad" title="Stone Grey"></div>
+        <div class="sw" style="background:#e8dcc8" data-c="#e8dcc8" title="Cream"></div>
+        <div class="sw" style="background:#5d7b6f" data-c="#5d7b6f" title="Morandi Green"></div>
+        <input type="color" id="customColor" value="#f5f5f0" style="width:32px;height:28px;border:none;background:none;cursor:pointer" title="Custom colour">
+      </div>
+      <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level (translucent blue = water)</label></div>
+    </div>
+    <div class="group">
+      <h3>⑥ Order Info (exported to CAD / spec)</h3>
+      <input type="text" id="custName" placeholder="Customer name">
+      <input type="email" id="custEmail" placeholder="Email *">
+      <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
+    </div>
+    <div class="group">
+      <h3>⑦ Live Specifications</h3>
+      <table id="spec"></table>
+    </div>
+    <div class="group">
+      <h3>⑧ Price & Quote</h3>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
+        <span style="font-size:12.5px;color:#8a8478">Tier</span>
+        <b id="tierName" style="font-family:'Playfair Display',serif;font-size:18px;color:#9a7b43"></b>
+      </div>
+      <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer">
+        <input type="checkbox" id="optOneOfOne" style="margin-top:2px;accent-color:#9a7b43">
+        <span>Make it One-of-One (mold retired + certificate)</span>
+      </label>
+      <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Options</div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:5px;cursor:pointer">
+        <input type="checkbox" id="optBackrest" style="accent-color:#9a7b43">
+        <span>Heated backrest</span>
+        <b style="margin-left:auto">+$1,690</b>
+      </label>
+      <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:10px;cursor:pointer">
+        <input type="checkbox" id="optBasin" style="accent-color:#9a7b43">
+        <span>Matching basin</span>
+        <b id="basinPriceLbl" style="margin-left:auto">+$990</b>
+      </label>
+      <div id="priceRows" style="font-size:13px;border-top:1px solid #ddd8cc;padding-top:7px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 10px;border-bottom:2px solid #1b1a16;margin-bottom:10px">
+        <span style="font-size:12.5px;color:#8a8478">Estimated price</span>
+        <b id="fromTotal" style="font-family:'Playfair Display',serif;font-size:20px;color:#9a7b43"></b>
+      </div>
+      <div style="margin:2px 0 12px">
+        <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Ship to</div>
+        <select id="shipDest" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid #ddd8cc;border-radius:8px;background:#fff;color:#1b1a16"></select>
+        <div id="shipEst" style="display:none;margin-top:9px;font-size:13.5px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#8a8478">Est. shipping</span><b id="shipVal"></b></div>
+          <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="color:#8a8478">Est. total</span><b id="totVal" style="color:#9a7b43"></b></div>
+          <div class="tip" style="margin-top:6px">Door-to-door estimate — confirmed on your firm quote.</div>
+        </div>
+      </div>
+      <div class="tip" style="margin-bottom:10px">USD $399 design fee — fully credited to any tier. Final price is confirmed on your firm quote.</div>
+      <button id="quoteBtn" onclick="sendQuote(this)" style="width:100%;background:#1b1a16;color:#f4f1ea;border:none;padding:14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer">Submit design & get a firm quote →</button>
+      <div id="quoteBanner" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5"></div>
+    </div>
+  </div>
+  <div id="viewer">
+    <canvas id="canvas3d"></canvas>
+    <div id="extBanner">Viewing external CAD model — adjust any parameter to return to the parametric model</div>
+    <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
+  </div>
+</main>
+<div id="wizModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(680px,94vw)">
+    <div id="wizQ">
+      <h2>✨ Guided design</h2>
+      <div class="sk-sub">Answer a few questions — we design four tubs around you, then you fine-tune the one you like.</div>
+      <div class="rim-label" style="margin-top:0">Installation space</div>
+      <div class="row"><label>Space length</label><input type="range" id="rSpL" min="1300" max="4000" step="50" value="2400"><div class="val"><input id="nSpL" value="2400"><span>mm</span></div></div>
+      <div class="row"><label>Space width</label><input type="range" id="rSpW" min="700" max="3000" step="50" value="1600"><div class="val"><input id="nSpW" value="1600"><span>mm</span></div></div>
+      <div class="tip">We keep at least 50mm clearance on each side for installation and cleaning.</div>
+      <div class="rim-label">Main bather's height</div>
+      <div class="row"><label>Height</label><input type="range" id="rBh" min="140" max="200" step="1" value="170"><div class="val"><input id="nBh" value="170"><span>cm</span></div></div>
+      <div class="rim-label">How do you like to soak?</div>
+      <div class="drain-btns" id="postureBtns">
+        <button data-pos="recline" class="active">Recline, knees relaxed</button>
+        <button data-pos="stretch">Lie flat, legs straight</button>
+        <button data-pos="deep">Deep soak, seated</button>
+      </div>
+      <div class="rim-label">Bathing for</div>
+      <div class="drain-btns" id="bathersBtns">
+        <button data-n="1" class="active">One person</button>
+        <button data-n="2">Two people</button>
+      </div>
+      <div class="rim-label">Which look speaks to you?</div>
+      <div class="drain-btns" id="lookBtns">
+        <button data-look="organic" class="active">Soft organic</button>
+        <button data-look="rounded">Rounded ends</button>
+        <button data-look="linear">Clean lines</button>
+      </div>
+      <div class="sk-actions">
+        <button class="cancel" onclick="closeWizard()">Cancel</button>
+        <button class="ok" onclick="generateProposals()">✨ Design my four tubs →</button>
+      </div>
+    </div>
+    <div id="wizP" style="display:none">
+      <h2>Your four proposals</h2>
+      <div class="sk-sub">Built around your space and body — pick one, then fine-tune it.</div>
+      <div id="propGrid"></div>
+      <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one — everything stays adjustable.</div>
+      <div class="sk-actions">
+        <button class="cancel" onclick="wizBack()">← Change answers</button>
+        <button class="cancel" onclick="closeWizard()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // 三版本設定（必須在 lib 之前）
+  window.PAGE_ID_PREFIX='BA-B'; window.PAGE_TAG='design-studio-basic'; window.PAGE_AUTO_WIZARD=true; window._noHandles=true;
+</script>
+<script src="lib-tub-state.js"></script>
+<script src="lib-tub-i18n.js"></script>
+<script src="lib-tub-scene.js"></script>
+<script src="lib-tub-engine.js"></script>
+<script src="lib-tub-pricing.js"></script>
+<script src="lib-tub-export.js"></script>
+<script src="lib-tub-ui.js"></script>
+<script src="lib-tub-wizard.js"></script>
+<script src="lib-tub-handles.js"></script>
+<script src="lib-tub-orbit.js"></script>
+<script src="lib-tub-boot.js"></script>
+</body>
