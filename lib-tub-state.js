@@ -19,7 +19,11 @@ const P = {
   ovf:true, ovfDrop:75,             // 溢水口（工廠標準件）＋距缸緣距離 mm
   skirt:false, skirtH:180, waistK:58, skirtR:400,   // 裙擺式底座（Oneida 式，僅外殼、legacy 模式）：裙擺高 mm / 收腰寬 % / 裙擺弧 R
   customPts:null,                   // 手繪俯視輪廓（normalized 至 ±0.5 bbox，96 點）
-  customProfile:null                // 手繪側牆剖面 k(v)，25 個取樣值，k[24]=1
+  customProfile:null,               // 手繪側牆剖面 k(v)，25 個取樣值，k[24]=1
+  // Phase 5(2026-08-20)：EDIT_MODE節點編輯＋wallFace模式新增欄位，補齊預設值(原本靠動態賦值也能運作，
+  // 但明確預設跟Edit3D單檔架構的P物件定義一致，避免undefined跟null混用造成閱讀混淆)
+  customPtsInner:null, wallMod:null, rimMod:null,
+  tub_type:'freestanding', wallEdgeStart:null, wallEdgeEnd:null
 };
 
 // 設計編號：浮水印、Concept PDF 與詢價單追蹤用

@@ -12,6 +12,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="shipping-rates.js"></script>
 <link rel="stylesheet" href="studio.css">
+<!-- Phase 5(2026-08-20)：Photo2Tub上傳banner樣式，逐字抽自photo2tub-app.html -->
+<style id="p2t-skin">
+  #p2tBanner { padding:12px clamp(20px,5vw,56px); background:#1c1a17; border-bottom:1px solid #2a2723; font-size:13px; }
+  #p2tBanner .p2t-row { display:flex; align-items:center; gap:12px; max-width:1280px; margin:0 auto; }
+  #p2tBanner .p2t-spinner { width:16px; height:16px; border-radius:50%; border:2px solid #3a352e; border-top-color:#9a7b43; animation:p2tspin .8s linear infinite; flex:none; }
+  @keyframes p2tspin { to { transform:rotate(360deg); } }
+  #p2tBanner.ok { border-left:3px solid #6f9a6f; }
+  #p2tBanner.warn { border-left:3px solid #b3541e; }
+  #p2tBanner.err { border-left:3px solid #b3413e; }
+  #p2tBanner .p2t-title { font-weight:600; color:#ece7dc; }
+  #p2tBanner .p2t-sub { color:#9b937f; margin-top:2px; }
+  #p2tDetails { margin-top:8px; max-width:1280px; margin-left:auto; margin-right:auto; }
+  #p2tDetails summary { cursor:pointer; color:#e6c98a; font-size:12px; }
+  #p2tDetails ul { margin:6px 0 0 18px; padding:0; color:#9b937f; font-size:12px; line-height:1.6; }
+  #p2tDetails li.p2t-warn-item { color:#d19a5c; }
+</style>
 </head>
 <body>
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
@@ -42,8 +58,17 @@
     <div class="eyebrow">The Design Studio — Pro</div>
     <h1>Shape it. Watch it turn.</h1>
     <div class="sub">Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there</div>
+    <div class="sub" style="color:#c99a4a">⚠ Please upload photos of a bathtub only — basins, shower trays, or washbasins cannot be reliably detected and will be reconstructed as an incorrect bathtub shape.</div>
   </div>
   <div class="btns">
+    <!-- Phase 5(2026-08-20)：照片轉3D，跟下面既有的T5「Site photo notes」是兩個不同功能——
+         這裡是AI自動重建3D模型，Site photo notes是人工標註空間位置附在詢價信裡，UI故意分開放避免混淆 -->
+    <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
+      <option value="freestanding" selected>Freestanding</option>
+      <option value="wall">Wall-mounted</option>
+    </select>
+    <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 Generate 3D from photos</button>
+    <input type="file" id="photo2tubFiles" accept="image/png,image/jpeg,image/jpg,image/webp" multiple style="display:none">
     <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
     <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
@@ -51,6 +76,7 @@
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
+<div id="p2tBanner" style="display:none"></div>
 <main>
   <div id="panel">
     <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
@@ -318,19 +344,26 @@
   // 三版本設定（必須在 lib 之前）
   window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true;
 </script>
+<!-- Phase 5(2026-08-20)：換底Edit3D共用核心(lib-edit3d-*.js)，取代lib-tub-engine/export/import/
+     ui/sketch/wizard/handles/i18n八個舊模組；state/scene/pricing/orbit/boot四個核對後零差異沿用不動；
+     wallmount/photo2tub為新增能力。順序要求：wallmount在geometry之前(geometry呼叫wallIdxWeight)；
+     handles在orbit/boot之前(boot.js結尾的buildTub()/animate()要在EDIT_MODE monkey-patch過buildTub後才call)；
+     photo2tub殿後(呼叫importSpecJSON，import.js要先載入)。 -->
 <script src="lib-tub-state.js"></script>
-<script src="lib-tub-i18n.js"></script>
+<script src="lib-edit3d-i18n.js"></script>
 <script src="lib-tub-scene.js"></script>
-<script src="lib-tub-engine.js"></script>
+<script src="lib-edit3d-wallmount.js"></script>
+<script src="lib-edit3d-geometry.js"></script>
 <script src="lib-tub-pricing.js"></script>
-<script src="lib-tub-export.js"></script>
-<script src="lib-tub-import.js"></script>
-<script src="lib-tub-ui.js"></script>
-<script src="lib-tub-sketch.js"></script>
-<script src="lib-tub-wizard.js"></script>
-<script src="lib-tub-handles.js"></script>
+<script src="lib-edit3d-export.js"></script>
+<script src="lib-edit3d-import.js"></script>
+<script src="lib-edit3d-ui.js"></script>
+<script src="lib-edit3d-sketch.js"></script>
+<script src="lib-edit3d-wizard.js"></script>
+<script src="lib-edit3d-handles.js"></script>
 <script src="lib-tub-orbit.js"></script>
 <script src="lib-tub-boot.js"></script>
+<script src="lib-edit3d-photo2tub.js"></script>
 <script>
 // ===== 照片分析（簡易圈選版）=====
 const _ph = { img:null, strokes:[], cur:null, scale:1 };
