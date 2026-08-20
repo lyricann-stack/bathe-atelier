@@ -1792,7 +1792,7 @@ function drawTitleBlock(x, y, w, h, D){
   E.line(x, cy-460, x+w, cy-460, 'TITLE');
   E.text(x+w/2, cy-180, 150, 'BATHE', 'TITLE', 1);
   E.text(x+w/2, cy-290, 46, 'Bespoke Bathworks', 'TITLE', 1);
-  E.text(x+w/2, cy-405, 44, 'Dongguan Shengchang Industries Co.Ltd.', 'TITLE', 1);
+  E.text(x+w/2, cy-405, 44, 'Made to order, one at a time', 'TITLE', 1);
   cy -= 460;
   // 資料列
   const rows = [
@@ -3034,7 +3034,12 @@ function briefTargets(){
   return { two, innerL, clampL, clampW };
 }
 let PROPS = [];
-function generateProposals(){
+// 2026-08-21 hotfix：EDIT_MODE把captureRenders monkey-patch成async function(見下方
+// 「2D→3D支線」區塊)，但這裡原本同步呼叫`captureRenders(...)[0][1]`——async函式回傳Promise，
+// `[0]`是undefined，點「Design my four tubs」精靈四提案卡當場丟TypeError、卡片顯示不出來。
+// 這是Edit3D單檔架構(wallface-test.html/photo2tub-app.html)本身就带的既有bug，換底成Medium時
+// 一併繼承，非這次新引入。修法：generateProposals()改async，await captureRenders()。
+async function generateProposals(){
   const T = briefTargets();
   const shape = LOOK_SHAPE[BRIEF.look] || 'ellipse';
   const wBase = T.two ? 760 : 600;   // 內口寬目標
@@ -3046,16 +3051,17 @@ function generateProposals(){
       extra:{ shape, dH:90, rim:'round', egg: BRIEF.look==='organic' ? 10 : 0 } }
   ];
   const saved = {}; Object.keys(P).forEach(k=>{ saved[k] = P[k]; });
-  PROPS = defs.map(d=>{
+  PROPS = [];
+  for(const d of defs){
     const params = darwinScaled(d.L, d.W, d.D, d.extra);
     Object.assign(P, params);
     P.customPts = null; P.customPtsInner = null; P.customProfile = null; P.wallMod = null; P.rimMod = null;
     buildTub();
     const spec = computeSpec();
     const price = priceParts().total;
-    const img = captureRenders({ w:520, h:390, mime:'image/jpeg', q:0.82, shots:[['thumb', Math.PI/4, Math.PI/3.2]], noWatermark:true })[0][1];
-    return { name:d.name, params, img, dims:`${d.L} × ${d.W} × ${params.H} mm`, depth:d.D, cap:spec.fullVol.toFixed(0), price };
-  });
+    const img = (await captureRenders({ w:520, h:390, mime:'image/jpeg', q:0.82, shots:[['thumb', Math.PI/4, Math.PI/3.2]], noWatermark:true }))[0][1];
+    PROPS.push({ name:d.name, params, img, dims:`${d.L} × ${d.W} × ${params.H} mm`, depth:d.D, cap:spec.fullVol.toFixed(0), price });
+  }
   Object.keys(saved).forEach(k=>{ P[k] = saved[k]; });
   syncUI(); buildTub();
   renderProposalCards();
