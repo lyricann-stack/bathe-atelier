@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo2Tub — Photo to 3D Test Page | Bathe Atelier</title>
-<meta name="description" content="Internal test page: upload 3-8 photos of a bathtub, get an editable 3D model back automatically. Not linked from the main site.">
+<title>Design Studio · Medium — Edit Your Bathtub in 3D | Bathe Atelier</title>
+<meta name="description" content="Sketch any bathtub shape and sculpt it live in 3D. Made-to-measure from USD $2,490 in premium acrylic or solid surface — free watermarked concept PDF, manufacturing CAD pack with your firm quote. The Bathe Atelier Design Studio.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
@@ -220,23 +220,27 @@
   .pc-body span { color:#8f8776; }
   canvas.pad { border:2px solid #3a352e; }   /* 手繪畫布維持白底好作畫 */
 </style>
-<style id="p2t-skin">
-  #p2tBanner { padding:12px clamp(20px,5vw,56px); background:#1c1a17; border-bottom:1px solid #2a2723; font-size:13px; }
-  #p2tBanner .p2t-row { display:flex; align-items:center; gap:12px; max-width:1280px; margin:0 auto; }
-  #p2tBanner .p2t-spinner { width:16px; height:16px; border-radius:50%; border:2px solid #3a352e; border-top-color:#9a7b43; animation:p2tspin .8s linear infinite; flex:none; }
-  @keyframes p2tspin { to { transform:rotate(360deg); } }
-  #p2tBanner.ok { border-left:3px solid #6f9a6f; }
-  #p2tBanner.warn { border-left:3px solid #b3541e; }
-  #p2tBanner.err { border-left:3px solid #b3413e; }
-  #p2tBanner .p2t-title { font-weight:600; color:#ece7dc; }
-  #p2tBanner .p2t-sub { color:#9b937f; margin-top:2px; }
-  #p2tDetails { margin-top:8px; max-width:1280px; margin-left:auto; margin-right:auto; }
-  #p2tDetails summary { cursor:pointer; color:#e6c98a; font-size:12px; }
-  #p2tDetails ul { margin:6px 0 0 18px; padding:0; color:#9b937f; font-size:12px; line-height:1.6; }
-  #p2tDetails li.p2t-warn-item { color:#d19a5c; }
-</style>
 </head>
 <body>
+<!-- Phase 4 P4-M2：進站缸型選擇——圖示化二選一，選擇決定編輯模式與管線參數 -->
+<div id="tubTypeChooser" style="position:fixed;inset:0;z-index:9999;background:rgba(27,26,22,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;text-align:center;padding:20px">
+  <div>
+    <h2 style="color:#f4f1ea;font-size:clamp(22px,4vw,32px);font-weight:600;margin:0">How will this bathtub be installed?</h2>
+  </div>
+  <div style="display:flex;gap:28px;flex-wrap:wrap;justify-content:center">
+    <button onclick="chooseTubType('freestanding')" style="cursor:pointer;background:#f4f1ea;border:2px solid transparent;border-radius:18px;padding:26px 30px;width:230px;display:flex;flex-direction:column;align-items:center;gap:14px;transition:border-color .15s" onmouseover="this.style.borderColor='#9a7b43'" onmouseout="this.style.borderColor='transparent'">
+      <svg width="100" height="70" viewBox="0 0 100 70" fill="none"><ellipse cx="50" cy="42" rx="42" ry="20" stroke="#1b1a16" stroke-width="3"/><path d="M14 42 C14 20, 30 12, 50 12 C70 12, 86 20, 86 42" stroke="#1b1a16" stroke-width="3"/><rect x="4" y="60" width="92" height="4" rx="2" fill="#ddd8cc"/></svg>
+      <div style="color:#1b1a16;font-weight:600;font-size:16px">Freestanding</div>
+      <div style="color:#79756a;font-size:12.5px">Stands on its own, all sides visible</div>
+    </button>
+    <button onclick="chooseTubType('wall')" style="cursor:pointer;background:#f4f1ea;border:2px solid transparent;border-radius:18px;padding:26px 30px;width:230px;display:flex;flex-direction:column;align-items:center;gap:14px;transition:border-color .15s" onmouseover="this.style.borderColor='#9a7b43'" onmouseout="this.style.borderColor='transparent'">
+      <svg width="100" height="70" viewBox="0 0 100 70" fill="none"><rect x="4" y="8" width="92" height="6" fill="#79756a"/><path d="M10 14 L10 42 C10 20, 26 14, 46 14 L90 14 L90 42 C90 20, 74 14, 54 14 Z" stroke="#1b1a16" stroke-width="3" fill="none"/><rect x="4" y="60" width="92" height="4" rx="2" fill="#ddd8cc"/></svg>
+      <div style="color:#1b1a16;font-weight:600;font-size:16px">Wall-mounted</div>
+      <div style="color:#79756a;font-size:12.5px">One side flush against a wall</div>
+    </button>
+  </div>
+  <div style="color:#9a7b43;font-size:12.5px">You can still switch later from the panel on the left</div>
+</div>
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
 <nav style="flex:none;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
   <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:20px">
@@ -260,28 +264,23 @@
   </div>
 </nav>
 
-<!-- 標題帶：Photo2Tub測試頁專用文案 -->
+<!-- 標題帶：沿用原 Design Studio 的頁面語氣 -->
 <div class="studio-strip">
   <div>
-    <div class="eyebrow">Photo2Tub — Internal test page</div>
-    <h1>Upload photos. Get a 3D model.</h1>
-    <div class="sub">Upload 3–8 photos of a bathtub — the pipeline finds it, segments it, and reconstructs a shape automatically. Fine-tune the result below.</div>
+    <div class="eyebrow">The Design Studio</div>
+    <h1>Shape it. Watch it turn.</h1>
+    <div class="sub">Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there</div>
   </div>
   <div class="btns">
-    <select id="photo2tubType" style="background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
-      <option value="freestanding" selected>Freestanding</option>
-      <option value="wall">Wall-mounted</option>
-    </select>
-    <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 Generate 3D from photos</button>
-    <input type="file" id="photo2tubFiles" accept="image/png,image/jpeg,image/jpg,image/webp" multiple style="display:none">
-    <button class="btn btn-dxf" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD/spec file instead</button>
+    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
+    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
-<div id="p2tBanner" style="display:none"></div>
 <main>
   <div id="panel">
+    <button style="margin:0 0 10px;padding:8px;background:none;border:1px solid #ddd8cc;border-radius:8px;font-size:12.5px;color:#79756a;cursor:pointer;width:100%" onclick="document.getElementById('tubTypeChooser').style.display='flex'">⇄ Change installation type (freestanding / wall-mounted)</button>
     <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
       <h3>① Tub Shape (Freestanding)</h3>
@@ -551,8 +550,91 @@ const P = {
   customPtsInner:null,              // 手繪內缸口輪廓（與外輪廓同座標系：除以 L/W 正規化；null＝均勻邊寬）
   wallMod:null,                     // 側壁外形修飾層（33 取樣，外殼縮放乘 1+mod(v)；null＝無修飾。裙邊等節點造型用）
   rimMod:null,                      // 缸緣高度修飾層（96 點，逐輪廓點高度偏移 mm；null＝無修飾。局部抬高/壓低缸緣用）
-  customProfile:null                // 手繪側牆剖面 k(v)，25 個取樣值，k[24]=1
+  customProfile:null,                // 手繪側牆剖面 k(v)，25 個取樣值，k[24]=1
+  tub_type:'freestanding',          // Phase 4 P4-M1新增：'freestanding'獨立缸 / 'wall'靠牆缸
+  wallEdgeStart:null, wallEdgeEnd:null  // 靠牆缸專用：customPts中「貼牆平直邊」的索引範圍[start,end)，null=無(獨立缸)
 };
+
+// ===================== Phase 4 P4-M1：靠牆缸(wallFace)模式 =====================
+// 這個新頁(wallface-test.html)專用，複製自medium.html——medium.html本身一行未改。
+// wallFaceMode=true時：預設輪廓改成D形(平背+弧前)，且對「貼牆平直邊」索引範圍做三處特殊處理：
+// (1) 節點編輯時鎖x，貼牆面永遠平直 (2) 外殼裙擺/側壁在該範圍不外鼓，改垂直直落到底(視為隱藏在牆內)
+// (3) 缸緣bump(圓角/斜角)在該範圍歸零(貼牆面不需要裝飾性緣邊處理)。
+// Phase 4 P4-M2：改成執行期可選的旗標(進站二選一決定)，預設false(獨立缸)，
+// 由下方的chooseTubType()在使用者點選後設定，不是頁面載入就寫死。
+let wallFaceMode = false;
+
+// 建D形俯視輪廓(平背+半圓弧前)：radFrac=前端弧半徑(normalized，0~0.5)。
+// 回傳96點customPts(normalized ±0.5 bbox)＋貼牆平直邊(即「WALL edge」)的索引範圍[wallEdgeStart, wallEdgeEnd)。
+function buildWallDOutline(radFrac){
+  const hl = 0.5, hw = 0.5, rad = Math.min(radFrac, hw);
+  const raw = [];
+  const segN = 32;
+  raw.push([hl - rad, -hw]);                              // 前端弧起點(前-下)
+  for(let i = 1; i < segN; i++){
+    const a = -Math.PI/2 + Math.PI*i/segN;
+    raw.push([hl - rad + rad*Math.cos(a), rad*Math.sin(a)]);
+  }
+  raw.push([hl - rad, hw]);                                // 前端弧終點(前-上) / 頂邊起點
+  const wallRawStart = raw.length;
+  raw.push([-hl, hw]);                                     // 頂邊終點 / 貼牆邊起點(牆-上)
+  raw.push([-hl, -hw]);                                    // 貼牆邊終點(牆-下)
+  // 收尾(牆-下 → 前端弧起點)為底邊，resample()會自動處理收合，不需再push起點。
+
+  // 複製resample()的弧長累計邏輯，算出貼牆邊在96點輸出裡對應的索引範圍(不重新resample，只算比例)
+  const d = [0];
+  for(let i = 1; i <= raw.length; i++){
+    const a = raw[i-1], b = raw[i % raw.length];
+    d.push(d[i-1] + Math.hypot(b[0]-a[0], b[1]-a[1]));
+  }
+  const total = d[raw.length];
+  const N = 96;
+  const wallEdgeStart = Math.round(d[wallRawStart] / total * N);
+  const wallEdgeEnd = Math.round(d[wallRawStart + 1] / total * N);
+  const customPts = resample(raw, N);
+  return { customPts, wallEdgeStart, wallEdgeEnd };
+}
+
+// 貼牆索引範圍的權重(1=完全貼牆平直, 0=正常獨立缸幾何)，邊界處線性淡出避免硬接縫
+function wallIdxWeight(i){
+  if(!wallFaceMode || P.wallEdgeStart == null) return 0;
+  const s = P.wallEdgeStart, e = P.wallEdgeEnd, n = 96, margin = 4;
+  const inRange = idx => (s <= e) ? (idx >= s && idx < e) : (idx >= s || idx < e);
+  if(inRange(i)) return 1;
+  const distTo = edge => Math.min(Math.abs(i - edge), n - Math.abs(i - edge));
+  const dd = Math.min(distTo(s), distTo(e));
+  return dd < margin ? 1 - dd/margin : 0;
+}
+
+// Phase 4 P4-M2：進站二選一——由使用者點選觸發，不在頁面載入時就套用。
+function chooseTubType(type){
+  wallFaceMode = (type === 'wall');
+  if(wallFaceMode){
+    const d0 = buildWallDOutline(0.5);
+    P.shape = 'custom';
+    P.customPts = d0.customPts;
+    P.wallEdgeStart = d0.wallEdgeStart;
+    P.wallEdgeEnd = d0.wallEdgeEnd;
+    P.tub_type = 'wall';
+    P.skirt = true;   // 靠牆缸預設開裙邊板(apron)，wallIdxWeight會讓貼牆那面不外鼓
+  } else {
+    P.tub_type = 'freestanding';
+    // 如果之前選過「靠牆安裝」，D形貼牆輪廓(平背)還留在P.customPts裡，切回獨立式要清掉重置成
+    // 預設ellipse，不然會變成「一面莫名其妙是死平的獨立缸」——這是本輪Chrome實測時發現的真實bug，
+    // 不是假設性的，修正：只有P.wallEdgeStart有值(代表用過wall模式)時才重置，第一次進站選freestanding
+    // 完全不動，等同現有medium.html行為。
+    if(P.wallEdgeStart != null){
+      P.shape = 'ellipse';
+      P.customPts = null;
+      P.wallEdgeStart = null;
+      P.wallEdgeEnd = null;
+      P.skirt = false;
+    }
+  }
+  const overlay = document.getElementById('tubTypeChooser');
+  if(overlay) overlay.style.display = 'none';
+  syncUI(); buildTub();
+}
 
 // 設計編號：浮水印、Concept PDF 與詢價單追蹤用
 const DESIGN_ID = 'BA-M-' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
@@ -560,6 +642,13 @@ const DESIGN_ID = 'BA-M-' + new Date().toISOString().slice(2,10).replace(/-/g,''
 // ===================== 多語系 i18n（英文 en ＝原文；[0]=简中 zhS, [1]=泰文 th, [2]=繁中 zhT） =====================
 let LANG = 'en';
 const I18N = {
+  'How will this bathtub be installed?': ['这个浴缸打算怎么安装？', 'อ่างอาบน้ำนี้จะติดตั้งแบบไหน?', '這個浴缸打算怎麼安裝？'],
+  'Freestanding': ['独立式', 'แบบตั้งอิสระ', '獨立式'],
+  'Stands on its own, all sides visible': ['自由放置，四面可见', 'ตั้งอิสระ มองเห็นได้ทุกด้าน', '自由放置，四面可見'],
+  'Wall-mounted': ['靠墙式', 'แบบติดผนัง', '靠牆式'],
+  'One side flush against a wall': ['一面贴墙安装', 'ด้านหนึ่งชิดผนัง', '一面貼牆安裝'],
+  'You can still switch later from the panel on the left': ['之后仍可在左侧面板切换', 'เปลี่ยนภายหลังได้จากแผงด้านซ้าย', '之後仍可在左側面板切換'],
+  '⇄ Change installation type (freestanding / wall-mounted)': ['⇄ 切换安装方式（独立式／靠墙式）', '⇄ เปลี่ยนรูปแบบการติดตั้ง (ตั้งอิสระ/ติดผนัง)', '⇄ 切換安裝方式（獨立式／靠牆式）'],
   'Shape it. Watch it turn.': ['塑形它，看它转动。', 'ปั้นรูปทรง แล้วชมมันหมุน', '🛁 客製化浴缸互動設計系統'],
   'Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there': ['画出任何形状 · 3D 实时雕塑 · 一键导出设计师可修改的 CAD — 之后交给我们制造', 'วาดรูปทรงใดก็ได้ · ปั้นแบบ 3D เรียลไทม์ · ส่งออก CAD ที่นักออกแบบแก้ไขได้ — จากนั้นเราผลิตให้', '客戶自主設計 → 參數化 3D 預覽 → 一鍵輸出設計師可修改之 CAD (DXF) 圖檔 → 模具製造'],
   '⬆ Upload CAD File': ['⬆ 上传 CAD 文件', '⬆ อัปโหลดไฟล์ CAD', '⬆ 上傳 CAD 檔案'],
@@ -1187,7 +1276,13 @@ function loftGeometry(pts, L, z0, H, dH, z0f, inner){
       const [x,y]=pts[i];
       const zTop=rimH(x, L, H, dH) + rimModI(i);
       const zB = z0f ? z0f(x*kbx, y*kby) : z0;
-      pos.push(x*kx, zB+v*(zTop-zB), y*ky);
+      // Phase 4 P4-M1：貼牆面外殼不外鼓，垂直直落(k→1)，視為隱藏在牆內、不做裙擺/側壁造型
+      let kxi=kx, kyi=ky;
+      if(!inner){
+        const w = wallIdxWeight(i);
+        if(w > 0){ kxi = kx + (1-kx)*w; kyi = ky + (1-ky)*w; }
+      }
+      pos.push(x*kxi, zB+v*(zTop-zB), y*kyi);
     }
   }
   for(let m=0;m<M_RING;m++)
@@ -1216,7 +1311,9 @@ function stripGeometry(ptsA, LA, ptsB, LB, H, dH){
     for(let i=0;i<N_SEG;i++){
       const [xa,ya]=ptsA[i], [xb,yb]=ptsB[i];
       const x = xa+(xb-xa)*u, y = ya+(yb-ya)*u;
-      pos.push(x, rimH(x, LA+(LB-LA)*u, H, dH) + rimModI(i) + bump(u), y);
+      // Phase 4 P4-M1：貼牆邊不做圓角/斜角裝飾緣邊，bump依wallIdxWeight淡出至0
+      const bumpV = bump(u) * (1 - wallIdxWeight(i));
+      pos.push(x, rimH(x, LA+(LB-LA)*u, H, dH) + rimModI(i) + bumpV, y);
     }
   }
   for(let m=0;m<RM;m++)
@@ -1887,8 +1984,9 @@ function exportDXF(noDownload){
   const code = `C-CUS-${Math.round(P.L/100)}${Math.round(P.W/10)}F.00`;
   const custName = document.getElementById('custName').value;
 
+  const tubTypeLabel = P.tub_type === 'wall' ? 'WALL-MOUNTED' : 'FREESTANDING';
   drawTitleBlock(M, M, TBW, shH-2*M, {
-    name: custName ? `CUSTOM TUB - ${custName}` : 'CUSTOM FREESTANDING BATHTUB',
+    name: custName ? `CUSTOM ${tubTypeLabel} TUB - ${custName}` : `CUSTOM ${tubTypeLabel} BATHTUB`,
     designId: DESIGN_ID,
     code,
     dims: `${P.L}x${P.W}x${inn.D}/${HB}mm`,
@@ -1975,7 +2073,9 @@ function exportJSON(noDownload){
       缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,
       內缸弧R_長邊剖面_mm: P.riL, 內缸弧R_短邊剖面_mm: P.riW, 外缸弧R_長邊剖面_mm: P.roL, 外缸弧R_短邊剖面_mm: P.roW,
       溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop,
-      裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR
+      裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR,
+      缸型: P.tub_type, tub_type: P.tub_type,
+      貼牆邊索引範圍: (P.wallEdgeStart!=null) ? [P.wallEdgeStart, P.wallEdgeEnd] : null
     },
     計算規格: {
       內部長度_mm: s.inn.L, 內部寬度_mm: s.inn.W, 內部深度_前端_mm: s.inn.D,
@@ -2390,6 +2490,8 @@ function importSpecJSON(text){
   P.wallMod = d.側壁外形修飾_33 || null;
   P.rimMod = d.缸緣高度修飾_96 || null;
   if(d.手繪側牆剖面_k) P.customProfile = d.手繪側牆剖面_k;
+  if(d.tub_type || d.缸型) P.tub_type = d.tub_type || d.缸型;
+  if(d.貼牆邊索引範圍){ P.wallEdgeStart = d.貼牆邊索引範圍[0]; P.wallEdgeEnd = d.貼牆邊索引範圍[1]; }
   if(d.material_code === 'solid' || d.material_code === 'acrylic'){
     P.material = d.material_code;
     document.querySelectorAll('.mat-btns button[data-mat]').forEach(b=>b.classList.toggle('active', b.dataset.mat === P.material));
@@ -3495,6 +3597,12 @@ if(EDIT_MODE){ (function(){
       on.forEach(n=>{ const w=gaussI(j-n.i0, n.sigma); if(w>0.01){ x+=n.dx*w; y+=n.dy*w; } });
       return [x,y];
     });
+    // Phase 4 P4-M1：貼牆邊索引範圍鎖x(只准沿y調整長度)，節點編輯不會把貼牆面拉彎
+    if(fo && wallFaceMode && P.wallEdgeStart != null){
+      const s=P.wallEdgeStart, e=P.wallEdgeEnd;
+      const inRange = idx => (s<=e) ? (idx>=s && idx<e) : (idx>=s || idx<e);
+      fo.forEach((p,j)=>{ if(inRange(j)) p[0] = baseO.pts[j][0]; });
+    }
     if(baseI) fi = baseI.pts.map((p,j)=>{
       let x=p[0], y=p[1];
       inn.forEach(n=>{ const w=gaussI(j-n.i0, n.sigma); if(w>0.01){ x+=n.dx*w; y+=n.dy*w; } });
@@ -4397,117 +4505,6 @@ if(EDIT_MODE){ (function(){
 
 buildTub();
 animate();
-</script>
-<script>
-// ============================================================
-// Photo2Tub 測試頁：上傳照片 -> 呼叫API -> importSpecJSON() 載入3D編輯器
-// P3-M3(規格書)。P3-M2已完成雲端部署(Modal，2026-08-20)，下面已指向正式端點。
-// ============================================================
-(function(){
-  const P2T_API_BASE = 'https://lyricann--photo2tub-api-fastapi-app.modal.run'; // P3-M2：雲端Modal端點(2026-08-20部署，GPU/T4)
-  const P2T_API_TOKEN = 'x_DW2YaJxsl_BM6m74t2bVeILZJwO9BAkEdRERqh42I';          // 正式token(存於Modal Secret photo2tub-api-token)
-  const P2T_MIN_PHOTOS = 3, P2T_MAX_PHOTOS = 8;
-
-  const banner = document.getElementById('p2tBanner');
-
-  function showBanner(kind, title, sub, detailsHtml){
-    banner.className = kind;
-    banner.style.display = 'block';
-    banner.innerHTML = `<div class="p2t-row">${kind==='progress' ? '<div class="p2t-spinner"></div>' : ''}
-      <div><div class="p2t-title">${title}</div>${sub ? `<div class="p2t-sub">${sub}</div>` : ''}</div></div>
-      ${detailsHtml || ''}`;
-  }
-
-  function messagesToDetailsHtml(messages){
-    if(!messages || !messages.length) return '';
-    const items = messages.map(m=>{
-      const isWarn = /⚠|建議|低信心|不足|退回|homography計算退化/.test(m);
-      return `<li class="${isWarn ? 'p2t-warn-item' : ''}">${m.replace(/</g,'&lt;')}</li>`;
-    }).join('');
-    return `<details id="p2tDetails"><summary>Pipeline notes (${messages.length}) — click to expand</summary><ul>${items}</ul></details>`;
-  }
-
-  async function handlePhotoUpload(files){
-    const list = Array.from(files);
-    if(list.length === 0) return;
-    if(list.length > P2T_MAX_PHOTOS){
-      showBanner('err', `⚠ Too many photos (${list.length})`, `Please select at most ${P2T_MAX_PHOTOS} photos.`);
-      return;
-    }
-    if(list.length < P2T_MIN_PHOTOS){
-      showBanner('warn', `⚠ Only ${list.length} photo${list.length>1?'s':''} selected`,
-        `${P2T_MIN_PHOTOS}–${P2T_MAX_PHOTOS} photos from different angles works best — continuing anyway with what you gave me.`);
-    } else {
-      showBanner('progress', 'Uploading & processing…', 'Usually 30–90 seconds. First run after idle time (cold start) can take 2–3 minutes — please don\'t close this tab.');
-    }
-
-    const t0 = performance.now();
-    const fd = new FormData();
-    list.forEach(f => fd.append('files', f, f.name));
-    fd.append('tub_type', document.getElementById('photo2tubType').value);  // P4-M4：接上P4-M3新增的tub_type參數
-
-    let resp, data;
-    try {
-      resp = await fetch(P2T_API_BASE + '/reconstruct', {
-        method: 'POST',
-        headers: { 'x-api-token': P2T_API_TOKEN },
-        body: fd,
-      });
-      data = await resp.json().catch(()=>null);
-    } catch(err){
-      showBanner('err', '⚠ Could not reach the reconstruction service',
-        `Network/CORS error — is the API endpoint reachable? (${err.message}). This is expected if the local test API isn't running, or before P3-M2 cloud deploy.`);
-      return;
-    }
-
-    const elapsed = ((performance.now() - t0) / 1000).toFixed(1);
-
-    if(!resp.ok){
-      const detail = data && data.detail;
-      const msgs = (detail && detail.messages) || [];
-      let reason = 'The pipeline could not produce a model from these photos.';
-      if(resp.status === 401) reason = 'Authentication failed (bad API token) — this is a test-page config issue, not a photo problem.';
-      else if(resp.status === 400) reason = (detail && detail.detail) || 'Please upload 1–8 photos.';
-      else if(resp.status === 422) reason = 'No bathtub was found in any of the uploaded photos. Try a clearer shot with the tub filling more of the frame, or better lighting.';
-      showBanner('err', '⚠ ' + reason, msgs.length ? '' : `(${resp.status}, ${elapsed}s)`, messagesToDetailsHtml(msgs));
-      return;
-    }
-
-    // 成功：載入spec JSON進3D編輯器(跟⬆ Upload CAD File按鈕走同一個函式)
-    try {
-      importSpecJSON(JSON.stringify(data.spec));
-    } catch(err){
-      showBanner('err', '⚠ Model reconstructed but failed to load into the editor', err.message);
-      return;
-    }
-
-    const dp = data.spec['設計參數'] || {};
-    const dimsMode = data.spec['dims_mode'];
-    let title = `✓ Model generated (${elapsed}s)`;
-    let sub = '';
-    if(dimsMode === 'proportional_default'){
-      sub = `Proportional model — default length 1.7m (${dp['外部長度_mm']}×${dp['外部寬度_mm']}mm shown). ` +
-            `This is <b>not a measurement</b> — use the Length/Width sliders below to set the real dimensions.`;
-    } else if(!dimsMode){
-      sub = 'Angle quality was too limited for a reliable shape/size estimate — only a rough outline could be produced. Consider a more top-down photo, or use the 4-point perspective tool below.';
-    }
-    const lowConf = Object.entries(data.spec['field_confidence'] || {}).filter(([k,v])=>v==='low').map(([k])=>k);
-    if(lowConf.length){
-      sub += (sub?'<br>':'') + `⚠ Please manually confirm: <b>${lowConf.join(', ')}</b> (low confidence).`;
-    }
-    const multiBoxMsgs = (data.messages || []).filter(m => /個候選框/.test(m));
-    if(multiBoxMsgs.length){
-      sub += (sub?'<br>':'') + `⚠ More than one bathtub-like shape was seen in ${multiBoxMsgs.length===1?'a photo':'some photos'} — ` +
-             `the largest was used. If that's wrong, re-photograph the target tub on its own.`;
-    }
-    showBanner('ok', title, sub, messagesToDetailsHtml(data.messages));
-  }
-
-  document.getElementById('photo2tubFiles').addEventListener('change', (e)=>{
-    handlePhotoUpload(e.target.files);
-    e.target.value = '';
-  });
-})();
 </script>
 </body>
 </html>
