@@ -10,6 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- 2026-08-22：Medium展示型功能下放(Lyric本人裁定)——AR預覽(M8-1b)+照片合成(M8-2a)，
+     照pro.html同一組CDN(glb/usdz匯出器+QR產生器)，photo2tub AI重建維持Pro-only不下放 -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.7.4/umd/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/USDZExporter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="shipping-rates.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; }
@@ -256,6 +262,9 @@
     <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
     <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
+    <!-- 2026-08-22：Medium展示型功能下放，比照pro.html -->
+    <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
+    <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 Place in a photo</button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
@@ -506,6 +515,50 @@
   </div>
 </div>
 
+<!-- 2026-08-22：Medium展示型功能下放(Lyric本人裁定)——逐字複製自pro.html，跟共用邏輯
+     (lib-edit3d-ar-ui.js/lib-edit3d-photocompose.js)完全對應，不另外設計新UI -->
+<div id="arModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(420px,92vw);text-align:center">
+    <h2>📱 Preview in your space</h2>
+    <div id="arIOSPanel" style="display:none">
+      <div class="sk-sub">Tap below to view this design in AR, right where you're standing.</div>
+      <button class="ok" onclick="launchARSameDevice()">👁 View in AR</button>
+    </div>
+    <div id="arDesktopPanel" style="display:none">
+      <div class="sk-sub">Scan with an iPhone or iPad to view this design in AR.</div>
+      <img id="arQrImg" style="width:220px;height:220px;margin:10px auto;display:block">
+      <div id="arQrError" class="tip" style="display:none;color:#b3541e"></div>
+      <div class="tip">Android AR support is on our roadmap — for now, this works on iPhone/iPad.</div>
+    </div>
+    <div class="sk-actions"><button class="cancel" onclick="closeARPreview()">Close</button></div>
+  </div>
+</div>
+
+<div id="composeModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(860px,94vw)">
+    <h2>🛋 Place your design in a photo</h2>
+    <div class="sk-sub">Upload a photo of the space, then drag, pinch or scroll to place the tub. The photo never leaves your browser.</div>
+    <div class="sk-tools" style="margin-bottom:8px;flex-wrap:wrap">
+      <label class="upl">📷 Upload photo<input type="file" id="pcPhotoFile" accept="image/*" style="display:none"></label>
+      <button id="pcModePlace" class="active" onclick="pcSetMode('place')">Move &amp; resize</button>
+      <button id="pcModeView" onclick="pcSetMode('view')">↻ Adjust 3D view</button>
+      <label style="display:inline-flex;align-items:center;gap:5px;font-size:13px;cursor:pointer"><input type="checkbox" id="pcShadowChk" checked onchange="pcToggleShadow(this)">Ground shadow</label>
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px">Rotate<input type="range" id="pcRotSlider" min="-180" max="180" value="0" step="1" style="width:110px"></label>
+    </div>
+    <div style="max-height:56vh;overflow:auto;border:1px solid #ddd8cc;border-radius:8px;background:#faf8f3;text-align:center">
+      <canvas id="pcCanvas" style="max-width:100%;cursor:move;touch-action:none"></canvas>
+    </div>
+    <div id="pcTip" class="tip" style="margin-top:6px"></div>
+    <div class="tip" style="margin-top:4px">Sizing here is visual only — for true-to-scale placement, use AR.<a href="javascript:void(0)" onclick="pcSwitchToAR()" style="color:#c99a4a;margin-inline-start:5px">📱 View in AR instead</a></div>
+    <div id="pcStatus" class="tip" style="margin-top:4px"></div>
+    <div class="sk-actions">
+      <button class="cancel" onclick="closePhotoCompose()">Close</button>
+      <button class="ok" id="pcShareBtn" style="display:none" onclick="pcShare()">📤 Share</button>
+      <button class="ok" onclick="pcDownload()">⬇ Download image</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // 三版本設定（必須在 lib 之前）——佇列項9(2026-08-21)Medium切共用核心
   window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=false; window.PAGE_EMAIL_OPTIONAL=true;
@@ -522,6 +575,7 @@
 <script src="lib-edit3d-geometry.js"></script>
 <script src="lib-tub-pricing.js"></script>
 <script src="lib-edit3d-export.js"></script>
+<script src="lib-edit3d-ar-export.js"></script>
 <script src="lib-edit3d-import.js"></script>
 <script src="lib-edit3d-ui.js"></script>
 <script src="lib-edit3d-sketch.js"></script>
@@ -529,5 +583,7 @@
 <script src="lib-edit3d-handles.js"></script>
 <script src="lib-tub-orbit.js"></script>
 <script src="lib-tub-boot.js"></script>
+<script src="lib-edit3d-ar-ui.js"></script>
+<script src="lib-edit3d-photocompose.js"></script>
 </body>
 </html>
