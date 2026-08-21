@@ -326,6 +326,44 @@ function minWallGap(){
   return g;
 }
 
+// ===================== 浴缸設計基本原則約束層(Phase 7 §3，2026-08-21) =====================
+// 目的：把散落各處的既有可製造性/設計原則檢核集中登記成一份清冊，方便之後Stanley的四項製造
+// 參數／人造石供應商生產限制數字到位時，直接掛進同一份清冊，而不是再各自新增獨立warn div。
+// 盤點結果(2026-08-21)：規格書§3(a)點名的四類原則裡，三類其實已經是既有上線功能——
+// 最小內缸人體空間＝lenWarn(inn.L<950)、壁厚＝thinWarn(minWallGap()<5)、脫模角＝undercutWarn
+// (P.undercut)，只有洩水坡度沒有獨立警示(滑桿本身就限制在1.3–1.5°範圍內、無法產生非法值，
+// 屬於「靠輸入範圍防呆」而不是「執行期檢查」)。這裡不重複造一套新UI，只是正式命名＋集中登記
+// (既有三個warn div維持原樣運作，不受影響)。§3(b)擬合端(Photo2Tub)串接：盤點後發現Photo2Tub
+// 管線目前只輸出造型/比例類參數(shape_code/customPts/side_profile/L/W/egg%/taper%/dH)，
+// 完全不輸出壁厚/脫模角/洩水坡度——這些欄位由前端編輯決定、Photo2Tub從未設定過，所以「擬合端
+// 自動過同一套檢核」在v1階段沒有實質掛勾點，誠實記錄不強行接一個沒有意義的檢查。
+function designPrincipleChecks(){
+  const s = computeSpec();
+  return [
+    { id:'base-decay', label:'Base floor stays flat when shaping walls',
+      status:'ok', source:'wallModAt()衰減乘數(結構性保證，非可能失敗的執行期檢查)',
+      detail:'Stanley：邊緣拉、底部不縮——Phase 7 Step 0，commit 941a16e' },
+    { id:'inner-clearance', label:'Interior space large enough to sit in',
+      status: s.inn.L < 950 ? 'warn' : 'ok', source:'既有lenWarn(#lenWarn)',
+      detail:'內長<950mm僅適合坐姿/蹲姿(腿到臀約900mm)——門檻是既有值，非本次新訂' },
+    { id:'wall-thickness', label:'Wall thickness between inner and outer shells',
+      status: minWallGap() < 5 ? 'warn' : 'ok', source:'既有thinWarn(#thinWarn)',
+      detail:`目前最小壁厚約${minWallGap().toFixed(1)}mm，門檻5mm——僅factory模式下有意義(非factory固定回傳99視為永遠合格)` },
+    { id:'demould-angle', label:'Demould direction (undercut)',
+      status: P.undercut ? 'warn' : 'ok', source:'既有undercutWarn(#undercutWarn)',
+      detail: P.undercut ? '允許倒扣＝需左右合模＋手工修邊，成本較高' : '垂直出模，標準開模' },
+    { id:'floor-slope', label:'Floor drain slope',
+      status:'ok', source:'滑桿range防呆(#rSlope min=1.3 max=1.5)',
+      detail:`目前${P.slope}°，落在工廠標準1.3–1.5°範圍內(滑桿本身無法超出)` },
+    { id:'stanley-params', label:"Stanley's 4 manufacturing parameters (R角/進出角/抽真空角度/S曲線上下限)",
+      status:'pending', source:'待補研究',
+      detail:'2026-08-19已確認Lyric出差未拿到，Stanley 2026-08-26參展後預計補回' },
+    { id:'solid-surface-supplier-limits', label:'Solid-surface supplier forming limits',
+      status:'pending', source:'待補研究',
+      detail:'2026-08-21 Masa會議交辦詢問供應商，用來收斂入口一參數滑桿上下限' },
+  ];
+}
+
 // ===================== 曲面放樣建模 =====================
 let tubGroup = null;
 const N_SEG = 96, M_RING = 24;
