@@ -86,7 +86,14 @@ function bez(k0, c, v){ const u=1-v; return u*u*k0 + 2*u*v*c + v*v*1; }
 // inner=true 時忽略裙擺（裙擺只作用於外殼，內缸維持正常碗形）
 function wallK(v, k0, c, inner){
   let k;
-  if(P.customProfile && P.shape === 'custom'){
+  // Phase 6A(2026-08-21)：customProfile的啟用條件從「&& P.shape==='custom'」解耦成只看
+  // customProfile本身存在與否——語意上side profile(側牆形狀)跟top-view outline(俯視外形是
+  // 圓/方/自訂)是正交的兩件事，舊寫法只是「customProfile歷史上只由手繪sketch產生、
+  // 且sketch必然同時設shape=custom」這個巧合，不是刻意設計的耦合。放寬後customProfile可以
+  // 獨立套用在任何top-view shape上(例如photo2tub只萃取到側面剖面、沒有俯視homography時)。
+  // 優先序不變：customProfile > factory(見isFactory()) > 一般wallMode參數化——這裡本來就是
+  // customProfile分支排最前面，沒有動到既有優先序。
+  if(P.customProfile){
     const arr = P.customProfile, t = Math.max(0, Math.min(1, v)) * (arr.length - 1);
     const i = Math.floor(t), f = t - i;
     k = arr[i] * (1 - f) + arr[Math.min(i + 1, arr.length - 1)] * f;
@@ -206,7 +213,7 @@ function fitCircle(pts){
 }
 // 把手繪側牆剖面（k 取樣）擬合成 1–3 段圓弧；容差 6mm（實際 mm 座標）
 function fitProfileArcs(){
-  if(!(P.customProfile && P.shape==='custom')) return null;
+  if(!P.customProfile) return null;  // Phase 6A解耦，見wallK()註解
   const h=Math.max(1, P.H+P.dH/2), x1=P.W/2, arr=P.customProfile, N=arr.length-1;
   const pts=arr.map((k,i)=>[Math.min(k,P.undercut?k:1)*x1, i/N*h]);
   const TOL=6;
@@ -230,13 +237,13 @@ function fitProfileArcs(){
   return best;
 }
 // 缸底相對缸口的比例（legacy 模式）
-function baseK(){ return (P.customProfile && P.shape === 'custom') ? P.customProfile[0] : P.taper/100; }
+function baseK(){ return P.customProfile ? P.customProfile[0] : P.taper/100; }  // Phase 6A解耦，見wallK()註解
 
 // ---------- Factory 模式（達爾文圖面語言，2026-07-13）----------
 // 內外殼各自獨立：上口尺寸＋底部尺寸＋連接弧 R；長邊/短邊剖面 R 各自獨立。
 // 幾何為「每軸縮放」：點 (x,y) 在高度 z 映射為 (x·kx(z), y·ky(z))，
 // kx 由長邊剖面弧決定、ky 由短邊剖面弧決定，0°/90° 剖面即為圖面上的真實弧。
-function isFactory(){ return P.wallMode === 'factory' && !(P.customProfile && P.shape === 'custom'); }
+function isFactory(){ return P.wallMode === 'factory' && !P.customProfile; }  // Phase 6A解耦，見wallK()註解——customProfile優先序仍在factory之前，未變
 // v=0 → 該殼體底部、v=1 → 缸緣；inner=true 內缸（底部在 z=P.b）
 function facK(v, inner){
   const h = Math.max(1, P.H + P.dH/2);
@@ -560,14 +567,14 @@ function updateSpec(){
       [t('Outer base (L×W)'), `${P.obL} × ${P.obW} mm`],
       [t('Inner base (L×W)'), `${P.ibL} × ${P.ibW} mm`],
     ] : [
-      [t('Base footprint (tapered)'), `${Math.round(P.L*baseK())} × ${Math.round(P.W*baseK())} mm${(P.customProfile && P.shape==='custom') ? t(' (sketched profile)') : ''}`],
+      [t('Base footprint (tapered)'), `${Math.round(P.L*baseK())} × ${Math.round(P.W*baseK())} mm${P.customProfile ? t(' (custom profile)') : ''}`],
     ]),
     [t('Full capacity (est.)'), `${s.fullVol.toFixed(0)} L`],
     [t('Recommended fill (80%)'), `${s.useVol.toFixed(0)} L`],
     [t('Product weight (est.)'), `~${s.weight.toFixed(0)} kg`],
     [t('Crated shipping weight (est.)'), `~${s.crated.toFixed(0)} kg`],
     [t('Side wall profile'), (function(){
-      if(P.customProfile && P.shape==='custom'){
+      if(P.customProfile){
         const fit=fitProfileArcs();
         return (fit && fit.ok) ? `≈ ${fit.label}` : t('Freeform (no clean arc fit)');
       }

@@ -130,7 +130,7 @@ let uploadedContour = null;   // 由照片辨識出的輪廓（畫布座標）
 function updateRowVis(){
   _el('radiusRow').style.display = (P.shape==='rect') ? 'flex' : 'none';
   _el('rE').closest('.row').style.display = (P.shape==='custom') ? 'none' : 'flex';
-  _el('rS').closest('.row').style.display = ((P.customProfile && P.shape==='custom') || P.wallMode==='factory') ? 'none' : 'flex';
+  _el('rS').closest('.row').style.display = (P.customProfile || P.wallMode==='factory') ? 'none' : 'flex';  // Phase 6A解耦
   _el('rT').closest('.row').style.display = (P.wallMode==='factory') ? 'none' : 'flex';   // factory：壁厚由內外殼幾何決定
 }
 

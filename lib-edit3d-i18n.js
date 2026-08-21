@@ -12,6 +12,7 @@ const I18N = {
   // Generate 3D from photos是這輪新增文案，自己補譯(避免新債疊在平台已知舊債上)
   'Freestanding': ['独立式', 'แบบตั้งอิสระ', '獨立式'],
   'Wall-mounted': ['靠墙式', 'แบบติดผนัง', '靠牆式'],
+  '💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.': ['💡 建议加拍一张正对侧面、与缸缘同高的照片——这样系统可以自动还原侧壁曲线造型', '💡 แนะนำให้ถ่ายภาพหนึ่งใบจากด้านข้างตรงๆ ระดับเดียวกับขอบอ่าง — จะช่วยให้ระบบคืนรูปทรงผนังด้านข้างได้อัตโนมัติ', '💡 建議加拍一張正對側面、與缸緣同高的照片——這樣系統可以自動還原側壁曲線造型'],
   '📷 Generate 3D from photos': ['📷 从照片生成 3D 模型', '📷 สร้างโมเดล 3D จากรูปถ่าย', '📷 從照片生成 3D 模型'],
   'Shape it. Watch it turn.': ['塑形它，看它转动。', 'ปั้นรูปทรง แล้วชมมันหมุน', '🛁 客製化浴缸互動設計系統'],
   'Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there': ['画出任何形状 · 3D 实时雕塑 · 一键导出设计师可修改的 CAD — 之后交给我们制造', 'วาดรูปทรงใดก็ได้ · ปั้นแบบ 3D เรียลไทม์ · ส่งออก CAD ที่นักออกแบบแก้ไขได้ — จากนั้นเราผลิตให้', '客戶自主設計 → 參數化 3D 預覽 → 一鍵輸出設計師可修改之 CAD (DXF) 圖檔 → 模具製造'],

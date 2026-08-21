@@ -198,7 +198,7 @@ function drawSectionView(cx, by, axis, tag){
       E.line(cx+qx, by+qz, cx+qx+420, by+qz+230, 'DIM');
       E.text(cx+qx+440, by+qz+250, 46, label, 'TEXT');
     };
-    if(P.customProfile && P.shape==='custom'){
+    if(P.customProfile){  // Phase 6A解耦，見lib-edit3d-geometry.js的wallK()註解
       const fit = fitProfileArcs();
       if(fit && fit.ok) fit.arcs.forEach(a=>leader(Math.max(0.1, Math.min(0.9, (a.v0+a.v1)/2)), `${a.straight?'STRAIGHT':'R'+Math.round(a.R)} (FIT)`));
     } else if(P.wallMode==='arc'){
@@ -208,7 +208,7 @@ function drawSectionView(cx, by, axis, tag){
       leader(vm*0.5, `R${Math.round(P.wallR)}`);
       leader(vm + (1-vm)*0.55, `R${Math.round(P.wallR2)} (REV)`);
     }
-    if(P.skirt && !(P.customProfile && P.shape==='custom')){
+    if(P.skirt && !P.customProfile){
       const hRef = Math.max(1, P.H + P.dH/2);
       leader(Math.max(0.05, (P.skirtH/hRef)*0.45), `R${Math.round(skirtReff())} (SKIRT)`);
     }
@@ -414,11 +414,11 @@ function exportDXF(noDownload){
                 : P.rim==='bevel' ? `RIM EDGE: BEVELLED, CHAMFER ${Math.max(3, Math.round(P.t/2))}mm`
                 : `RIM EDGE: FLAT / SHARP (WALL ${P.t}mm)`;
   E.text(gx + col1 + 300, M + 800, 44, rimNote, 'TEXT');
-  if(P.customProfile && P.shape==='custom'){
+  if(P.customProfile){  // Phase 6A解耦：DXF文案改中性用詞，不再假設一定來自手繪sketch
     const fit = fitProfileArcs();
     E.text(gx + col1 + 300, M + 680, 44, fit && fit.ok
-      ? `SIDE WALL (SKETCHED) = FITTED ARCS ${fit.label} (MAX DEV ${fit.maxErr.toFixed(1)}mm, WIDTH SECTION REF)`
-      : 'SIDE WALL (SKETCHED): FREEFORM POLYLINE - NO CLEAN ARC FIT. SIMPLIFY SKETCH FOR ARC-BASED TOOLING.', 'TEXT');
+      ? `SIDE WALL (CUSTOM PROFILE) = FITTED ARCS ${fit.label} (MAX DEV ${fit.maxErr.toFixed(1)}mm, WIDTH SECTION REF)`
+      : 'SIDE WALL (CUSTOM PROFILE): FREEFORM POLYLINE - NO CLEAN ARC FIT. SIMPLIFY PROFILE FOR ARC-BASED TOOLING.', 'TEXT');
   } else if(isFactory()){
     E.text(gx + col1 + 300, M + 680, 44, `SIDE WALLS: INNER R${P.riL}(L-SEC)/R${P.riW}(W-SEC), OUTER R${P.roL}(L-SEC)/R${P.roW}(W-SEC); RIM EDGE ${P.lip}mm`, 'TEXT');
     if(P.ovf) E.text(gx + col1 + 300, M + 920, 44, `OVERFLOW ${P.ovfDrop}mm BELOW RIM, REAR END, PER FACTORY STANDARD FITTING`, 'TEXT');
