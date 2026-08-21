@@ -34,6 +34,29 @@ const I18N = {
   'Close': ['关闭', 'ปิด', '關閉'],
   '⚠ Upload a photo first.': ['⚠ 请先上传照片。', '⚠ กรุณาอัปโหลดรูปถ่ายก่อน', '⚠ 請先上傳照片。'],
   'Could not prepare the composite image. Please try again.': ['无法生成合成图，请重试。', 'ไม่สามารถสร้างภาพประกอบได้ กรุณาลองใหม่', '無法生成合成圖，請重試。'],
+  // Phase 8佇列項8(2026-08-21)：照片張數精度提示(4句，動態組進banner文字，見lib-edit3d-photo2tub.js的
+  // photoCountHint())+ i18n積欠批次補譯(M8-1b AR modal全部字串、T5 Site photo notes殘留字串、
+  // strip副標、Phase 7龍頭孔checkbox標籤——皆為既有applyLang()掛鉤頁面(pro.html)的欠譯，
+  // 一次補齊；不含photo2tub-app.html的上傳banner系統(該頁無i18n管線，屬另案，見交接檔)
+  'Expect only a rough proportional estimate — add more angles for shape detail.': ['仅能还原粗略比例，形状细节建议补拍更多角度。', 'คาดว่าจะได้เพียงสัดส่วนคร่าวๆ — เพิ่มมุมถ่ายภาพเพื่อรายละเอียดรูปทรง', '僅能還原粗略比例，形狀細節建議補拍更多角度。'],
+  'Expect basic proportions — shape detail depends on which angles you chose.': ['可还原基本比例，形状细节则视所选角度而定。', 'คาดว่าจะได้สัดส่วนพื้นฐาน — รายละเอียดรูปทรงขึ้นอยู่กับมุมที่เลือกถ่าย', '可還原基本比例，形狀細節則視所選角度而定。'],
+  'Good chance of capturing the profile-curve shape, especially with a side-on and a top-down photo included.': ['有机会还原剖面曲线造型，若含正侧面与俯视照片效果更佳。', 'มีโอกาสดีที่จะจับรูปทรงเส้นโค้งด้านข้างได้ โดยเฉพาะถ้ามีภาพถ่ายด้านข้างตรงๆ และภาพมุมสูง', '有機會還原剖面曲線造型，若含正側面與俯視照片效果更佳。'],
+  'The most complete shape reconstruction this tool supports.': ['可达到本工具支持的最完整形状还原。', 'การสร้างรูปทรงที่สมบูรณ์ที่สุดเท่าที่เครื่องมือนี้รองรับ', '可達到本工具支援的最完整形狀還原。'],
+  'The Design Studio — Pro': ['设计工作室 — 专业版', 'สตูดิโอออกแบบ — โปร', '設計工作室 — 專業版'],
+  'Faucet hole (drag on the rim to position)': ['龙头孔(拖曳缸缘定位)', 'รูก๊อกน้ำ (ลากบนขอบอ่างเพื่อจัดตำแหน่ง)', '龍頭孔(拖曳缸緣定位)'],
+  '📷 Site photo notes': ['📷 现场照片标注', '📷 บันทึกภาพหน้างาน', '📷 現場照片標註'],
+  'Upload a photo of the space, then draw directly on it to circle where the tub goes or what we should know. It is attached to your inquiry.': ['上传空间照片，直接在上面圈出浴缸预定位置或需要告知的事项，会随询价一起送出。', 'อัปโหลดรูปถ่ายพื้นที่ แล้ววาดวงกลมบนรูปเพื่อระบุตำแหน่งอ่างหรือสิ่งที่ต้องการแจ้ง จะถูกแนบไปกับคำขอราคาของคุณ', '上傳空間照片，直接在上面圈出浴缸預定位置或需要告知的事項，會隨詢價一起送出。'],
+  'Clear markings': ['清除标记', 'ล้างเครื่องหมาย', '清除標記'],
+  '✔ Attach to inquiry': ['✔ 附加至询价', '✔ แนบไปกับคำขอราคา', '✔ 附加至詢價'],
+  'Note (e.g. tub goes here, window on the left)': ['备注（例：浴缸放这里、左边是窗户）', 'หมายเหตุ (เช่น วางอ่างตรงนี้ หน้าต่างอยู่ด้านซ้าย)', '備註（例：浴缸放這裡、左邊是窗戶）'],
+  '📱 Preview in your space': ['📱 在你的空间查看', '📱 ดูตัวอย่างในพื้นที่ของคุณ', '📱 在你的空間查看'],
+  'Tap below to view this design in AR, right where you\'re standing.': ['点击下方按钮，在你所在的位置以 AR 检视这个设计。', 'แตะด้านล่างเพื่อดูดีไซน์นี้ในโหมด AR ตรงตำแหน่งที่คุณยืนอยู่', '點擊下方按鈕，在你所在的位置以 AR 檢視這個設計。'],
+  '👁 View in AR': ['👁 以 AR 检视', '👁 ดูใน AR', '👁 以 AR 檢視'],
+  'Scan with an iPhone or iPad to view this design in AR.': ['用 iPhone 或 iPad 扫描以 AR 检视这个设计。', 'สแกนด้วย iPhone หรือ iPad เพื่อดูดีไซน์นี้ในโหมด AR', '用 iPhone 或 iPad 掃描以 AR 檢視這個設計。'],
+  'Android AR support is on our roadmap — for now, this works on iPhone/iPad.': ['Android 的 AR 支持规划中——目前仅支持 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนงาน — ขณะนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援規劃中——目前僅支援 iPhone/iPad。'],
+  'AR preview currently supports iPhone/iPad — Android support is on our roadmap.': ['AR 预览目前支持 iPhone/iPad——Android 支持规划中。', 'ตัวอย่าง AR รองรับ iPhone/iPad ในขณะนี้ — การรองรับ Android อยู่ในแผนงาน', 'AR 預覽目前支援 iPhone/iPad——Android 支援規劃中。'],
+  'Could not prepare the AR model for this design. Please try again.': ['无法为此设计准备 AR 模型，请重试。', 'ไม่สามารถเตรียมโมเดล AR สำหรับดีไซน์นี้ได้ กรุณาลองใหม่', '無法為此設計準備 AR 模型，請重試。'],
+  'This design is too complex to share as a QR code — try a simpler shape, or browse this page directly on your iPhone.': ['此设计过于复杂，无法生成 QR code 分享——请尝试简化造型，或直接用你的 iPhone 开启本页。', 'ดีไซน์นี้ซับซ้อนเกินกว่าจะแชร์เป็น QR code — ลองทำรูปทรงให้เรียบง่ายขึ้น หรือเปิดหน้านี้โดยตรงบน iPhone ของคุณ', '此設計過於複雜，無法生成 QR code 分享——請嘗試簡化造型，或直接用你的 iPhone 開啟本頁。'],
   'Shape it. Watch it turn.': ['塑形它，看它转动。', 'ปั้นรูปทรง แล้วชมมันหมุน', '🛁 客製化浴缸互動設計系統'],
   'Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there': ['画出任何形状 · 3D 实时雕塑 · 一键导出设计师可修改的 CAD — 之后交给我们制造', 'วาดรูปทรงใดก็ได้ · ปั้นแบบ 3D เรียลไทม์ · ส่งออก CAD ที่นักออกแบบแก้ไขได้ — จากนั้นเราผลิตให้', '客戶自主設計 → 參數化 3D 預覽 → 一鍵輸出設計師可修改之 CAD (DXF) 圖檔 → 模具製造'],
   '⬆ Upload CAD File': ['⬆ 上传 CAD 文件', '⬆ อัปโหลดไฟล์ CAD', '⬆ 上傳 CAD 檔案'],
@@ -275,6 +298,8 @@ function applyLang(){
   });
   document.getElementById('custName').placeholder = t('Customer name');
   document.getElementById('custNote').placeholder = t('Notes (e.g. overflow drain required)');
+  const photoNoteEl = document.getElementById('photoNote');   // Phase 8佇列項8：T5照片備註欄位placeholder，比照custName/custNote既有模式補漏
+  if(photoNoteEl) photoNoteEl.placeholder = t('Note (e.g. tub goes here, window on the left)');
   document.documentElement.lang = LANG === 'en' ? 'en' : (LANG === 'th' ? 'th' : (LANG === 'zhS' ? 'zh-Hans' : 'zh-Hant'));
   if(typeof padTop !== 'undefined'){ padTop.redraw(); padSide.redraw(); }
   if(typeof updateSpec === 'function' && tubGroup) updateSpec();

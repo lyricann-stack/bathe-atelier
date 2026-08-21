@@ -32,6 +32,19 @@
     return `<details id="p2tDetails"><summary>Pipeline notes (${messages.length}) — click to expand</summary><ul>${items}</ul></details>`;
   }
 
+  // Phase 8佇列項8：照片張數→預期精度提示(規格書UX節)。純張數門檻(client端沒有上傳前的角度推斷能力，
+  // 規格原文「可推斷的視角組成」是選配，這裡誠實只做張數這個可靠訊號)，跟Stage 1.5已上線的
+  // 「人機分工」低信心標註是同一溝通方向的互補：那個是分析完事後標，這個是選片當下先設預期。
+  // 三語(EN/zh/th)透過t()呼叫——這段文字是動態組出來的banner內容，不是靜態DOM，collectI18nNodes()
+  // 掃描不到，所以直接呼叫t()而非依賴語言切換時的TreeWalker機制(跟本頁其餘banner文字保持英文不同，
+  // 那些是既有債，本次刻意只還「新增的這一句」，不擴大成整套banner系統i18n化)。
+  function photoCountHint(n){
+    if(n <= 2) return t('Expect only a rough proportional estimate — add more angles for shape detail.');
+    if(n === P2T_MIN_PHOTOS) return t('Expect basic proportions — shape detail depends on which angles you chose.');
+    if(n <= 6) return t('Good chance of capturing the profile-curve shape, especially with a side-on and a top-down photo included.');
+    return t('The most complete shape reconstruction this tool supports.');
+  }
+
   async function handlePhotoUpload(files){
     const list = Array.from(files);
     if(list.length === 0) return;
@@ -41,9 +54,9 @@
     }
     if(list.length < P2T_MIN_PHOTOS){
       showBanner('warn', `⚠ Only ${list.length} photo${list.length>1?'s':''} selected`,
-        `${P2T_MIN_PHOTOS}–${P2T_MAX_PHOTOS} photos from different angles works best — continuing anyway with what you gave me.`);
+        `${P2T_MIN_PHOTOS}–${P2T_MAX_PHOTOS} photos from different angles works best — continuing anyway with what you gave me. ${photoCountHint(list.length)}`);
     } else {
-      showBanner('progress', 'Uploading & processing…', 'Usually 30–90 seconds. First run after idle time (cold start) can take 2–3 minutes — please don\'t close this tab.');
+      showBanner('progress', 'Uploading & processing…', `${photoCountHint(list.length)} Usually 30–90 seconds. First run after idle time (cold start) can take 2–3 minutes — please don\'t close this tab.`);
     }
 
     const t0 = performance.now();
