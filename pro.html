@@ -13,6 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fflate@0.7.4/umd/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/USDZExporter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="shipping-rates.js"></script>
 <link rel="stylesheet" href="studio.css">
 <!-- Phase 5(2026-08-20)：Photo2Tub上傳banner樣式，逐字抽自photo2tub-app.html -->
@@ -79,6 +80,7 @@
     <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <button class="btn btn-upl" onclick="openPhoto()">📷 Site photo notes</button>
+    <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
@@ -347,6 +349,25 @@
     </div>
   </div>
 </div>
+
+<!-- Phase 8 M8-1b(2026-08-21)：在你的空間查看(AR)——同機iOS直接開Quick Look，
+     其他裝置顯示QR給iPhone/iPad掃(Android v1不支援，見lib-edit3d-ar-ui.js開頭說明) -->
+<div id="arModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(420px,92vw);text-align:center">
+    <h2>📱 Preview in your space</h2>
+    <div id="arIOSPanel" style="display:none">
+      <div class="sk-sub">Tap below to view this design in AR, right where you're standing.</div>
+      <button class="ok" onclick="launchARSameDevice()">👁 View in AR</button>
+    </div>
+    <div id="arDesktopPanel" style="display:none">
+      <div class="sk-sub">Scan with an iPhone or iPad to view this design in AR.</div>
+      <img id="arQrImg" style="width:220px;height:220px;margin:10px auto;display:block">
+      <div id="arQrError" class="tip" style="display:none;color:#b3541e"></div>
+      <div class="tip">Android AR support is on our roadmap — for now, this works on iPhone/iPad.</div>
+    </div>
+    <div class="sk-actions"><button class="cancel" onclick="closeARPreview()">Close</button></div>
+  </div>
+</div>
 <script>
   // 三版本設定（必須在 lib 之前）
   window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true;
@@ -372,6 +393,7 @@
 <script src="lib-tub-orbit.js"></script>
 <script src="lib-tub-boot.js"></script>
 <script src="lib-edit3d-photo2tub.js"></script>
+<script src="lib-edit3d-ar-ui.js"></script>
 <script>
 // ===== 照片分析（簡易圈選版）=====
 const _ph = { img:null, strokes:[], cur:null, scale:1 };
