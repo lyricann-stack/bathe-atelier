@@ -682,6 +682,7 @@ function buildTub(){
     const water = new THREE.Mesh(wg,
       new THREE.MeshStandardMaterial({color:0x7ec8e3, transparent:true, opacity:0.55, roughness:0.1, side:THREE.DoubleSide})
     );
+    water.name = 'waterSim';  // Phase 8：AR/glb匯出時要濾掉的編輯器預覽用網格，不是真實產品的一部分
     tubGroup.add(water);
   }
 
