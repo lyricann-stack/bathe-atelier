@@ -52,6 +52,7 @@ function syncUI(){
   ['lipRow','obLRow','obWRow','ibLRow','ibWRow','riLRow','riWRow','roLRow','roWRow'].forEach(id=>{ _el(id).style.display = fac ? 'flex' : 'none'; });
   _el('ovfChk').style.display = fac ? 'flex' : 'none';
   _el('ovfToggle').checked = P.ovf;
+  _el('faucetToggle').checked = P.faucet;   // Phase 7：龍頭孔不分factory/legacy模式，一律顯示，不用display切換
   _el('wallRRow').style.display  = (P.wallMode==='arc') ? 'flex' : 'none';
   _el('wallR1Row').style.display = (P.wallMode==='s') ? 'flex' : 'none';
   _el('wallR2Row').style.display = (P.wallMode==='s') ? 'flex' : 'none';
@@ -118,6 +119,7 @@ function applyClassic(k){
   Object.assign(P, CLASSICS[k]);
   P.customPts = null; P.customPtsInner = null; P.customProfile = null; P.wallMod = null; P.rimMod = null;
   P.drainPos = null; P.ovfPos = null;   // Phase 7：套用經典款時清掉拖曳留下的自訂座標，改用經典款自己的固定位置
+  P.faucet = false; P.faucetPos = null; // 龍頭孔是全新配件，經典款本來就沒有這個欄位，切換時重置為關閉
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim===P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain===P.drain));
   syncUI();
@@ -151,3 +153,4 @@ _el('waterToggle').addEventListener('change', e=>{ P.water = e.target.checked; b
 _el('undercutToggle').addEventListener('change', e=>{ P.undercut = e.target.checked; buildTub(); });
 _el('skirtToggle').addEventListener('change', e=>{ P.skirt = e.target.checked; syncUI(); buildTub(); });
 _el('ovfToggle').addEventListener('change', e=>{ P.ovf = e.target.checked; buildTub(); });
+_el('faucetToggle').addEventListener('change', e=>{ P.faucet = e.target.checked; buildTub(); });

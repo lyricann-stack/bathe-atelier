@@ -297,6 +297,15 @@ function drawPlanView(cx, cy){
     E.circle(cx+ox, cy+oy, 24, 'OUTLINE');
     if(P.ovfPos) E.text(cx+ox+40, cy+oy+40, 36, `OVF ${P.ovfPos[1]}mm`, 'TEXT');
   }
+  // 龍頭孔記號：貼在缸緣面上，跟溢水口同樣畫十字+圓圈標記
+  if(P.faucet){
+    const fc = faucetCurrent();
+    const fx = fc.x, fy = fc.y;
+    E.line(cx+fx-16, cy+fy-16, cx+fx+16, cy+fy+16, 'OUTLINE');
+    E.line(cx+fx-16, cy+fy+16, cx+fx+16, cy+fy-16, 'OUTLINE');
+    E.circle(cx+fx, cy+fy, 18, 'OUTLINE');
+    E.text(cx+fx+40, cy+fy-40, 36, 'FAUCET', 'TEXT');
+  }
   // 標註：總長／總寬／內缸底長寬／排水孔偏移
   dimH([cx+nX, cy], [cx+xX, cy], cy+nY-340);
   dimV([cx, cy+nY], [cx, cy+xY], cx+xX+360);
@@ -443,6 +452,7 @@ function exportDXF(noDownload){
     wallMode:P.wallMode, wallR:P.wallR, wallR2:P.wallR2, wallMid:P.wallMid,
     lip:P.lip, obL:P.obL, obW:P.obW, ibL:P.ibL, ibW:P.ibW, riL:P.riL, riW:P.riW, roL:P.roL, roW:P.roW,
     ovf:P.ovf?1:0, ovfDrop:P.ovfDrop, ovfPos:P.ovfPos||null,
+    faucet:P.faucet?1:0, faucetPos:P.faucetPos||null,
     skirt:P.skirt?1:0, skirtH:P.skirtH, waistK:P.waistK, skirtR:P.skirtR });
   E.text(M + 30, 16, 22, paramsJson, 'PARAMS');
 
@@ -483,6 +493,7 @@ function exportJSON(noDownload){
       缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,
       內缸弧R_長邊剖面_mm: P.riL, 內缸弧R_短邊剖面_mm: P.riW, 外缸弧R_長邊剖面_mm: P.roL, 外缸弧R_短邊剖面_mm: P.roW,
       溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop, 溢水孔自訂座標: P.ovfPos || null,
+      龍頭孔: P.faucet, 龍頭孔自訂座標: P.faucetPos || null,
       裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR
     },
     計算規格: {
@@ -558,6 +569,7 @@ async function sendQuote(btn){
         缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,
         內缸弧R_長邊剖面_mm: P.riL, 內缸弧R_短邊剖面_mm: P.riW, 外缸弧R_長邊剖面_mm: P.roL, 外缸弧R_短邊剖面_mm: P.roW,
         溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop, 溢水孔自訂座標: P.ovfPos || null,
+        龍頭孔: P.faucet, 龍頭孔自訂座標: P.faucetPos || null,
         裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR,
         手繪俯視輪廓_normalized: P.customPts, 手繪內缸口輪廓_normalized: P.customPtsInner, 手繪側牆剖面_k: P.customProfile },
       計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) }

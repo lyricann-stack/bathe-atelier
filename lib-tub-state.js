@@ -26,8 +26,10 @@ const P = {
   tub_type:'freestanding', wallEdgeStart:null, wallEdgeEnd:null,
   drainPos:null,                    // Phase 7(2026-08-21)：去水口自訂連續座標[x,y](mm，缸底面座標系，
                                      // 跟drainXY()回傳同一套)，非null時覆蓋P.drain離散選項，見lib-edit3d-geometry.js
-  ovfPos:null                       // Phase 7(2026-08-21)：溢水孔自訂座標[t,depth](t=內壁周長索引0~N_SEG-1整數，
+  ovfPos:null,                      // Phase 7(2026-08-21)：溢水孔自訂座標[t,depth](t=內壁周長索引0~N_SEG-1整數，
                                      // depth=距該點局部缸緣高度mm)，非null時覆蓋P.ovfDrop固定後端置中位置，見ovfWorldXYZ()
+  faucet:false, faucetPos:null      // Phase 7(2026-08-21)：龍頭孔(配件v1)開關＋自訂座標[t,u](t=周長索引，
+                                     // u=缸緣寬度方向位置0外緣~1內緣，跟stripGeometry()的u同義)，見faucetWorldXYZ()
 };
 
 // 設計編號：浮水印、Concept PDF 與詢價單追蹤用

@@ -122,6 +122,7 @@ if(EDIT_MODE){ (function(){
   let _lastL = P.L, _lastW = P.W;       // L/W 滑桿與節點基準（mm）的同步縮放
   let dragDrain = false;                // Phase 7：去水口拖曳中旗標，跟side/outer節點拖曳(dragN)分開管理
   let dragOvf = false;                  // Phase 7：溢水孔拖曳中旗標(內壁面周向+深度，跟去水口的缸底面座標系不同)
+  let dragFaucet = false;               // Phase 7：龍頭孔拖曳中旗標(缸緣面周向+緣寬位置)
 
   // ---- 幾何輔助 ----
   const outMM = () => outlinePts(P.shape, P.L, P.W, P.r, P.egg, N_SEG);
@@ -562,6 +563,30 @@ if(EDIT_MODE){ (function(){
       }
       return;
     }
+    if(dragFaucet){
+      // 龍頭孔貼在缸緣面(平面的環狀窄帶)上，對實際rimStripMesh做光線投射取得命中點，
+      // 再把命中點投影到該周長索引的「外緣→內緣」線段上算出u，跟溢水孔的內壁面手法同一套精神。
+      const r = canvas.getBoundingClientRect();
+      _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+      _ray.setFromCamera(_mv, camera);
+      const stripMesh = tubGroup && tubGroup.getObjectByName('rimStripMesh');
+      const hits = stripMesh ? _ray.intersectObject(stripMesh) : [];
+      if(hits.length){
+        const hp = hits[0].point;
+        const inn = innerDims();
+        const outerPts = outlinePts(P.shape, P.L, P.W, P.r, P.egg, N_SEG);
+        const innerPts = innerOutlinePts(inn, N_SEG);
+        const idx = faucetClosestIndex(hp.x, hp.z, outerPts);
+        const [xa, ya] = outerPts[idx], [xb, yb] = innerPts[idx];
+        const dx = xb - xa, dy = yb - ya;
+        const len2 = dx*dx + dy*dy || 1;
+        const u = ((hp.x - xa)*dx + (hp.z - ya)*dy) / len2;
+        const c = clampFaucetPos(idx, u);
+        P.faucetPos = [c.t, c.u];
+        requestBuild();
+      }
+      return;
+    }
     if(dragN){
       const r = canvas.getBoundingClientRect();
       _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
@@ -649,6 +674,16 @@ if(EDIT_MODE){ (function(){
         return;
       }
     }
+    // 龍頭孔拖曳——同上，命中faucetHandle即接管；mesh只在P.faucet開啟時才存在。
+    const faucetMesh = tubGroup && tubGroup.getObjectByName('faucetHandle');
+    if(faucetMesh){
+      const fh = pickAt(e, [faucetMesh]);
+      if(fh){
+        dragFaucet = true;
+        e.stopPropagation(); e.preventDefault();
+        return;
+      }
+    }
     const nh = nodeGrp && pickAt(e, nodeGrp.children);
     if(nh){
       const nd = nh.object.userData.node;
@@ -715,6 +750,7 @@ if(EDIT_MODE){ (function(){
   window.addEventListener('pointerup', ()=>{
     if(dragDrain){ dragDrain = false; requestBuild(); return; }
     if(dragOvf){ dragOvf = false; requestBuild(); return; }
+    if(dragFaucet){ dragFaucet = false; requestBuild(); return; }
     if(!dragN) return;
     dragN = null;
     requestBuild();

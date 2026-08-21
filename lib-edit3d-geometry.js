@@ -495,6 +495,43 @@ function ovfWorldXYZ(){
   return { x: sx - (sx/rlen)*8, y: height, z: sy - (sy/rlen)*8, index: c.index };
 }
 
+// ===================== 龍頭孔連續座標(Phase 7) =====================
+// t=周長索引(0~N_SEG-1，同rimMod/去水口/溢水孔慣例)；u=缸緣寬度方向位置(0=外緣、1=內緣，跟stripGeometry()的u同義)
+function clampFaucetPos(t, u){
+  const N = N_SEG;
+  const ti = ((Math.round(t) % N) + N) % N;
+  // 0.1~0.9：先卡位避免太靠外/內緣，離邊最小距離的真實數值待Phase7規格書§3(浴缸設計基本原則約束層)填入
+  return { t: ti, u: Math.max(0.1, Math.min(0.9, u)) };
+}
+function faucetClosestIndex(hx, hz, pts){
+  const ang = Math.atan2(hz, hx);
+  let best = 0, bestDiff = Infinity;
+  for(let i=0;i<pts.length;i++){
+    const a = Math.atan2(pts[i][1], pts[i][0]);
+    let diff = Math.abs(a - ang); if(diff > Math.PI) diff = 2*Math.PI - diff;
+    if(diff < bestDiff){ bestDiff = diff; best = i; }
+  }
+  return best;
+}
+// 龍頭孔目前的(索引,缸緣寬度位置,平面座標)：無自訂座標時給一個示意預設(後端側邊、緣寬置中)
+function faucetCurrent(){
+  const inn = innerDims();
+  const outerPts = outlinePts(P.shape, P.L, P.W, P.r, P.egg, N_SEG);
+  const innerPts = innerOutlinePts(inn, N_SEG);
+  const N = N_SEG;
+  const t = P.faucetPos ? P.faucetPos[0] : Math.round(N * 0.75);
+  const u = P.faucetPos ? P.faucetPos[1] : 0.5;
+  const ti = ((Math.round(t) % N) + N) % N;
+  const [xa, ya] = outerPts[ti], [xb, yb] = innerPts[ti];
+  return { index: ti, u, x: xa + (xb - xa) * u, y: ya + (yb - ya) * u, LA: P.L, LB: inn.L };
+}
+// 龍頭孔3D世界座標(Three.js座標系：x,z水平面，y高度)，套用跟stripGeometry()同一套高度公式，確保標記真的貼在缸緣面上
+function faucetWorldXYZ(){
+  const c = faucetCurrent();
+  const h = rimH(c.x, c.LA + (c.LB - c.LA) * c.u, P.H, P.dH) + rimModI(c.index);
+  return { x: c.x, y: h + 6, z: c.y, index: c.index };   // +6mm墊高避免跟缸緣面z-fighting
+}
+
 // 洩水斜底：缸內底面高度（排水孔＝最低點 P.b，向外以 P.slope° 升高）
 function floorZ(x, y){
   const d = drainXY();
@@ -535,7 +572,9 @@ function buildTub(){
   const innerWallMesh = new THREE.Mesh(loftGeometry(innerPts, inn.L, P.b, P.H, P.dH, floorZ, true), mat); // 內壁（底=洩水斜底，不套裙擺）
   innerWallMesh.name = 'innerWallMesh';  // Phase 7：溢水孔拖曳時對實際內壁面做光線投射
   tubGroup.add(innerWallMesh);
-  tubGroup.add(new THREE.Mesh(stripGeometry(outerPts, P.L, innerPts, inn.L, P.H, P.dH), mat)); // 缸緣
+  const rimStripMesh = new THREE.Mesh(stripGeometry(outerPts, P.L, innerPts, inn.L, P.H, P.dH), mat); // 缸緣
+  rimStripMesh.name = 'rimStripMesh';  // Phase 7：龍頭孔拖曳時對實際缸緣面做光線投射
+  tubGroup.add(rimStripMesh);
   tubGroup.add(new THREE.Mesh(capGeometry(outerPts, obx, oby, 0), mat));   // 底封板
   tubGroup.add(new THREE.Mesh(slopedCapGeometry(innerPts, ibx, iby, P.b), mat)); // 缸內底面（向排水孔傾斜 P.slope°）
 
@@ -562,6 +601,18 @@ function buildTub(){
     om.position.set(ov.x, ov.y, ov.z);
     om.name = 'ovfHandle';  // Phase 7：拖曳互動用名稱查找
     tubGroup.add(om);
+  }
+
+  // 龍頭孔（配件v1，細部不建模）：貼在缸緣面上，見faucetWorldXYZ()
+  if(P.faucet){
+    const fv = faucetWorldXYZ();
+    const fm = new THREE.Mesh(
+      new THREE.CylinderGeometry(14, 14, 10, 20),
+      new THREE.MeshStandardMaterial({color:0x666e75, metalness:0.8, roughness:0.3})
+    );
+    fm.position.set(fv.x, fv.y, fv.z);
+    fm.name = 'faucetHandle';  // Phase 7：拖曳互動用名稱查找
+    tubGroup.add(fm);
   }
 
   // 水位模擬（藍色半透明 = 水）：沿內壁放樣的水體，水面平坦、高度 = 內部深度的八成
