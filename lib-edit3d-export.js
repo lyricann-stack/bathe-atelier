@@ -147,10 +147,13 @@ function drawSectionView(cx, by, axis, tag){
   const zf    = q => floorZ(axis==='L'? q : 0, axis==='L'? 0 : q);
   const T = pts => pts.map(p=>[cx+p[0], by+p[1]]);
 
-  // 外底＋外牆
-  E.line(cx+so.lo*sO, by, cx+so.hi*sO, by, 'OUTLINE');
-  E.path(T(wallCurveQ(so.lo, P.L, axis, 0)), 0, 0, 'OUTLINE');
-  E.path(T(wallCurveQ(so.hi, P.L, axis, 0)), 0, 0, 'OUTLINE');
+  // 外底＋外牆。佇列項11(2026-08-22)：缸底斜面v1只沿長軸(L)方向傾斜，W軸剖面固定切在x=0
+  // (outerBaseZ(0)=0)本來就不受影響，只有L軸剖面的兩端z值要跟著斜率變化，不再是同一個by。
+  const zbLo = axis==='L' ? by+outerBaseZ(so.lo*sO) : by;
+  const zbHi = axis==='L' ? by+outerBaseZ(so.hi*sO) : by;
+  E.line(cx+so.lo*sO, zbLo, cx+so.hi*sO, zbHi, 'OUTLINE');
+  E.path(T(wallCurveQ(so.lo, P.L, axis, zbLo-by)), 0, 0, 'OUTLINE');
+  E.path(T(wallCurveQ(so.hi, P.L, axis, zbHi-by)), 0, 0, 'OUTLINE');
   // 缸緣（外頂 → 內頂）
   E.path(T(rimCurveQ(so.lo, si.lo, P.L, inn.L, axis)), 0, 0, 'OUTLINE');
   E.path(T(rimCurveQ(so.hi, si.hi, P.L, inn.L, axis)), 0, 0, 'OUTLINE');
@@ -176,6 +179,12 @@ function drawSectionView(cx, by, axis, tag){
     const qm = (qd + si.hi*sI) / 2;
     E.line(cx+qm, by+zf(qm), cx+qm, by+P.b+150, 'DIM');
     E.text(cx+qm, by+P.b+175, 40, `SLOPE ${P.slope}%%d`, 'TEXT', 1);
+  }
+
+  // 佇列項11(2026-08-22)：缸底斜面標註——只在L軸剖面(斜率作用軸)、確實非0時才畫，
+  // 跟Phase7溢水孔「v1只在有意義的視圖標示，不硬畫」的誠實原則一致
+  if(axis==='L' && P.baseSlope){
+    E.text(cx, by+Math.min(zbLo,zbHi)-60, 36, `BASE SLOPE ${P.baseSlope}%%d (ADVANCED — NOT FACTORY STANDARD)`, 'TEXT', 1);
   }
 
   // 側壁 R 值標註
@@ -453,7 +462,7 @@ function exportDXF(noDownload){
     lip:P.lip, obL:P.obL, obW:P.obW, ibL:P.ibL, ibW:P.ibW, riL:P.riL, riW:P.riW, roL:P.roL, roW:P.roW,
     ovf:P.ovf?1:0, ovfDrop:P.ovfDrop, ovfPos:P.ovfPos||null,
     faucet:P.faucet?1:0, faucetPos:P.faucetPos||null,
-    skirt:P.skirt?1:0, skirtH:P.skirtH, waistK:P.waistK, skirtR:P.skirtR });
+    skirt:P.skirt?1:0, skirtH:P.skirtH, waistK:P.waistK, skirtR:P.skirtR, baseSlope:P.baseSlope||0 });
   E.text(M + 30, 16, 22, paramsJson, 'PARAMS');
 
   dxf += '0\nENDSEC\n0\nEOF\n';
@@ -494,7 +503,8 @@ function exportJSON(noDownload){
       內缸弧R_長邊剖面_mm: P.riL, 內缸弧R_短邊剖面_mm: P.riW, 外缸弧R_長邊剖面_mm: P.roL, 外缸弧R_短邊剖面_mm: P.roW,
       溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop, 溢水孔自訂座標: P.ovfPos || null,
       龍頭孔: P.faucet, 龍頭孔自訂座標: P.faucetPos || null,
-      裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR
+      裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR,
+      缸底斜面角度_deg: P.baseSlope || 0
     },
     計算規格: {
       內部長度_mm: s.inn.L, 內部寬度_mm: s.inn.W, 內部深度_前端_mm: s.inn.D,
@@ -571,6 +581,7 @@ async function sendQuote(btn){
         溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop, 溢水孔自訂座標: P.ovfPos || null,
         龍頭孔: P.faucet, 龍頭孔自訂座標: P.faucetPos || null,
         裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR,
+        缸底斜面角度_deg: P.baseSlope || 0,
         手繪俯視輪廓_normalized: P.customPts, 手繪內缸口輪廓_normalized: P.customPtsInner, 手繪側牆剖面_k: P.customProfile },
       計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) }
     };

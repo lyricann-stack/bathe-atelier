@@ -28,8 +28,10 @@ const P = {
                                      // 跟drainXY()回傳同一套)，非null時覆蓋P.drain離散選項，見lib-edit3d-geometry.js
   ovfPos:null,                      // Phase 7(2026-08-21)：溢水孔自訂座標[t,depth](t=內壁周長索引0~N_SEG-1整數，
                                      // depth=距該點局部缸緣高度mm)，非null時覆蓋P.ovfDrop固定後端置中位置，見ovfWorldXYZ()
-  faucet:false, faucetPos:null      // Phase 7(2026-08-21)：龍頭孔(配件v1)開關＋自訂座標[t,u](t=周長索引，
+  faucet:false, faucetPos:null,     // Phase 7(2026-08-21)：龍頭孔(配件v1)開關＋自訂座標[t,u](t=周長索引，
                                      // u=缸緣寬度方向位置0外緣~1內緣，跟stripGeometry()的u同義)，見faucetWorldXYZ()
+  baseSlope:0                       // 佇列項11(2026-08-22)：獨立缸底曲線編輯v1(缸底整體傾斜，度)，Pro專屬進階
+                                     // 選項，預設0(關閉，跟現行零改動)，正值時+X端墊高、−X端下沉(見outerBaseZ())
 };
 
 // 設計編號：浮水印、Concept PDF 與詢價單追蹤用

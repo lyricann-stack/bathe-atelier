@@ -35,7 +35,7 @@ document.getElementById('cadFile').addEventListener('change', e=>{
 // 套用參數物件（來自 DXF 內嵌 PARAMS 或 JSON 規格表）
 function applyParams(p){
   ['L','W','H','t','b','r','dH','egg','taper','arc','slope','wallR','wallR2','wallMid','skirtH','waistK','skirtR',
-   'lip','obL','obW','ibL','ibW','riL','riW','roL','roW','ovfDrop'].forEach(k=>{ if(typeof p[k] === 'number') P[k] = p[k]; });
+   'lip','obL','obW','ibL','ibW','riL','riW','roL','roW','ovfDrop','baseSlope'].forEach(k=>{ if(typeof p[k] === 'number') P[k] = p[k]; });
   if(typeof p.undercut !== 'undefined') P.undercut = !!(+p.undercut);
   if(typeof p.skirt !== 'undefined') P.skirt = !!(+p.skirt);
   if(typeof p.ovf !== 'undefined') P.ovf = !!(+p.ovf);
@@ -70,7 +70,8 @@ function importSpecJSON(text){
     ovf: typeof d.溢水口 !== 'undefined' ? (d.溢水口 ? 1 : 0) : undefined, ovfDrop: d.溢水口距缸緣_mm,
     faucet: typeof d.龍頭孔 !== 'undefined' ? (d.龍頭孔 ? 1 : 0) : undefined,
     skirt: typeof d.裙擺式底座 !== 'undefined' ? (d.裙擺式底座 ? 1 : 0) : undefined,
-    skirtH: d.裙擺高度_mm, waistK: d.收腰寬度_pct, skirtR: d.裙擺弧R_mm
+    skirtH: d.裙擺高度_mm, waistK: d.收腰寬度_pct, skirtR: d.裙擺弧R_mm,
+    baseSlope: d.缸底斜面角度_deg
   });
   if(d.手繪俯視輪廓_normalized) P.customPts = d.手繪俯視輪廓_normalized;
   P.customPtsInner = d.手繪內缸口輪廓_normalized || null;

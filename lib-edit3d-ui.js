@@ -19,7 +19,8 @@ const sliderMap = [
   ['rSlope','nSlope','slope'], ['rWR','nWR','wallR'], ['rWR1','nWR1','wallR'], ['rWR2','nWR2','wallR2'], ['rWM','nWM','wallMid'],
   ['rSkH','nSkH','skirtH'], ['rSkW','nSkW','waistK'], ['rSkR','nSkR','skirtR'],
   ['rLip','nLip','lip'], ['rObL','nObL','obL'], ['rObW','nObW','obW'], ['rIbL','nIbL','ibL'], ['rIbW','nIbW','ibW'],
-  ['rRiL','nRiL','riL'], ['rRiW','nRiW','riW'], ['rRoL','nRoL','roL'], ['rRoW','nRoW','roW']
+  ['rRiL','nRiL','riL'], ['rRiW','nRiW','riW'], ['rRoL','nRoL','roL'], ['rRoW','nRoW','roW'],
+  ['rBaseSlope','nBaseSlope','baseSlope']   // 佇列項11(2026-08-22)：缸底斜面v1，只在pro.html加HTML，Medium/basic無對應元素時sliderMap自動略過(既有防禦性guard)
 ];
 sliderMap.forEach(([rid,nid,key])=>{
   const r=document.getElementById(rid), n=document.getElementById(nid);
@@ -120,6 +121,7 @@ function applyClassic(k){
   P.customPts = null; P.customPtsInner = null; P.customProfile = null; P.wallMod = null; P.rimMod = null;
   P.drainPos = null; P.ovfPos = null;   // Phase 7：套用經典款時清掉拖曳留下的自訂座標，改用經典款自己的固定位置
   P.faucet = false; P.faucetPos = null; // 龍頭孔是全新配件，經典款本來就沒有這個欄位，切換時重置為關閉
+  P.baseSlope = 0;                      // 佇列項11：缸底斜面是全新進階選項，經典款本來就沒有，切換時重置為平底
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim===P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain===P.drain));
   syncUI();

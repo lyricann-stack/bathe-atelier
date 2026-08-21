@@ -343,6 +343,9 @@ function designPrincipleChecks(){
     { id:'base-decay', label:'Base floor stays flat when shaping walls',
       status:'ok', source:'wallModAt()衰減乘數(結構性保證，非可能失敗的執行期檢查)',
       detail:'Stanley：邊緣拉、底部不縮——Phase 7 Step 0，commit 941a16e' },
+    { id:'base-slope-thickness', label:'Base thickness preserved when tilting the base (advanced)',
+      status:'ok', source:'outerBaseZ()安全clamp(結構性保證，2026-08-22佇列項11實測發現minWallGap()' +
+        '不涵蓋此風險後補上)', detail:'缸底斜面下沉端最多吃掉70%缸底厚度，clamp在幾何層面強制執行，不是只警告' },
     { id:'inner-clearance', label:'Interior space large enough to sit in',
       status: s.inn.L < 950 ? 'warn' : 'ok', source:'既有lenWarn(#lenWarn)',
       detail:'內長<950mm僅適合坐姿/蹲姿(腿到臀約900mm)——門檻是既有值，非本次新訂' },
@@ -444,16 +447,37 @@ function stripGeometry(ptsA, LA, ptsB, LB, H, dH){
   return g;
 }
 
-// Flat封蓋（底板 / 缸內底面）
-function capGeometry(pts, kx, ky, z){
-  const pos=[0*1,z,0], idx=[];
-  for(let i=0;i<N_SEG;i++) pos.push(pts[i][0]*kx, z, pts[i][1]*ky);
+// Flat封蓋（底板 / 缸內底面）。z0f(選用)：跟loftGeometry()同一個約定，逐點高度函式，
+// 佇列項11(2026-08-22)新增此參數供outerBaseZ()使用，未傳時維持原本單一z值的行為不變
+function capGeometry(pts, kx, ky, z, z0f){
+  const center = z0f ? z0f(0, 0) : z;
+  const pos=[0, center, 0], idx=[];
+  for(let i=0;i<N_SEG;i++){
+    const x=pts[i][0]*kx, y=pts[i][1]*ky;
+    pos.push(x, z0f ? z0f(x, y) : z, y);
+  }
   for(let i=0;i<N_SEG;i++) idx.push(0, i+1, (i+1)%N_SEG+1);
   const g=new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
   g.setIndex(idx);
   g.computeVertexNormals();
   return g;
+}
+
+// 佇列項11(2026-08-22)：獨立缸底曲線編輯v1——缸底整體傾斜(單一斜率參數)，對應規格書
+// 「非平整底、斜面底」的具體例子。刻意不做「任意自訂缸底輪廓」(v2 backlog，08裁定)：
+// 只沿長軸(X)方向線性傾斜，+X端墊高、−X端下沉，跟rimH()/drainXY()等既有函式一樣用
+// mm為單位的世界座標(x已經是loftGeometry()傳入的實際mm座標，不是normalized值)。
+// P.baseSlope=0時回傳恆為0，等同沒有這個函式存在，跟現行行為零改變(Medium/basic皆同)。
+function outerBaseZ(x){
+  if(!P.baseSlope) return 0;
+  const raw = Math.tan(P.baseSlope * Math.PI / 180) * x;
+  // 安全clamp(2026-08-22實測發現後補上)：minWallGap()只檢查水平壁厚(factory模式的xy間距)，
+  // 非factory模式甚至固定回傳99跳過檢查——兩者都不會偵測到「斜面把下沉端的缸底厚度吃掉」
+  // 這個垂直方向的風險，需要獨立防護。這裡直接在幾何層面clamp，不管使用者怎麼組合L/斜率，
+  // 下沉端最多吃掉70%的P.b(缸底厚度)，保證結構上一定還有材料，不是只警告不擋。
+  const cap = P.b * 0.7;
+  return Math.max(-cap, Math.min(cap, raw));
 }
 
 // 排水位置（工廠常規三式）：中間集中 / 兩頭（長軸 X 正負端）/ 短邊（寬軸 Y 端）
@@ -606,14 +630,14 @@ function buildTub(){
   const [obx, oby] = shellKxy(0, false), [ibx, iby] = shellKxy(0, true);
   const mat = new THREE.MeshStandardMaterial({ color:P.color, roughness:P.material==='solid'?0.6:0.22, metalness:0.05, side:THREE.DoubleSide });
 
-  tubGroup.add(new THREE.Mesh(loftGeometry(outerPts, P.L, 0,   P.H, P.dH), mat)); // 外殼
+  tubGroup.add(new THREE.Mesh(loftGeometry(outerPts, P.L, 0,   P.H, P.dH, (x,y)=>outerBaseZ(x)), mat)); // 外殼(佇列項11：缸底斜面z0f)
   const innerWallMesh = new THREE.Mesh(loftGeometry(innerPts, inn.L, P.b, P.H, P.dH, floorZ, true), mat); // 內壁（底=洩水斜底，不套裙擺）
   innerWallMesh.name = 'innerWallMesh';  // Phase 7：溢水孔拖曳時對實際內壁面做光線投射
   tubGroup.add(innerWallMesh);
   const rimStripMesh = new THREE.Mesh(stripGeometry(outerPts, P.L, innerPts, inn.L, P.H, P.dH), mat); // 缸緣
   rimStripMesh.name = 'rimStripMesh';  // Phase 7：龍頭孔拖曳時對實際缸緣面做光線投射
   tubGroup.add(rimStripMesh);
-  tubGroup.add(new THREE.Mesh(capGeometry(outerPts, obx, oby, 0), mat));   // 底封板
+  tubGroup.add(new THREE.Mesh(capGeometry(outerPts, obx, oby, 0, (x,y)=>outerBaseZ(x)), mat));   // 底封板(跟外殼base ring用同一個z0f，接縫吻合)
   tubGroup.add(new THREE.Mesh(slopedCapGeometry(innerPts, ibx, iby, P.b), mat)); // 缸內底面（向排水孔傾斜 P.slope°）
 
   // 排水孔（位於斜底最低點）
