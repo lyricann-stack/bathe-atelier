@@ -273,12 +273,21 @@ function shellKxy(v, inner){
   return k;
 }
 // 側壁修飾層取值：33 點線性內插
+// Phase 7(2026-08-21)：缸底連動修正——原本這裡直接回傳插值，v=0(缸底)那端如果Gaussian
+// 節點的影響範圍剛好蓋到底部，會讓缸底footprint被側壁編輯意外拖動變形(既有缺口，非新問題，
+// 對應Masa會議Stanley的設計原則「邊緣拉、底部不縮」)。修法：乘上v本身當衰減係數——
+// v=0(缸底)強制歸零(不管節點的Gaussian插值算出什麼，缸底一律不受側壁編輯影響)、
+// v=1(缸緣)保持100%不衰減、中間線性內插。只影響這個取值函式，不改變`recomputeSide()`
+// 產生節點Gaussian delta的邏輯本身，所以拖曳手感(节点在v多少位置有多大峰值)不變，
+// 變的只是「這個峰值實際套用到殼體時，越靠近缸底衰減得越多」。
 function wallModAt(v){
   const a = P.wallMod;
   if(!a || !a.length) return 0;
-  const t = Math.max(0, Math.min(1, v)) * (a.length - 1);
+  const vv = Math.max(0, Math.min(1, v));
+  const t = vv * (a.length - 1);
   const j = Math.floor(t), f = t - j;
-  return a[j] + (a[Math.min(j + 1, a.length - 1)] - a[j]) * f;
+  const raw = a[j] + (a[Math.min(j + 1, a.length - 1)] - a[j]) * f;
+  return raw * vv;  // 衰減：缸底(v=0)→0，缸緣(v=1)→100%，線性內插
 }
 // 缸緣高度修飾取值：依輪廓點索引（外殼/內壁/缸緣帶同索引對齊）
 function rimModI(i){
