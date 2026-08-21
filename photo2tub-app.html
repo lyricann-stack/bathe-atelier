@@ -4474,6 +4474,7 @@ animate();
       if(resp.status === 401) reason = 'Authentication failed (bad API token) — this is a test-page config issue, not a photo problem.';
       else if(resp.status === 400) reason = (detail && detail.detail) || 'Please upload 1–8 photos.';
       else if(resp.status === 422) reason = 'No bathtub was found in any of the uploaded photos. Try a clearer shot with the tub filling more of the frame, or better lighting.';
+      else if(resp.status === 429) reason = 'Too many attempts from this network in a short time — please wait a few minutes and try again.';
       showBanner('err', '⚠ ' + reason, msgs.length ? '' : `(${resp.status}, ${elapsed}s)`, messagesToDetailsHtml(msgs));
       return;
     }
