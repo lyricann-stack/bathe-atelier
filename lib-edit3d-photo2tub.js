@@ -30,13 +30,15 @@
     'Uploading & processing…': ['上传处理中…', 'กำลังอัปโหลดและประมวลผล…', '上傳處理中…'],
     'Usually 30–90 seconds. First run after idle time (cold start) can take 2–3 minutes — please don\'t close this tab.': ['通常需要30–90秒。闲置后第一次运行(冷启动)可能需要2–3分钟——请勿关闭此分页。', 'โดยปกติใช้เวลา 30–90 วินาที การรันครั้งแรกหลังไม่มีการใช้งาน (cold start) อาจใช้เวลา 2–3 นาที — กรุณาอย่าปิดแท็บนี้', '通常需要30–90秒。閒置後第一次運行(冷啟動)可能需要2–3分鐘——請勿關閉此分頁。'],
     '⚠ Could not reach the reconstruction service': ['⚠ 无法连线到重建服务', '⚠ ไม่สามารถเชื่อมต่อบริการสร้างโมเดลได้', '⚠ 無法連線到重建服務'],
-    // ⚠ 文案審視backlog(2026-08-22，08裁定本次照原文翻譯不改寫)："P3-M2 cloud deploy"是2026-08-20
-    // 已完成的部署事件，這句話當初寫給開發期參考、現在讀起來像還沒deploy，過時但本次不動英文原文
-    'Network/CORS error — is the API endpoint reachable? ({err}). This is expected if the local test API isn\'t running, or before P3-M2 cloud deploy.': ['网路/CORS错误——API端点可以连线吗？({err})。如果本机测试API没有运行，或云端部署前，这是预期中的情况。', 'ข้อผิดพลาดเครือข่าย/CORS — เข้าถึง API endpoint ได้หรือไม่ ({err}) หากยังไม่ได้รัน API ทดสอบในเครื่อง หรือก่อนการ deploy ขึ้นคลาวด์ นี่เป็นเรื่องปกติ', '網路/CORS錯誤——API端點可以連線嗎？({err})。如果本機測試API沒有運行，或雲端部署前，這是預期中的情況。'],
+    // 文案審視backlog修正(2026-08-22，08裁定「處理掉」)："P3-M2 cloud deploy"是2026-08-20已完成的
+    // 部署事件，原文案寫給開發期參考、雲端deploy完成後讀起來反而像還沒deploy，永久性過時(不會隨時間
+    // 變回準確)，這次直接改寫英文原文+三語同步，不只是翻譯留債。
+    'Network/CORS error — is the API endpoint reachable? ({err}). This can happen during a temporary connectivity issue, or if you\'re testing against a local API that isn\'t running.': ['网路/CORS错误——API端点可以连线吗？({err})。可能是暂时的连线问题，或你正在测试一个没有运行的本机API。', 'ข้อผิดพลาดเครือข่าย/CORS — เข้าถึง API endpoint ได้หรือไม่ ({err}) อาจเกิดจากปัญหาการเชื่อมต่อชั่วคราว หรือกำลังทดสอบกับ API ในเครื่องที่ยังไม่ได้รัน', '網路/CORS錯誤——API端點可以連線嗎？({err})。可能是暫時的連線問題，或你正在測試一個沒有運行的本機API。'],
     'The pipeline could not produce a model from these photos.': ['管线无法从这些照片产生模型。', 'ไพพ์ไลน์ไม่สามารถสร้างโมเดลจากรูปถ่ายเหล่านี้ได้', '管線無法從這些照片產生模型。'],
-    // ⚠ 文案審視backlog：「test-page config issue」在pro.html(正式頁)出現不合適(不是測試頁)，
-    // 本次照原文翻譯不改寫，留給文案審視項一次處理
-    'Authentication failed (bad API token) — this is a test-page config issue, not a photo problem.': ['认证失败(API token错误)——这是测试页设定问题，不是照片本身的问题。', 'การยืนยันตัวตนล้มเหลว (API token ไม่ถูกต้อง) — เป็นปัญหาการตั้งค่าหน้าทดสอบ ไม่ใช่ปัญหารูปถ่าย', '認證失敗(API token錯誤)——這是測試頁設定問題，不是照片本身的問題。'],
+    // 文案審視backlog修正：「test-page config issue」在pro.html(正式頁)出現不合適(不是測試頁)，
+    // 這裡(共用檔，pro.html在用)改成不提「測試頁」的通用版本；photo2tub-app.html自己那份inline拷貝
+    // 真的是測試頁，維持原文案不變(兩邊故意分流，不是漏改)。
+    'Authentication failed (bad API token) — this is a site configuration issue, not a problem with your photo.': ['认证失败(API token错误)——这是网站设定问题，不是照片本身的问题。', 'การยืนยันตัวตนล้มเหลว (API token ไม่ถูกต้อง) — เป็นปัญหาการตั้งค่าเว็บไซต์ ไม่ใช่ปัญหารูปถ่าย', '認證失敗(API token錯誤)——這是網站設定問題，不是照片本身的問題。'],
     'Please upload 1–8 photos.': ['请上传1–8张照片。', 'กรุณาอัปโหลดรูปถ่าย 1–8 รูป', '請上傳1–8張照片。'],
     'No bathtub was found in any of the uploaded photos. Try a clearer shot with the tub filling more of the frame, or better lighting.': ['上传的照片里都没有侦测到浴缸。请试试让浴缸占满画面、或加强照明后重拍。', 'ไม่พบอ่างอาบน้ำในรูปถ่ายที่อัปโหลด ลองถ่ายให้อ่างเต็มเฟรมมากขึ้น หรือเพิ่มแสงให้ชัดเจนขึ้น', '上傳的照片裡都沒有偵測到浴缸。請試試讓浴缸佔滿畫面、或加強照明後重拍。'],
     'Too many attempts from this network in a short time — please wait a few minutes and try again.': ['同一网路短时间内尝试次数过多——请稍候几分钟再试。', 'มีการพยายามจากเครือข่ายนี้มากเกินไปในเวลาอันสั้น — กรุณารอสักครู่แล้วลองใหม่', '同一網路短時間內嘗試次數過多——請稍候幾分鐘再試。'],
@@ -115,7 +117,7 @@
       data = await resp.json().catch(()=>null);
     } catch(err){
       showBanner('err', p2tT('⚠ Could not reach the reconstruction service'),
-        p2tT('Network/CORS error — is the API endpoint reachable? ({err}). This is expected if the local test API isn\'t running, or before P3-M2 cloud deploy.', {err:err.message}));
+        p2tT('Network/CORS error — is the API endpoint reachable? ({err}). This can happen during a temporary connectivity issue, or if you\'re testing against a local API that isn\'t running.', {err:err.message}));
       return;
     }
 
@@ -125,7 +127,7 @@
       const detail = data && data.detail;
       const msgs = (detail && detail.messages) || [];
       let reason = p2tT('The pipeline could not produce a model from these photos.');
-      if(resp.status === 401) reason = p2tT('Authentication failed (bad API token) — this is a test-page config issue, not a photo problem.');
+      if(resp.status === 401) reason = p2tT('Authentication failed (bad API token) — this is a site configuration issue, not a problem with your photo.');
       else if(resp.status === 400) reason = (detail && detail.detail) || p2tT('Please upload 1–8 photos.');
       else if(resp.status === 422) reason = p2tT('No bathtub was found in any of the uploaded photos. Try a clearer shot with the tub filling more of the frame, or better lighting.');
       else if(resp.status === 429) reason = p2tT('Too many attempts from this network in a short time — please wait a few minutes and try again.');
