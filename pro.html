@@ -81,6 +81,9 @@
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <button class="btn btn-upl" onclick="openPhoto()">📷 Site photo notes</button>
     <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
+    <!-- Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)——跟上面T5「Site photo notes」是兩個不同功能
+         (T5=標註空間位置附詢價信；這裡=把設計缸疊進場景照輸出展示圖)，入口分開避免混淆 -->
+    <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 Place in a photo</button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
@@ -368,6 +371,35 @@
     <div class="sk-actions"><button class="cancel" onclick="closeARPreview()">Close</button></div>
   </div>
 </div>
+
+<!-- Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)——上傳場景照，把設計缸的去背渲染貼紙
+     拖曳/縮放/旋轉對齊後輸出合成圖。純前端零上傳。邏輯在lib-edit3d-photocompose.js -->
+<div id="composeModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(860px,94vw)">
+    <h2>🛋 Place your design in a photo</h2>
+    <div class="sk-sub">Upload a photo of the space, then drag, pinch or scroll to place the tub. The photo never leaves your browser.</div>
+    <div class="sk-tools" style="margin-bottom:8px;flex-wrap:wrap">
+      <label class="upl">📷 Upload photo<input type="file" id="pcPhotoFile" accept="image/*" style="display:none"></label>
+      <button id="pcModePlace" class="active" onclick="pcSetMode('place')">Move &amp; resize</button>
+      <button id="pcModeView" onclick="pcSetMode('view')">↻ Adjust 3D view</button>
+      <label style="display:inline-flex;align-items:center;gap:5px;font-size:13px;cursor:pointer"><input type="checkbox" id="pcShadowChk" checked onchange="pcToggleShadow(this)">Ground shadow</label>
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px">Rotate<input type="range" id="pcRotSlider" min="-180" max="180" value="0" step="1" style="width:110px"></label>
+    </div>
+    <div style="max-height:56vh;overflow:auto;border:1px solid #ddd8cc;border-radius:8px;background:#faf8f3;text-align:center">
+      <canvas id="pcCanvas" style="max-width:100%;cursor:move;touch-action:none"></canvas>
+    </div>
+    <div id="pcTip" class="tip" style="margin-top:6px"></div>
+    <!-- margin-inline-start(非文字空格)隔開連結：i18n的applyLang()會用t(key)整段覆蓋文字節點內容，
+         尾隨空格活不過語言切換，靠CSS間距才不受影響(3d-photo2tub-55複核時發現，順手修) -->
+    <div class="tip" style="margin-top:4px">Sizing here is visual only — for true-to-scale placement, use AR.<a href="javascript:void(0)" onclick="pcSwitchToAR()" style="color:#c99a4a;margin-inline-start:5px">📱 View in AR instead</a></div>
+    <div id="pcStatus" class="tip" style="margin-top:4px"></div>
+    <div class="sk-actions">
+      <button class="cancel" onclick="closePhotoCompose()">Close</button>
+      <button class="ok" id="pcShareBtn" style="display:none" onclick="pcShare()">📤 Share</button>
+      <button class="ok" onclick="pcDownload()">⬇ Download image</button>
+    </div>
+  </div>
+</div>
 <script>
   // 三版本設定（必須在 lib 之前）
   window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true;
@@ -394,6 +426,7 @@
 <script src="lib-tub-boot.js"></script>
 <script src="lib-edit3d-photo2tub.js"></script>
 <script src="lib-edit3d-ar-ui.js"></script>
+<script src="lib-edit3d-photocompose.js"></script>
 <script>
 // ===== 照片分析（簡易圈選版）=====
 const _ph = { img:null, strokes:[], cur:null, scale:1 };
