@@ -4407,7 +4407,10 @@ animate();
 // ============================================================
 (function(){
   const P2T_API_BASE = 'https://lyricann--photo2tub-api-fastapi-app.modal.run'; // P3-M2：雲端Modal端點(2026-08-20部署，GPU/T4)
-  const P2T_API_TOKEN = 'x_DW2YaJxsl_BM6m74t2bVeILZJwO9BAkEdRERqh42I';          // 正式token(存於Modal Secret photo2tub-api-token)
+  // 2026-08-21 token輪替準備：新token+新Modal secret名稱(photo2tub-api-token-20260821)已備妥，
+  // 但**尚未切換**——見lib-edit3d-photo2tub.js同一段註解，三件事(這裡的commit push、建新secret、
+  // modal_app.py改名+deploy)要同時生效。
+  const P2T_API_TOKEN = 'KziTQXe5ltFKzu5swfb20DoshQihl3h_etRKmbLQ5AE';          // 新token(待跟Modal secret同步切換，見上)
   const P2T_MIN_PHOTOS = 3, P2T_MAX_PHOTOS = 8;
 
   const banner = document.getElementById('p2tBanner');
