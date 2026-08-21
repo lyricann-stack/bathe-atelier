@@ -15,34 +15,35 @@ const BI_I18N = {
   'Continue': ['继续', 'ดำเนินการต่อ', '繼續'],
   "That code didn't work — please check and try again.": ['通行码有误，请确认后再试一次。', 'รหัสไม่ถูกต้อง กรุณาตรวจสอบแล้วลองใหม่', '通行碼有誤，請確認後再試一次。'],
   'Could not reach the system right now — please try again in a moment.': ['目前连不上系统，请稍后再试一次。', 'ขณะนี้เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่ภายหลัง', '目前連不上系統，請稍後再試一次。'],
-  'Turn a basin into bath inspiration': ['把臉盆變成浴缸設計靈感', 'เปลี่ยนอ่างล้างหน้าให้เป็นแรงบันดาลใจสำหรับอ่างอาบน้ำ', '把臉盆變成浴缸設計靈感'],
-  'Upload a photo of a basin — we\'ll turn its shape into four bathtub design ideas.': ['上傳一張臉盆照片——我們把它的造型變成4款浴缸設計提案。', 'อัปโหลดรูปอ่างล้างหน้า — เราจะเปลี่ยนรูปทรงเป็นไอเดียออกแบบอ่างอาบน้ำ 4 แบบ', '上傳一張臉盆照片——我們把它的造型變成4款浴缸設計提案。'],
-  'Upload a basin photo': ['上傳臉盆照片', 'อัปโหลดรูปอ่างล้างหน้า', '上傳臉盆照片'],
-  'Try an example instead': ['試試範例', 'ลองดูตัวอย่าง', '試試範例'],
-  'Countertop basin': ['檯面式臉盆', 'อ่างล้างหน้าแบบวางบนเคาน์เตอร์', '檯面式臉盆'],
-  'Wall-hung basin': ['壁掛式臉盆', 'อ่างล้างหน้าแบบแขวนผนัง', '壁掛式臉盆'],
-  'Freestanding basin': ['獨立碗型臉盆', 'อ่างล้างหน้าแบบตั้งอิสระ', '獨立碗型臉盆'],
+  'Network issue — showing a pre-made example instead.': ['网络连线有问题，先让你看一组预录范例。', 'ปัญหาการเชื่อมต่อเครือข่าย — ขอแสดงตัวอย่างที่เตรียมไว้ให้ดูก่อน', '網路連線有問題，先讓你看一組預錄範例。'],
+  'Turn a basin into bath inspiration': ['把脸盆变成浴缸设计灵感', 'เปลี่ยนอ่างล้างหน้าให้เป็นแรงบันดาลใจสำหรับอ่างอาบน้ำ', '把臉盆變成浴缸設計靈感'],
+  'Upload a photo of a basin — we\'ll turn its shape into four bathtub design ideas.': ['上传一张脸盆照片——我们把它的造型变成4款浴缸设计提案。', 'อัปโหลดรูปอ่างล้างหน้า — เราจะเปลี่ยนรูปทรงเป็นไอเดียออกแบบอ่างอาบน้ำ 4 แบบ', '上傳一張臉盆照片——我們把它的造型變成4款浴缸設計提案。'],
+  'Upload a basin photo': ['上传脸盆照片', 'อัปโหลดรูปอ่างล้างหน้า', '上傳臉盆照片'],
+  'Try an example instead': ['试试范例', 'ลองดูตัวอย่าง', '試試範例'],
+  'Countertop basin': ['台面式脸盆', 'อ่างล้างหน้าแบบวางบนเคาน์เตอร์', '檯面式臉盆'],
+  'Wall-hung basin': ['壁挂式脸盆', 'อ่างล้างหน้าแบบแขวนผนัง', '壁掛式臉盆'],
+  'Freestanding basin': ['独立碗型脸盆', 'อ่างล้างหน้าแบบตั้งอิสระ', '獨立碗型臉盆'],
   'This is design inspiration, not a real product — it turns your basin\'s shape into bathtub design ideas. Sizes and details are yours to adjust afterwards.':
-    ['這是設計發想，不是真實產品——依你的臉盆造型產生浴缸設計靈感，實際尺寸與細節之後由你調整。',
+    ['这是设计发想，不是真实产品——依你的脸盆造型产生浴缸设计灵感，实际尺寸与细节之后由你调整。',
      'นี่คือแรงบันดาลใจด้านการออกแบบ ไม่ใช่ผลิตภัณฑ์จริง — เปลี่ยนรูปทรงอ่างของคุณเป็นไอเดียออกแบบอ่างอาบน้ำ ขนาดและรายละเอียดปรับได้ภายหลัง',
      '這是設計發想，不是真實產品——依你的臉盆造型產生浴缸設計靈感，實際尺寸與細節之後由你調整。'],
   'Basins with a distinct bowl (like a countertop basin) usually give a clearer curve; freestanding bowl-style basins may come back close to their outer shape instead.':
-    ['有明顯凹陷的臉盆(例如檯面式)通常能得到更清楚的弧線；獨立碗型臉盆則可能得到接近外殼形狀的結果。',
+    ['有明显凹陷的脸盆(例如台面式)通常能得到更清楚的弧线；独立碗型脸盆则可能得到接近外壳形状的结果。',
      'อ่างที่มีแอ่งชัดเจน (เช่นแบบวางบนเคาน์เตอร์) มักได้เส้นโค้งที่ชัดกว่า อ่างแบบตั้งอิสระทรงชามอาจได้ผลลัพธ์ใกล้เคียงรูปทรงภายนอกแทน',
      '有明顯凹陷的臉盆(例如檯面式)通常能得到更清楚的弧線；獨立碗型臉盆則可能得到接近外殼形狀的結果。'],
   'Uploading & analysing… usually 30–90 seconds, longer if the system just woke up.':
-    ['上傳分析中…通常30-90秒，系統剛啟動時可能較久。', 'กำลังอัปโหลดและวิเคราะห์… ปกติ 30-90 วินาที อาจนานกว่านี้หากระบบเพิ่งเริ่มทำงาน', '上傳分析中…通常30-90秒，系統剛啟動時可能較久。'],
+    ['上传分析中…通常30-90秒，系统刚启动时可能较久。', 'กำลังอัปโหลดและวิเคราะห์… ปกติ 30-90 วินาที อาจนานกว่านี้หากระบบเพิ่งเริ่มทำงาน', '上傳分析中…通常30-90秒，系統剛啟動時可能較久。'],
   "We couldn't clearly recognise a basin in this photo — try a clearer, closer shot of just the basin.":
-    ['這張照片認不出清楚的臉盆——試試拍近一點、只拍臉盆本身的照片。', 'จำอ่างล้างหน้าจากรูปนี้ไม่ชัดเจน — ลองถ่ายใกล้ขึ้นเฉพาะตัวอ่าง', '這張照片認不出清楚的臉盆——試試拍近一點、只拍臉盆本身的照片。'],
-  'Your access code is no longer valid — please enter it again.': ['你的通行碼失效了，請重新輸入。', 'รหัสผ่านของคุณหมดอายุ กรุณากรอกใหม่', '你的通行碼失效了，請重新輸入。'],
-  'Four ideas from your basin': ['從你的臉盆得到4個提案', 'ไอเดีย 4 แบบจากอ่างล้างหน้าของคุณ', '從你的臉盆得到4個提案'],
-  'Pick one to fine-tune — shape and size are yours to adjust from here.': ['挑一款進去微調——造型跟尺寸接下來都可以調整。', 'เลือกหนึ่งแบบเพื่อปรับแต่ง — รูปทรงและขนาดปรับได้จากนี้ไป', '挑一款進去微調——造型跟尺寸接下來都可以調整。'],
-  "You're viewing a pre-made example, not your own photo.": ['你現在看的是預錄範例，不是你自己的照片結果。', 'คุณกำลังดูตัวอย่างที่เตรียมไว้ล่วงหน้า ไม่ใช่ผลจากรูปของคุณเอง', '你現在看的是預錄範例，不是你自己的照片結果。'],
-  'Try another photo': ['換一張照片', 'ลองรูปอื่น', '換一張照片'],
-  'Faithful curve': ['忠實弧度版', 'เส้นโค้งตามต้นฉบับ', '忠實弧度版'],
+    ['这张照片认不出清楚的脸盆——试试拍近一点、只拍脸盆本身的照片。', 'จำอ่างล้างหน้าจากรูปนี้ไม่ชัดเจน — ลองถ่ายใกล้ขึ้นเฉพาะตัวอ่าง', '這張照片認不出清楚的臉盆——試試拍近一點、只拍臉盆本身的照片。'],
+  'Your access code is no longer valid — please enter it again.': ['你的通行码失效了，请重新输入。', 'รหัสผ่านของคุณหมดอายุ กรุณากรอกใหม่', '你的通行碼失效了，請重新輸入。'],
+  'Four ideas from your basin': ['从你的脸盆得到4个提案', 'ไอเดีย 4 แบบจากอ่างล้างหน้าของคุณ', '從你的臉盆得到4個提案'],
+  'Pick one to fine-tune — shape and size are yours to adjust from here.': ['挑一款进去微调——造型跟尺寸接下来都可以调整。', 'เลือกหนึ่งแบบเพื่อปรับแต่ง — รูปทรงและขนาดปรับได้จากนี้ไป', '挑一款進去微調——造型跟尺寸接下來都可以調整。'],
+  "You're viewing a pre-made example, not your own photo.": ['你现在看的是预录范例，不是你自己的照片结果。', 'คุณกำลังดูตัวอย่างที่เตรียมไว้ล่วงหน้า ไม่ใช่ผลจากรูปของคุณเอง', '你現在看的是預錄範例，不是你自己的照片結果。'],
+  'Try another photo': ['换一张照片', 'ลองรูปอื่น', '換一張照片'],
+  'Faithful curve': ['忠实弧度版', 'เส้นโค้งตามต้นฉบับ', '忠實弧度版'],
   'Deep soak': ['深泡版', 'แช่ลึก', '深泡版'],
-  'Elongated': ['拉長版', 'ยืดยาว', '拉長版'],
-  'Softened': ['圓潤化版', 'โค้งมนขึ้น', '圓潤化版'],
+  'Elongated': ['拉长版', 'ยืดยาว', '拉長版'],
+  'Softened': ['圆润化版', 'โค้งมนขึ้น', '圓潤化版'],
 };
 function biT(key, vars){
   let s = key;
@@ -247,8 +248,12 @@ async function biHandleUpload(file){
     resp = await fetch(BI_API_BASE + '/reconstruct', { method:'POST', headers:{'x-api-token': BI_API_TOKEN}, body: fd });
     data = await resp.json().catch(()=>null);
   } catch(err){
+    // 規格書§十一(08裁定「直接做，不等網路確認」)：真正的網路/連線失敗(fetch本身拋錯，不是
+    // 伺服器回了錯誤狀態碼)才自動切範例——401/422/429等是「網路通、伺服器有回應」的正常錯誤路徑，
+    // 那些狀況硬塞一個範例反而誤導使用者(以為自己的照片有效，其實是code錯或真的沒認出臉盆)。
     btn.style.pointerEvents = ''; btn.style.opacity = '';
-    biShowStatus('err', biT('Could not reach the system right now — please try again in a moment.'));
+    biShowStatus('err', biT('Network issue — showing a pre-made example instead.'));
+    await biGenerateProposals(biExampleToDesignParams(BI_EXAMPLES.countertop), true);
     return;
   }
   btn.style.pointerEvents = ''; btn.style.opacity = '';
