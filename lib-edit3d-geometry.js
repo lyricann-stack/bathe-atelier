@@ -419,10 +419,26 @@ function capGeometry(pts, kx, ky, z){
 }
 
 // 排水位置（工廠常規三式）：中間集中 / 兩頭（長軸 X 正負端）/ 短邊（寬軸 Y 端）
-function drainXY(){
+// Phase 7(2026-08-21)：去水口安全活動範圍——跟原本5個離散選項用同一組邊界margin(130mm長軸/
+// 110mm短軸，離內壁的安全淨距)，供drainXY()的custom分支跟拖曳互動共用同一個「合法範圍」定義，
+// 不要各自維護一份容易對不上。用橢圓邊界(而非矩形夾範圍)，對大多數浴缸內緣輪廓(橢圓/圓角矩形)
+// 都是合理近似，v1不做逐形狀精確碰撞。
+function drainReach(){
   const inn=innerDims(), fac=isFactory(), s=baseK();
-  const reach = Math.max(0, (fac ? P.ibL/2 : inn.L/2*s) - 130);
-  const reachW = Math.max(0, (fac ? P.ibW/2 : inn.W/2*s) - 110);
+  return {
+    reach:  Math.max(0, (fac ? P.ibL/2 : inn.L/2*s) - 130),
+    reachW: Math.max(0, (fac ? P.ibW/2 : inn.W/2*s) - 110),
+  };
+}
+function clampDrainPos(x, y){
+  const {reach, reachW} = drainReach();
+  if(reach<=0 || reachW<=0) return {x:0, y:0};
+  const nx = x/reach, ny = y/reachW, r = Math.hypot(nx, ny);
+  return r<=1 ? {x, y} : {x: x/r, y: y/r};
+}
+function drainXY(){
+  if(P.drainPos) return clampDrainPos(P.drainPos[0], P.drainPos[1]);
+  const {reach, reachW} = drainReach();
   if(P.drain==='back')  return {x:-reach, y:0};
   if(P.drain==='front') return {x: reach, y:0};
   if(P.drain==='side')  return {x:0, y:reachW};
@@ -479,6 +495,7 @@ function buildTub(){
     new THREE.MeshStandardMaterial({color:0x666e75, metalness:0.8, roughness:0.3})
   );
   drain.position.set(d.x, P.b+4, d.y);
+  drain.name = 'drainHandle';  // Phase 7：拖曳互動用名稱查找，tubGroup每次buildTub()都重建
   tubGroup.add(drain);
 
   // 溢水口（工廠標準件，細部不建模）：後端內壁、距缸緣 P.ovfDrop

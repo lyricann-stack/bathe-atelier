@@ -435,7 +435,7 @@ function exportDXF(noDownload){
 
   // 嵌入參數（PARAMS 圖層，供本系統重新上傳還原設計 — 閉環）
   const paramsJson = JSON.stringify({ _bathtub:1, shape:P.shape, L:P.L, W:P.W, H:P.H, t:P.t, b:P.b, r:P.r,
-    dH:P.dH, egg:P.egg, taper:P.taper, arc:P.arc, rim:P.rim, drain:P.drain, slope:P.slope, undercut:P.undercut?1:0,
+    dH:P.dH, egg:P.egg, taper:P.taper, arc:P.arc, rim:P.rim, drain:P.drain, drainPos:P.drainPos||null, slope:P.slope, undercut:P.undercut?1:0,
     wallMode:P.wallMode, wallR:P.wallR, wallR2:P.wallR2, wallMid:P.wallMid,
     lip:P.lip, obL:P.obL, obW:P.obW, ibL:P.ibL, ibW:P.ibW, riL:P.riL, riW:P.riW, roL:P.roL, roW:P.roW,
     ovf:P.ovf?1:0, ovfDrop:P.ovfDrop,
@@ -473,7 +473,7 @@ function exportJSON(noDownload){
       缸壁厚度_mm: P.t, 缸底厚度_mm: P.b, 圓角半徑_mm: P.r,
       缸緣造型: {flat:'Flat', round:'Rounded', bevel:'Beveled'}[P.rim], rim_code: P.rim,
       增高弧度_pct: P.arc,
-      排水孔位置: P.drain, 外觀顏色: P.color,
+      排水孔位置: P.drain, 去水口自訂座標: P.drainPos || null, 外觀顏色: P.color,
       排水洩水角度_deg: P.slope, 允許倒扣: P.undercut,
       側壁模式: P.wallMode, 側壁弧度R_mm: P.wallR, 上段弧R2_mm: P.wallR2, S轉折高度_pct: P.wallMid,
       缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,
@@ -548,7 +548,7 @@ async function sendQuote(btn){
     const spec = {
       設計參數: { material_code: P.material, shape_code: P.shape, 外部長度_mm: P.L, 外部寬度_mm: P.W, 缸緣高度_前端_mm: P.H,
         靠背增高_mm: P.dH, 增高弧度_pct: P.arc, 蛋形係數_pct: P.egg, 底部收縮_pct: P.taper,
-        缸壁厚度_mm: P.t, 缸底厚度_mm: P.b, 圓角半徑_mm: P.r, rim_code: P.rim, 排水孔位置: P.drain, 外觀顏色: P.color,
+        缸壁厚度_mm: P.t, 缸底厚度_mm: P.b, 圓角半徑_mm: P.r, rim_code: P.rim, 排水孔位置: P.drain, 去水口自訂座標: P.drainPos || null, 外觀顏色: P.color,
         排水洩水角度_deg: P.slope, 允許倒扣: P.undercut,
         側壁模式: P.wallMode, 側壁弧度R_mm: P.wallR, 上段弧R2_mm: P.wallR2, S轉折高度_pct: P.wallMid,
         缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,

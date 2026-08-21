@@ -23,7 +23,9 @@ const P = {
   // Phase 5(2026-08-20)：EDIT_MODE節點編輯＋wallFace模式新增欄位，補齊預設值(原本靠動態賦值也能運作，
   // 但明確預設跟Edit3D單檔架構的P物件定義一致，避免undefined跟null混用造成閱讀混淆)
   customPtsInner:null, wallMod:null, rimMod:null,
-  tub_type:'freestanding', wallEdgeStart:null, wallEdgeEnd:null
+  tub_type:'freestanding', wallEdgeStart:null, wallEdgeEnd:null,
+  drainPos:null                     // Phase 7(2026-08-21)：去水口自訂連續座標[x,y](mm，缸底面座標系，
+                                     // 跟drainXY()回傳同一套)，非null時覆蓋P.drain離散選項，見lib-edit3d-geometry.js
 };
 
 // 設計編號：浮水印、Concept PDF 與詢價單追蹤用

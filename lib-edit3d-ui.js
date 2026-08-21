@@ -86,6 +86,7 @@ function setMaterial(m, btn){
 }
 function setDrain(d, btn){
   P.drain = d;
+  P.drainPos = null;  // Phase 7：切回離散選項時清掉拖曳留下的自訂座標，避免drainXY()誤用舊值
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   buildTub();

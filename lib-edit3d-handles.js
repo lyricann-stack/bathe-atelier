@@ -120,6 +120,7 @@ if(EDIT_MODE){ (function(){
   let edgeGrp = null, tubes = {}, hiTubes = {};
   let nodeGrp = null, selectedEdge = null, hoverKey = null, selNode = null, dragN = null;
   let _lastL = P.L, _lastW = P.W;       // L/W 滑桿與節點基準（mm）的同步縮放
+  let dragDrain = false;                // Phase 7：去水口拖曳中旗標，跟side/outer節點拖曳(dragN)分開管理
 
   // ---- 幾何輔助 ----
   const outMM = () => outlinePts(P.shape, P.L, P.W, P.r, P.egg, N_SEG);
@@ -529,6 +530,17 @@ if(EDIT_MODE){ (function(){
 
   // ---- 事件 ----
   window.addEventListener('pointermove', e=>{
+    if(dragDrain){
+      const r = canvas.getBoundingClientRect();
+      _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+      _ray.setFromCamera(_mv, camera);
+      if(_ray.ray.intersectPlane(_dragPlane, _hitPt)){
+        const c = clampDrainPos(_hitPt.x, _hitPt.z);
+        P.drainPos = [c.x, c.y];
+        requestBuild();
+      }
+      return;
+    }
     if(dragN){
       const r = canvas.getBoundingClientRect();
       _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
@@ -593,6 +605,19 @@ if(EDIT_MODE){ (function(){
   });
   window.addEventListener('pointerdown', e=>{
     if(e.target!==canvas || !edgeGrp) return;
+    // Phase 7(2026-08-21)：去水口拖曳——檢查優先於節點/邊線命中，避免跟既有EDIT_MODE互動衝突。
+    // drainHandle是buildTub()裡加進tubGroup的實心圓柱，每次重建都會拿到新的mesh實例，
+    // 用name查找而不是保留舊引用(舊引用在下一次buildTub()後就是已dispose的孤兒物件)。
+    const drainMesh = tubGroup && tubGroup.getObjectByName('drainHandle');
+    if(drainMesh){
+      const dh = pickAt(e, [drainMesh]);
+      if(dh){
+        _dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0), dh.point);
+        dragDrain = true;
+        e.stopPropagation(); e.preventDefault();
+        return;
+      }
+    }
     const nh = nodeGrp && pickAt(e, nodeGrp.children);
     if(nh){
       const nd = nh.object.userData.node;
@@ -657,6 +682,7 @@ if(EDIT_MODE){ (function(){
     e.stopPropagation(); e.preventDefault();
   }, true);
   window.addEventListener('pointerup', ()=>{
+    if(dragDrain){ dragDrain = false; requestBuild(); return; }
     if(!dragN) return;
     dragN = null;
     requestBuild();
