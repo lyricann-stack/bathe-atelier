@@ -24,8 +24,10 @@ const P = {
   // 但明確預設跟Edit3D單檔架構的P物件定義一致，避免undefined跟null混用造成閱讀混淆)
   customPtsInner:null, wallMod:null, rimMod:null,
   tub_type:'freestanding', wallEdgeStart:null, wallEdgeEnd:null,
-  drainPos:null                     // Phase 7(2026-08-21)：去水口自訂連續座標[x,y](mm，缸底面座標系，
+  drainPos:null,                    // Phase 7(2026-08-21)：去水口自訂連續座標[x,y](mm，缸底面座標系，
                                      // 跟drainXY()回傳同一套)，非null時覆蓋P.drain離散選項，見lib-edit3d-geometry.js
+  ovfPos:null                       // Phase 7(2026-08-21)：溢水孔自訂座標[t,depth](t=內壁周長索引0~N_SEG-1整數，
+                                     // depth=距該點局部缸緣高度mm)，非null時覆蓋P.ovfDrop固定後端置中位置，見ovfWorldXYZ()
 };
 
 // 設計編號：浮水印、Concept PDF 與詢價單追蹤用

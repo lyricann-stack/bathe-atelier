@@ -446,6 +446,55 @@ function drainXY(){
   return {x:0, y:0};
 }
 
+// ===================== 溢水孔連續座標(Phase 7) =====================
+// t=內壁周長索引(0~N_SEG-1整數，跟rimMod/rimModI同一套索引慣例)；depth=距該點局部缸緣高度mm
+function ovfReachDepth(px, inn){
+  const rh = rimH(px, inn.L, P.H, P.dH);
+  return { min: 20, max: Math.max(20, rh - (P.b + 40)) };
+}
+function clampOvfPos(t, depth){
+  const inn = innerDims();
+  const pts = innerOutlinePts(inn, N_SEG);
+  const N = pts.length;
+  const ti = ((Math.round(t) % N) + N) % N;
+  const rd = ovfReachDepth(pts[ti][0], inn);
+  return { t: ti, depth: Math.max(rd.min, Math.min(rd.max, depth)) };
+}
+// 依水平世界座標(hx,hz)找內壁周長上最近的索引(按角度，96點約3.75°解析度已足夠拖曳平滑)
+function ovfClosestIndex(hx, hz, inn){
+  const pts = innerOutlinePts(inn, N_SEG);
+  const ang = Math.atan2(hz, hx);
+  let best = 0, bestDiff = Infinity;
+  for(let i=0;i<pts.length;i++){
+    const a = Math.atan2(pts[i][1], pts[i][0]);
+    let diff = Math.abs(a - ang); if(diff > Math.PI) diff = 2*Math.PI - diff;
+    if(diff < bestDiff){ bestDiff = diff; best = i; }
+  }
+  return best;
+}
+// 溢水口目前的(索引,深度,未縮放內壁座標)：有自訂座標(P.ovfPos)用自訂，否則退回舊版後端置中(index=N_SEG/2)+P.ovfDrop
+function ovfCurrent(){
+  const inn = innerDims();
+  const N = N_SEG;
+  const t = P.ovfPos ? P.ovfPos[0] : Math.round(N/2);
+  const depth = P.ovfPos ? P.ovfPos[1] : P.ovfDrop;
+  const pts = innerOutlinePts(inn, N);
+  const ti = ((Math.round(t) % N) + N) % N;
+  return { index: ti, depth, x: pts[ti][0], y: pts[ti][1], inn };
+}
+// 溢水口3D世界座標(Three.js座標系：x,z水平面，y高度)，供buildTub()與拖曳互動共用
+function ovfWorldXYZ(){
+  const c = ovfCurrent();
+  const rh = rimH(c.x, c.inn.L, P.H, P.dH);
+  const hRef = Math.max(1, P.H + P.dH/2);
+  const height = Math.max(P.b + 40, rh - c.depth);
+  const vo = Math.max(0, Math.min(1, (height - P.b) / Math.max(1, hRef - P.b)));
+  const [kx, ky] = shellKxy(vo, true);
+  const sx = c.x*kx, sy = c.y*ky;
+  const rlen = Math.hypot(sx, sy) || 1;
+  return { x: sx - (sx/rlen)*8, y: height, z: sy - (sy/rlen)*8, index: c.index };
+}
+
 // 洩水斜底：缸內底面高度（排水孔＝最低點 P.b，向外以 P.slope° 升高）
 function floorZ(x, y){
   const d = drainXY();
@@ -483,7 +532,9 @@ function buildTub(){
   const mat = new THREE.MeshStandardMaterial({ color:P.color, roughness:P.material==='solid'?0.6:0.22, metalness:0.05, side:THREE.DoubleSide });
 
   tubGroup.add(new THREE.Mesh(loftGeometry(outerPts, P.L, 0,   P.H, P.dH), mat)); // 外殼
-  tubGroup.add(new THREE.Mesh(loftGeometry(innerPts, inn.L, P.b, P.H, P.dH, floorZ, true), mat)); // 內壁（底=洩水斜底，不套裙擺）
+  const innerWallMesh = new THREE.Mesh(loftGeometry(innerPts, inn.L, P.b, P.H, P.dH, floorZ, true), mat); // 內壁（底=洩水斜底，不套裙擺）
+  innerWallMesh.name = 'innerWallMesh';  // Phase 7：溢水孔拖曳時對實際內壁面做光線投射
+  tubGroup.add(innerWallMesh);
   tubGroup.add(new THREE.Mesh(stripGeometry(outerPts, P.L, innerPts, inn.L, P.H, P.dH), mat)); // 缸緣
   tubGroup.add(new THREE.Mesh(capGeometry(outerPts, obx, oby, 0), mat));   // 底封板
   tubGroup.add(new THREE.Mesh(slopedCapGeometry(innerPts, ibx, iby, P.b), mat)); // 缸內底面（向排水孔傾斜 P.slope°）
@@ -498,18 +549,18 @@ function buildTub(){
   drain.name = 'drainHandle';  // Phase 7：拖曳互動用名稱查找，tubGroup每次buildTub()都重建
   tubGroup.add(drain);
 
-  // 溢水口（工廠標準件，細部不建模）：後端內壁、距缸緣 P.ovfDrop
+  // 溢水口（工廠標準件，細部不建模）：Phase 7起支援周向+深度自訂座標，見ovfWorldXYZ()
   if(P.ovf){
-    const hRef = Math.max(1, P.H + P.dH/2);
-    const zo = Math.max(P.b+40, rimH(-inn.L/2, inn.L, P.H, P.dH) - P.ovfDrop);
-    const vo = Math.max(0, Math.min(1, (zo - P.b) / Math.max(1, hRef - P.b)));
-    const ko = shellKxy(vo, true);
+    const ov = ovfWorldXYZ();
     const om = new THREE.Mesh(
       new THREE.CylinderGeometry(26, 26, 6, 24),
       new THREE.MeshStandardMaterial({color:0x666e75, metalness:0.8, roughness:0.3})
     );
-    om.rotation.z = Math.PI/2;
-    om.position.set(-(inn.L/2)*ko[0] + 8, zo, 0);
+    const nrm = new THREE.Vector3(ov.x, 0, ov.z);
+    if(nrm.lengthSq() < 1e-6) nrm.set(-1, 0, 0);
+    om.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), nrm.normalize());
+    om.position.set(ov.x, ov.y, ov.z);
+    om.name = 'ovfHandle';  // Phase 7：拖曳互動用名稱查找
     tubGroup.add(om);
   }
 

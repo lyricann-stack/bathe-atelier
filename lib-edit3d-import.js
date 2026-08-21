@@ -44,6 +44,7 @@ function applyParams(p){
   if(p.rim) P.rim = p.rim;
   if(p.drain) P.drain = p.drain;
   if(p.drainPos && Array.isArray(p.drainPos)) P.drainPos = p.drainPos;   // Phase 7：DXF PARAMS 閉環還原去水口自訂座標
+  if(p.ovfPos && Array.isArray(p.ovfPos)) P.ovfPos = p.ovfPos;           // Phase 7：DXF PARAMS 閉環還原溢水孔自訂座標
   if(p.shape) P.shape = p.shape;
   sanitizeBase();   // 匯入來源（DXF PARAMS / JSON）也不得違反外>內缸底
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim === P.rim));
@@ -74,6 +75,7 @@ function importSpecJSON(text){
   P.rimMod = d.缸緣高度修飾_96 || null;
   if(d.手繪側牆剖面_k) P.customProfile = d.手繪側牆剖面_k;
   P.drainPos = (d.去水口自訂座標 && Array.isArray(d.去水口自訂座標)) ? d.去水口自訂座標 : null;
+  P.ovfPos = (d.溢水孔自訂座標 && Array.isArray(d.溢水孔自訂座標)) ? d.溢水孔自訂座標 : null;
   if(d.tub_type || d.缸型) P.tub_type = d.tub_type || d.缸型;
   if(d.貼牆邊索引範圍){ P.wallEdgeStart = d.貼牆邊索引範圍[0]; P.wallEdgeEnd = d.貼牆邊索引範圍[1]; }
   if(d.material_code === 'solid' || d.material_code === 'acrylic'){

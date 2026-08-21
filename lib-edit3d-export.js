@@ -214,8 +214,9 @@ function drawSectionView(cx, by, axis, tag){
     }
   }
 
-  // 溢水口（工廠標準件）：後端內壁、距缸緣 P.ovfDrop（長邊剖面才畫）
-  if(P.ovf && axis==='L'){
+  // 溢水口（工廠標準件）：後端內壁、距缸緣 P.ovfDrop（長邊剖面才畫；Phase 7起若為自訂周向座標，
+  // 這個剖面標註假設「就在長軸剖切線上」不再成立，改在PLAN VIEW標實際位置，這裡略過，不畫誤導性標註）
+  if(P.ovf && axis==='L' && !P.ovfPos){
     const zo = zRimI(si.lo) - P.ovfDrop;
     const vo = Math.max(0, Math.min(1, (zo - P.b) / Math.max(1, zRimI(si.lo) - P.b)));
     const kso = shellKxy(vo, true);
@@ -287,13 +288,14 @@ function drawPlanView(cx, cy){
   };
   cutMark(cx+nX-220, cy, true, 'F'); cutMark(cx+xX+220, cy, true, 'F');
   cutMark(cx, cy+nY-220, false, 'G'); cutMark(cx, cy+xY+220, false, 'G');
-  // 溢水口記號（後端 −x、內缸口邊）
+  // 溢水口記號：Phase 7起用ovfCurrent()取實際內壁周長座標(無自訂座標時=舊版後端置中，行為不變)
   if(P.ovf){
-    let iTop=1e9; innerPts.forEach(p=>{ iTop=Math.min(iTop, p[0]); });   // 內缸口後端（−x）
-    E.line(cx+iTop+26, cy-70, cx+iTop+26, cy+70, 'OUTLINE');
-    E.line(cx+iTop+42, cy-70, cx+iTop+42, cy+70, 'OUTLINE');
-    E.line(cx+iTop+26, cy-70, cx+iTop+42, cy-70, 'OUTLINE');
-    E.line(cx+iTop+26, cy+70, cx+iTop+42, cy+70, 'OUTLINE');
+    const oc = ovfCurrent();
+    const ox = oc.x, oy = oc.y;
+    E.line(cx+ox-16, cy+oy-16, cx+ox+16, cy+oy+16, 'OUTLINE');
+    E.line(cx+ox-16, cy+oy+16, cx+ox+16, cy+oy-16, 'OUTLINE');
+    E.circle(cx+ox, cy+oy, 24, 'OUTLINE');
+    if(P.ovfPos) E.text(cx+ox+40, cy+oy+40, 36, `OVF ${P.ovfPos[1]}mm`, 'TEXT');
   }
   // 標註：總長／總寬／內缸底長寬／排水孔偏移
   dimH([cx+nX, cy], [cx+xX, cy], cy+nY-340);
@@ -421,7 +423,9 @@ function exportDXF(noDownload){
       : 'SIDE WALL (CUSTOM PROFILE): FREEFORM POLYLINE - NO CLEAN ARC FIT. SIMPLIFY PROFILE FOR ARC-BASED TOOLING.', 'TEXT');
   } else if(isFactory()){
     E.text(gx + col1 + 300, M + 680, 44, `SIDE WALLS: INNER R${P.riL}(L-SEC)/R${P.riW}(W-SEC), OUTER R${P.roL}(L-SEC)/R${P.roW}(W-SEC); RIM EDGE ${P.lip}mm`, 'TEXT');
-    if(P.ovf) E.text(gx + col1 + 300, M + 920, 44, `OVERFLOW ${P.ovfDrop}mm BELOW RIM, REAR END, PER FACTORY STANDARD FITTING`, 'TEXT');
+    if(P.ovf) E.text(gx + col1 + 300, M + 920, 44, P.ovfPos
+      ? `OVERFLOW ${P.ovfPos[1]}mm BELOW LOCAL RIM, CUSTOM POSITION (SEE PLAN VIEW MARKER)`
+      : `OVERFLOW ${P.ovfDrop}mm BELOW RIM, REAR END, PER FACTORY STANDARD FITTING`, 'TEXT');
   } else if(P.wallMode==='arc'){
     E.text(gx + col1 + 300, M + 680, 44, `SIDE WALL: CIRCULAR ARC R${Math.round(P.wallR)} (WIDTH SECTION REFERENCE)`, 'TEXT');
   } else if(P.wallMode==='s'){
@@ -438,7 +442,7 @@ function exportDXF(noDownload){
     dH:P.dH, egg:P.egg, taper:P.taper, arc:P.arc, rim:P.rim, drain:P.drain, drainPos:P.drainPos||null, slope:P.slope, undercut:P.undercut?1:0,
     wallMode:P.wallMode, wallR:P.wallR, wallR2:P.wallR2, wallMid:P.wallMid,
     lip:P.lip, obL:P.obL, obW:P.obW, ibL:P.ibL, ibW:P.ibW, riL:P.riL, riW:P.riW, roL:P.roL, roW:P.roW,
-    ovf:P.ovf?1:0, ovfDrop:P.ovfDrop,
+    ovf:P.ovf?1:0, ovfDrop:P.ovfDrop, ovfPos:P.ovfPos||null,
     skirt:P.skirt?1:0, skirtH:P.skirtH, waistK:P.waistK, skirtR:P.skirtR });
   E.text(M + 30, 16, 22, paramsJson, 'PARAMS');
 
@@ -478,7 +482,7 @@ function exportJSON(noDownload){
       側壁模式: P.wallMode, 側壁弧度R_mm: P.wallR, 上段弧R2_mm: P.wallR2, S轉折高度_pct: P.wallMid,
       缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,
       內缸弧R_長邊剖面_mm: P.riL, 內缸弧R_短邊剖面_mm: P.riW, 外缸弧R_長邊剖面_mm: P.roL, 外缸弧R_短邊剖面_mm: P.roW,
-      溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop,
+      溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop, 溢水孔自訂座標: P.ovfPos || null,
       裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR
     },
     計算規格: {
@@ -553,7 +557,7 @@ async function sendQuote(btn){
         側壁模式: P.wallMode, 側壁弧度R_mm: P.wallR, 上段弧R2_mm: P.wallR2, S轉折高度_pct: P.wallMid,
         缸邊寬_mm: P.lip, 外缸底長_mm: P.obL, 外缸底寬_mm: P.obW, 內缸底長_mm: P.ibL, 內缸底寬_mm: P.ibW,
         內缸弧R_長邊剖面_mm: P.riL, 內缸弧R_短邊剖面_mm: P.riW, 外缸弧R_長邊剖面_mm: P.roL, 外缸弧R_短邊剖面_mm: P.roW,
-        溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop,
+        溢水口: P.ovf, 溢水口距缸緣_mm: P.ovfDrop, 溢水孔自訂座標: P.ovfPos || null,
         裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR,
         手繪俯視輪廓_normalized: P.customPts, 手繪內缸口輪廓_normalized: P.customPtsInner, 手繪側牆剖面_k: P.customProfile },
       計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) }

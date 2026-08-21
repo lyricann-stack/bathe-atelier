@@ -121,6 +121,7 @@ if(EDIT_MODE){ (function(){
   let nodeGrp = null, selectedEdge = null, hoverKey = null, selNode = null, dragN = null;
   let _lastL = P.L, _lastW = P.W;       // L/W 滑桿與節點基準（mm）的同步縮放
   let dragDrain = false;                // Phase 7：去水口拖曳中旗標，跟side/outer節點拖曳(dragN)分開管理
+  let dragOvf = false;                  // Phase 7：溢水孔拖曳中旗標(內壁面周向+深度，跟去水口的缸底面座標系不同)
 
   // ---- 幾何輔助 ----
   const outMM = () => outlinePts(P.shape, P.L, P.W, P.r, P.egg, N_SEG);
@@ -541,6 +542,26 @@ if(EDIT_MODE){ (function(){
       }
       return;
     }
+    if(dragOvf){
+      // 溢水孔貼在彎曲的內壁面上，不能像去水口那樣用單一水平面近似——
+      // 直接對實際的innerWallMesh做光線投射，取得曲面上的真實命中點再換算(周長索引,深度)。
+      const r = canvas.getBoundingClientRect();
+      _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+      _ray.setFromCamera(_mv, camera);
+      const wallMesh = tubGroup && tubGroup.getObjectByName('innerWallMesh');
+      const hits = wallMesh ? _ray.intersectObject(wallMesh) : [];
+      if(hits.length){
+        const hp = hits[0].point;
+        const inn = innerDims();
+        const idx = ovfClosestIndex(hp.x, hp.z, inn);
+        const pts = innerOutlinePts(inn, N_SEG);
+        const rh = rimH(pts[idx][0], inn.L, P.H, P.dH);
+        const c = clampOvfPos(idx, rh - hp.y);
+        P.ovfPos = [c.t, c.depth];
+        requestBuild();
+      }
+      return;
+    }
     if(dragN){
       const r = canvas.getBoundingClientRect();
       _mv.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
@@ -618,6 +639,16 @@ if(EDIT_MODE){ (function(){
         return;
       }
     }
+    // 溢水孔拖曳——同去水口模式，命中ovfHandle即接管；mesh只在P.ovf開啟時才存在，不用額外判斷。
+    const ovfMesh = tubGroup && tubGroup.getObjectByName('ovfHandle');
+    if(ovfMesh){
+      const oh = pickAt(e, [ovfMesh]);
+      if(oh){
+        dragOvf = true;
+        e.stopPropagation(); e.preventDefault();
+        return;
+      }
+    }
     const nh = nodeGrp && pickAt(e, nodeGrp.children);
     if(nh){
       const nd = nh.object.userData.node;
@@ -683,6 +714,7 @@ if(EDIT_MODE){ (function(){
   }, true);
   window.addEventListener('pointerup', ()=>{
     if(dragDrain){ dragDrain = false; requestBuild(); return; }
+    if(dragOvf){ dragOvf = false; requestBuild(); return; }
     if(!dragN) return;
     dragN = null;
     requestBuild();
