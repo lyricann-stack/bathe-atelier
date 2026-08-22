@@ -70,10 +70,6 @@
   <div class="btns">
     <!-- Phase 5(2026-08-20)：照片轉3D，跟下面既有的T5「Site photo notes」是兩個不同功能——
          這裡是AI自動重建3D模型，Site photo notes是人工標註空間位置附在詢價信裡，UI故意分開放避免混淆 -->
-    <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
-      <option value="freestanding" selected>Freestanding</option>
-      <option value="wall">Wall-mounted</option>
-    </select>
     <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 Generate 3D from photos</button>
     <input type="file" id="photo2tubFiles" accept="image/png,image/jpeg,image/jpg,image/webp" multiple style="display:none">
     <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
@@ -90,6 +86,16 @@
 <div id="p2tBanner" style="display:none"></div>
 <main>
   <div id="panel">
+    <!-- Phase 8佇列(2026-08-22)：缸型切換提升為一級控制——直接是#panel的子元素、故意不用class="group"，
+         避開lib-edit3d-handles.js的EDIT_MODE面板收合邏輯(只收':scope > .group')，讓純手動設計靠牆缸的人
+         不用先找到照片上傳區。select本身id/onchange原樣搬過來，photo2tub上傳流程讀值的路徑不受影響。 -->
+    <div style="margin-bottom:16px;padding:12px;border:1px solid #2e2a24;border-radius:16px;background:#201d19">
+      <h3 style="font-size:13px;color:#ece7dc;margin-bottom:10px;border-left:3px solid #9a7b43;padding-left:8px">Tub Type</h3>
+      <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="width:100%;background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
+        <option value="freestanding" selected>Freestanding</option>
+        <option value="wall">Wall-mounted</option>
+      </select>
+    </div>
     <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
       <h3>① Tub Shape (Freestanding)</h3>
