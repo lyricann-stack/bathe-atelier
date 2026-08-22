@@ -81,8 +81,13 @@ async function biVerifyCode(code){
 }
 
 function biGateError(msg){
+  // 2026-08-22正式環境e2e測試發現的真bug：`.bi-err`這個class本身CSS就是display:none，
+  // 這裡原本寫`style.display=''`只是清掉inline覆蓋、退回class預設值(還是none)，等於錯誤文字
+  // 永遠不會真的顯示出來——文字內容(textContent)是對的，畫面上就是看不到，純程式碼審查不會發現，
+  // 一定要實際截圖看畫面才抓到(跟C1遮罩案例、BI_EXAMPLES key不對稱案例同一種「數值/DOM正確但
+  // 視覺不對」陷阱)。改用明確的'block'覆蓋CSS class的display:none。
   const el = document.getElementById('biGateErr');
-  el.textContent = msg; el.style.display = msg ? '' : 'none';
+  el.textContent = msg; el.style.display = msg ? 'block' : 'none';
 }
 
 document.getElementById('biGateForm').addEventListener('submit', async e=>{
@@ -226,10 +231,12 @@ document.getElementById('biBackBtn').addEventListener('click', ()=> biShowScreen
 
 // ---------- 上傳流程 ----------
 function biShowStatus(kind, msg){
+  // 同biGateError()的修正理由：明確用'block'而不是''，不要依賴目標元素當前的class剛好沒設
+  // display:none這種脆弱假設(這裡是#biUploadStatus/.tip，目前.tip沒設display，但不該靠這個巧合)。
   const el = document.getElementById('biUploadStatus');
   el.style.color = (kind === 'err') ? '#a04b2e' : '';
   el.textContent = msg || '';
-  el.style.display = msg ? '' : 'none';
+  el.style.display = msg ? 'block' : 'none';
 }
 
 async function biHandleUpload(file){
