@@ -272,6 +272,17 @@
 </div>
 <main>
   <div id="panel">
+    <!-- 靠牆缸下放Medium(2026-08-22，Lyric裁定)：入口設計跟pro.html同一套——直接是#panel的子元素、
+         故意不用class="group"，避開lib-edit3d-handles.js的EDIT_MODE面板收合邏輯(只收':scope > .group')。
+         Medium原本沒有這個select，這裡是新增不是搬移；chooseTubType()/wallmount.js本來就在Medium的
+         script清單裡(共用核心)，這裡只補UI入口。 -->
+    <div style="margin-bottom:16px;padding:12px;border:1px solid #2e2a24;border-radius:16px;background:#201d19">
+      <h3 style="font-size:13px;color:#ece7dc;margin-bottom:10px;border-left:3px solid #9a7b43;padding-left:8px">Tub Type</h3>
+      <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="width:100%;background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
+        <option value="freestanding" selected>Freestanding</option>
+        <option value="wall">Wall-mounted</option>
+      </select>
+    </div>
     <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
       <h3>① Tub Shape (Freestanding)</h3>
@@ -361,6 +372,9 @@
       <div class="tip">Drain marker (and overflow marker, once enabled) can be dragged directly in the 3D view to reposition.</div>
       <div class="chk" id="ovfChk" style="margin-top:10px"><input type="checkbox" id="ovfToggle"><label for="ovfToggle">Overflow drain (factory standard, 75mm below rim)</label></div>
       <div class="chk" id="faucetChk" style="margin-top:10px"><input type="checkbox" id="faucetToggle"><label for="faucetToggle">Faucet hole (drag on the rim to position)</label></div>
+      <!-- 缸底斜面下放Medium(2026-08-22，Lyric裁定為基本功能)：HTML/wording跟pro.html一致 -->
+      <div class="row" style="margin-top:12px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
+      <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
     </div>
     <div class="group">
       <h3>⑤ Material & Colour</h3>

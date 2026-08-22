@@ -122,6 +122,19 @@ function applyClassic(k){
   P.drainPos = null; P.ovfPos = null;   // Phase 7：套用經典款時清掉拖曳留下的自訂座標，改用經典款自己的固定位置
   P.faucet = false; P.faucetPos = null; // 龍頭孔是全新配件，經典款本來就沒有這個欄位，切換時重置為關閉
   P.baseSlope = 0;                      // 佇列項11：缸底斜面是全新進階選項，經典款本來就沒有，切換時重置為平底
+  // 靠牆缸下放Medium(2026-08-22)迴歸實測發現：經典款都是獨立缸造型，套用時要把wall模式狀態
+  // 一併清掉(wallFaceMode/wallEdgeStart)，否則UI的「Tub Type」下拉選單會停在「Wall-mounted」，
+  // 跟畫面上已經變回獨立缸造型的實際狀態不一致——這裡跟chooseTubType()的freestanding分支
+  // 是同一個修復精神，但不呼叫chooseTubType()本身(它會強制shape=ellipse，蓋掉經典款自己
+  // 的stadium/ellipse選擇)。幾何層面的保護(wallIdxWeight()要求P.shape==='custom')在
+  // lib-edit3d-wallmount.js另外補上，這裡主要是同步UI/狀態讓使用者不會看到誤導的下拉選單。
+  if(typeof wallFaceMode !== 'undefined' && wallFaceMode){
+    wallFaceMode = false;
+    P.tub_type = 'freestanding';
+    P.wallEdgeStart = null; P.wallEdgeEnd = null;
+    const tt = document.getElementById('photo2tubType');
+    if(tt) tt.value = 'freestanding';
+  }
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim===P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain===P.drain));
   syncUI();

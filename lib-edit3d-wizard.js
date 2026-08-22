@@ -122,6 +122,15 @@ function applyProposal(i){
   if(!p) return;
   Object.assign(P, p.params);
   P.customPts = null; P.customPtsInner = null; P.customProfile = null; P.wallMod = null; P.rimMod = null;
+  // 靠牆缸下放Medium(2026-08-22)迴歸實測發現的同一個狀態同步問題(見applyClassic()同段註解)：
+  // 精靈提案永遠是獨立缸造型，套用時要清掉wall模式狀態，避免UI下拉選單停在「Wall-mounted」
+  if(typeof wallFaceMode !== 'undefined' && wallFaceMode){
+    wallFaceMode = false;
+    P.tub_type = 'freestanding';
+    P.wallEdgeStart = null; P.wallEdgeEnd = null;
+    const tt = document.getElementById('photo2tubType');
+    if(tt) tt.value = 'freestanding';
+  }
   sanitizeBase();
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim === P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain === P.drain));

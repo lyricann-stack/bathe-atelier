@@ -46,6 +46,9 @@ const I18N = {
   'The most complete shape reconstruction this tool supports.': ['可达到本工具支持的最完整形状还原。', 'การสร้างรูปทรงที่สมบูรณ์ที่สุดเท่าที่เครื่องมือนี้รองรับ', '可達到本工具支援的最完整形狀還原。'],
   'The Design Studio — Pro': ['设计工作室 — 专业版', 'สตูดิโอออกแบบ — โปร', '設計工作室 — 專業版'],
   'Faucet hole (drag on the rim to position)': ['龙头孔(拖曳缸缘定位)', 'รูก๊อกน้ำ (ลากบนขอบอ่างเพื่อจัดตำแหน่ง)', '龍頭孔(拖曳缸緣定位)'],
+  // 缸底斜面下放Medium/Basic(2026-08-22)：拿掉"advanced"/"Experimental"措辭後補譯(三版本頁共用此檔)
+  'Base slope': ['缸底斜面', 'ความลาดเอียงของฐานอ่าง', '缸底斜面'],
+  'Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.': ['将整个缸底倾斜成楔形（0° = 标准平底）。适合需要放在斜面上，或刻意想要斜底造型的浴缸。', 'เอียงฐานอ่างทั้งหมดให้เป็นรูปลิ่ม (0° = ฐานเรียบมาตรฐาน) เหมาะสำหรับอ่างที่ต้องวางบนพื้นเอียง หรือต้องการรูปลักษณ์ฐานเอียงโดยตั้งใจ', '將整個缸底傾斜成楔形（0° = 標準平底）。適合需要放在斜面上，或刻意想要斜底造型的浴缸。'],
   '📷 Site photo notes': ['📷 现场照片标注', '📷 บันทึกภาพหน้างาน', '📷 現場照片標註'],
   'Upload a photo of the space, then draw directly on it to circle where the tub goes or what we should know. It is attached to your inquiry.': ['上传空间照片，直接在上面圈出浴缸预定位置或需要告知的事项，会随询价一起送出。', 'อัปโหลดรูปถ่ายพื้นที่ แล้ววาดวงกลมบนรูปเพื่อระบุตำแหน่งอ่างหรือสิ่งที่ต้องการแจ้ง จะถูกแนบไปกับคำขอราคาของคุณ', '上傳空間照片，直接在上面圈出浴缸預定位置或需要告知的事項，會隨詢價一起送出。'],
   'Clear markings': ['清除标记', 'ล้างเครื่องหมาย', '清除標記'],

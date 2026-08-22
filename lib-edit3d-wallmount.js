@@ -50,9 +50,15 @@ function buildWallDOutline(radFrac){
   return { customPts, wallEdgeStart, wallEdgeEnd };
 }
 
-// 貼牆索引範圍的權重(1=完全貼牆平直, 0=正常獨立缸幾何)，邊界處線性淡出避免硬接縫
+// 貼牆索引範圍的權重(1=完全貼牆平直, 0=正常獨立缸幾何)，邊界處線性淡出避免硬接縫。
+// 2026-08-22迴歸實測發現的真實bug：在wall模式下套用經典款(applyClassic)，P.shape被改回
+// 'stadium'/'ellipse'但wallFaceMode/P.wallEdgeStart沒有跟著清掉，導致經典款的橢圓/跑道形
+// 輪廓在index 56-83這段角度範圍被強制拉平(視覺上是隱蔽的局部形狀扭曲，不易一眼看出)。
+// 修法：貼牆平直邏輯只在P.shape仍是'custom'(貼牆D形唯一使用的shape值)時才生效，
+// 這樣不管未來還有哪些路徑(精靈/手繪/CAD匯入)會改動P.shape，都會自動安全略過，
+// 不用每個改P.shape的地方都各自記得清掉wallFaceMode。
 function wallIdxWeight(i){
-  if(!wallFaceMode || P.wallEdgeStart == null) return 0;
+  if(!wallFaceMode || P.wallEdgeStart == null || P.shape !== 'custom') return 0;
   const s = P.wallEdgeStart, e = P.wallEdgeEnd, n = 96, margin = 4;
   const inRange = idx => (s <= e) ? (idx >= s && idx < e) : (idx >= s || idx < e);
   if(inRange(i)) return 1;

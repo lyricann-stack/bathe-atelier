@@ -8,6 +8,7 @@ const sliderMap = [
   ['rL','nL','L'], ['rW','nW','W'], ['rH','nH','H'], ['rT','nT','t'],
   ['rB','nB','b'], ['rR','nR','r'], ['rDH','nDH','dH'], ['rE','nE','egg'], ['rS','nS','taper'], ['rArc','nArc','arc'],
   ['rSlope','nSlope','slope'], ['rWR','nWR','wallR'], ['rWR1','nWR1','wallR'], ['rWR2','nWR2','wallR2'], ['rWM','nWM','wallMid'],
+  ['rBaseSlope','nBaseSlope','baseSlope'],  // 缸底斜面下放Basic(2026-08-22)，元素不存在的頁面本行自動略過(既有guard)
   ['rSkH','nSkH','skirtH'], ['rSkW','nSkW','waistK'], ['rSkR','nSkR','skirtR'],
   ['rLip','nLip','lip'], ['rObL','nObL','obL'], ['rObW','nObW','obW'], ['rIbL','nIbL','ibL'], ['rIbW','nIbW','ibW'],
   ['rRiL','nRiL','riL'], ['rRiW','nRiW','riW'], ['rRoL','nRoL','roL'], ['rRoW','nRoW','roW']

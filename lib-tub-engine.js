@@ -345,16 +345,32 @@ function stripGeometry(ptsA, LA, ptsB, LB, H, dH){
   return g;
 }
 
-// Flat封蓋（底板 / 缸內底面）
-function capGeometry(pts, kx, ky, z){
-  const pos=[0*1,z,0], idx=[];
-  for(let i=0;i<N_SEG;i++) pos.push(pts[i][0]*kx, z, pts[i][1]*ky);
+// Flat封蓋（底板 / 缸內底面）。z0f(選用，2026-08-22缸底斜面下放Basic新增)：跟loftGeometry()
+// 同一個約定，逐點高度函式，未傳時維持原本單一z值的行為不變
+function capGeometry(pts, kx, ky, z, z0f){
+  const center = z0f ? z0f(0, 0) : z;
+  const pos=[0, center, 0], idx=[];
+  for(let i=0;i<N_SEG;i++){
+    const x=pts[i][0]*kx, y=pts[i][1]*ky;
+    pos.push(x, z0f ? z0f(x, y) : z, y);
+  }
   for(let i=0;i<N_SEG;i++) idx.push(0, i+1, (i+1)%N_SEG+1);
   const g=new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
   g.setIndex(idx);
   g.computeVertexNormals();
   return g;
+}
+
+// 缸底整體傾斜(單一斜率參數，2026-08-22原為Pro專屬進階選項，Lyric裁定改列基本功能下放Medium/Basic)。
+// 只沿長軸(X)方向線性傾斜，+X端墊高、−X端下沉。P.baseSlope=0時回傳恆為0，等同沒有這個函式存在。
+// 安全clamp：下沉端最多吃掉70%的P.b(缸底厚度)，跟lib-edit3d-geometry.js的outerBaseZ()同一份邏輯，
+// 逐字複製過來(Basic是獨立引擎，沒有共用模組可以直接reuse)。
+function outerBaseZ(x){
+  if(!P.baseSlope) return 0;
+  const raw = Math.tan(P.baseSlope * Math.PI / 180) * x;
+  const cap = P.b * 0.7;
+  return Math.max(-cap, Math.min(cap, raw));
 }
 
 // 排水位置（工廠常規三式）：中間集中 / 兩頭（長軸 X 正負端）/ 短邊（寬軸 Y 端）
@@ -405,10 +421,10 @@ function buildTub(){
   const [obx, oby] = shellKxy(0, false), [ibx, iby] = shellKxy(0, true);
   const mat = new THREE.MeshStandardMaterial({ color:P.color, roughness:P.material==='solid'?0.6:0.22, metalness:0.05, side:THREE.DoubleSide });
 
-  tubGroup.add(new THREE.Mesh(loftGeometry(outerPts, P.L, 0,   P.H, P.dH), mat)); // 外殼
+  tubGroup.add(new THREE.Mesh(loftGeometry(outerPts, P.L, 0,   P.H, P.dH, (x,y)=>outerBaseZ(x)), mat)); // 外殼(缸底斜面z0f)
   tubGroup.add(new THREE.Mesh(loftGeometry(innerPts, inn.L, P.b, P.H, P.dH, floorZ, true), mat)); // 內壁（底=洩水斜底，不套裙擺）
   tubGroup.add(new THREE.Mesh(stripGeometry(outerPts, P.L, innerPts, inn.L, P.H, P.dH), mat)); // 缸緣
-  tubGroup.add(new THREE.Mesh(capGeometry(outerPts, obx, oby, 0), mat));   // 底封板
+  tubGroup.add(new THREE.Mesh(capGeometry(outerPts, obx, oby, 0, (x,y)=>outerBaseZ(x)), mat));   // 底封板(跟外殼base ring用同一個z0f，接縫吻合)
   tubGroup.add(new THREE.Mesh(slopedCapGeometry(innerPts, ibx, iby, P.b), mat)); // 缸內底面（向排水孔傾斜 P.slope°）
 
   // 排水孔（位於斜底最低點）
