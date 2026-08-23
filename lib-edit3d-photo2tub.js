@@ -79,6 +79,20 @@
     'external length/width (your estimate)': ['外部长宽(你的估计)', 'ความยาว/ความกว้างภายนอก (ค่าประมาณของคุณ)', '外部長寬(你的估計)'],
     'symmetry (confirmed symmetric)': ['对称性(已确认对称)', 'ความสมมาตร (ยืนยันสมมาตรแล้ว)', '對稱性(已確認對稱)'],
     'base taper (confirmed nearly vertical)': ['底部收缩(已确认接近直壁)', 'ความสอบของฐาน (ยืนยันเกือบตั้งตรงแล้ว)', '底部收縮(已確認接近直壁)'],
+    // 招2「型錄檢索借參數」建議式借用UI(2026-08-23，Lyric裁定的安全轉向：單照片/ambiguous情境
+    // 一律「建議+使用者確認」，不自動套用——見scripts/m6_catalog_match.py的三條安全紅線)。
+    'We found a similar shape in our catalog — want to try it?': ['我们在型录里找到相似的造型——要套用看看吗？', 'เราพบรูปทรงที่คล้ายกันในแคตตาล็อกของเรา — ต้องการลองใช้ไหม?', '我們在型錄裡找到相似的造型——要套用看看嗎？'],
+    // v1安全裁定(2026-08-23)：would_be_auto案例(N≥2+confident+不ambiguous)用語氣更肯定的文案，
+    // 但套用動作仍要使用者手動點擊——見scripts/m6_catalog_match.py的AUTO_MODE_ENABLED說明。
+    'Multiple photos closely match a shape in our catalog — want to apply it?': ['多张照片高度吻合型录里的一个造型——要套用看看吗？', 'รูปถ่ายหลายรูปตรงกับรูปทรงในแคตตาล็อกของเรามาก — ต้องการใช้ไหม?', '多張照片高度吻合型錄裡的一個造型——要套用看看嗎？'],
+    'This only borrows the shape (no product name/brand is used or shown) — preview it before deciding.': ['这只是借用造型(不使用/不显示任何产品名称或品牌)——先预览再决定。', 'นี่เป็นการยืมเฉพาะรูปทรง (ไม่ใช้/ไม่แสดงชื่อผลิตภัณฑ์หรือแบรนด์ใดๆ) — ดูตัวอย่างก่อนตัดสินใจ', '這只是借用造型(不使用/不顯示任何產品名稱或品牌)——先預覽再決定。'],
+    '👁 Preview': ['👁 预览', '👁 ดูตัวอย่าง', '👁 預覽'],
+    '✓ Use this shape': ['✓ 套用这个造型', '✓ ใช้รูปทรงนี้', '✓ 套用這個造型'],
+    'Not this one': ['不是这个', 'ไม่ใช่อันนี้', '不是這個'],
+    '↺ Back to my photo result': ['↺ 还原成我的照片结果', '↺ กลับไปที่ผลลัพธ์จากรูปถ่ายของฉัน', '↺ 還原成我的照片結果'],
+    'Previewing the suggested catalog shape (not applied yet).': ['正在预览建议的型录造型(尚未套用)。', 'กำลังดูตัวอย่างรูปทรงจากแคตตาล็อกที่แนะนำ (ยังไม่ได้ใช้)', '正在預覽建議的型錄造型(尚未套用)。'],
+    '✓ Applied a similar catalog shape (no product name used) — you can undo this anytime to return to the state right before it was applied.': ['✓ 已套用型录里的相似造型(未使用任何产品名称)——随时可以撤销，还原为套用前的状态。', '✓ ใช้รูปทรงที่คล้ายกันจากแคตตาล็อกแล้ว (ไม่ใช้ชื่อผลิตภัณฑ์ใดๆ) — สามารถยกเลิกได้ทุกเมื่อเพื่อกลับไปยังสถานะก่อนใช้งาน', '✓ 已套用型錄裡的相似造型(未使用任何產品名稱)——隨時可以撤銷，還原為套用前的狀態。'],
+    'Undo': ['撤销', 'ยกเลิก', '撤銷'],
   };
   // p2tT(key, vars)：跟共用t()同一套LANG查表邏輯，差別是多一個vars參數做{placeholder}取代
   function p2tT(key, vars){
@@ -169,6 +183,95 @@
     applyHint(btn.dataset.q, btn.dataset.opt, btn);
   });
 
+  // ===== 單照片救援包招2(2026-08-23，Lyric拍板+安全轉向)：型錄檢索借參數，建議式借用 =====
+  // 獨立的Modal App(跟/reconstruct物理隔離，見api/modal_catalog_match.py)，只在照片數<3時
+  // 額外打一次這個輕量endpoint，跟主要的/reconstruct呼叫平行進行、互不阻擋。三條安全紅線
+  // (N=1永遠suggestion、ambiguous永遠降級suggestion、只回參數不回款名)全部在後端
+  // scripts/m6_catalog_match.py實作，前端只負責呈現跟使用者確認流程，不重複判斷邏輯。
+  const P2T_CATALOG_MATCH_API_BASE = 'https://lyricann--photo2tub-catalog-match-fastapi-app.modal.run';
+  let p2tPreCatalogSpec = null; // 套用建議前的spec快照，供"還原/撤銷"使用
+
+  function mergeCatalogParamsIntoSpec(spec, params){
+    const dp = spec['設計參數'] || (spec['設計參數'] = {});
+    const L = dp['外部長度_mm'];
+    if(L && params.wl_ratio){ dp['外部寬度_mm'] = Math.round(L * params.wl_ratio * 10) / 10; }
+    ['shape_code','蛋形係數_pct','底部收縮_pct','手繪俯視輪廓_normalized','側壁模式','側壁弧度R_mm',
+     '上段弧R2_mm','S轉折高度_pct','內缸弧R_長邊剖面_mm','內缸弧R_短邊剖面_mm','外缸弧R_長邊剖面_mm','外缸弧R_短邊剖面_mm']
+      .forEach(k => { if(params[k] !== undefined) dp[k] = params[k]; });
+    const fc = spec['field_confidence'] || (spec['field_confidence'] = {});
+    fc['shape_code'] = fc['egg_pct'] = fc['taper_pct'] = fc['wall_r'] = 'catalog_borrowed';
+    return spec;
+  }
+
+  function revertCatalogSuggestion(){
+    if(!p2tPreCatalogSpec || !p2tLastData) return;
+    p2tLastData.spec = p2tPreCatalogSpec;
+    try { importSpecJSON(JSON.stringify(p2tLastData.spec)); } catch(err){}
+    const card = document.getElementById('p2tCatalogCard');
+    if(card) card.remove();
+  }
+
+  function showCatalogSuggestionCard(candidate){
+    // v1安全裁定(2026-08-23，擴大驗證報告後)：全面suggestion-only，不論後端回傳的mode是
+    // 什麼，前端一律走「建議+使用者點擊才套用」這條路徑——不再有任何自動merge的分支。
+    // candidate.confidence_tier==='high'(後端would_be_auto的案例：N>=2+confident+不ambiguous)
+    // 用語氣更肯定的文案，但套用動作一樣要使用者手動點擊，這個欄位只影響文案，不影響流程。
+    if(!p2tLastData) return;
+    const card = document.createElement('div');
+    card.id = 'p2tCatalogCard';
+    card.className = 'p2t-hint-card';
+    const headerText = candidate.confidence_tier === 'high'
+      ? p2tT('Multiple photos closely match a shape in our catalog — want to apply it?')
+      : p2tT('We found a similar shape in our catalog — want to try it?');
+    card.innerHTML = `<div class="p2t-hint-header">${headerText}</div>
+      <div class="p2t-hint-q">${p2tT('This only borrows the shape (no product name/brand is used or shown) — preview it before deciding.')}</div>
+      <div class="p2t-hint-opts">
+        <button type="button" class="p2t-hint-pill p2t-catalog-preview-btn">${p2tT('👁 Preview')}</button>
+        <button type="button" class="p2t-hint-pill p2t-catalog-skip-btn">${p2tT('Not this one')}</button>
+      </div>
+      <div class="p2t-hint-status" id="p2tCatalogStatus"></div>`;
+    banner.appendChild(card);
+    card.__candidate = candidate;
+  }
+
+  banner.addEventListener('click', (e) => {
+    const card = document.getElementById('p2tCatalogCard');
+    if(!card) return;
+    const candidate = card.__candidate;
+    if(e.target.closest('.p2t-catalog-preview-btn') && p2tLastData){
+      p2tPreCatalogSpec = JSON.parse(JSON.stringify(p2tLastData.spec));
+      mergeCatalogParamsIntoSpec(p2tLastData.spec, candidate.params);
+      try { importSpecJSON(JSON.stringify(p2tLastData.spec)); } catch(err){}
+      document.getElementById('p2tCatalogStatus').textContent = p2tT('Previewing the suggested catalog shape (not applied yet).');
+      const opts = card.querySelector('.p2t-hint-opts');
+      opts.innerHTML = `<button type="button" class="p2t-hint-pill p2t-catalog-confirm-btn">${p2tT('✓ Use this shape')}</button>
+        <button type="button" class="p2t-hint-pill p2t-catalog-revert-btn">${p2tT('↺ Back to my photo result')}</button>`;
+    } else if(e.target.closest('.p2t-catalog-confirm-btn')){
+      card.innerHTML = `<div class="p2t-hint-header">${p2tT('✓ Applied a similar catalog shape (no product name used) — you can undo this anytime to return to the state right before it was applied.')}</div>
+        <button type="button" class="p2t-hint-pill p2t-catalog-revert-btn">${p2tT('Undo')}</button>`;
+    } else if(e.target.closest('.p2t-catalog-revert-btn')){
+      revertCatalogSuggestion();
+    } else if(e.target.closest('.p2t-catalog-skip-btn')){
+      card.remove();
+    }
+  });
+
+  async function tryCatalogMatch(list){
+    try {
+      const fd = new FormData();
+      list.forEach(f => fd.append('files', f, f.name));
+      const resp = await fetch(P2T_CATALOG_MATCH_API_BASE + '/catalog_match', {
+        method: 'POST', headers: {'x-api-token': P2T_API_TOKEN}, body: fd,
+      });
+      if(!resp.ok) return;
+      const candidate = await resp.json().catch(() => null);
+      if(candidate && candidate.matched) showCatalogSuggestionCard(candidate);
+    } catch(err){
+      // 招2是輔助性建議功能，呼叫失敗(包含這個endpoint還沒deploy時)靜默忽略，
+      // 不能影響主要的照片重建流程——這是設計上的優雅降級，不是錯誤處理疏漏。
+    }
+  }
+
   // Phase 8佇列項8：照片張數→預期精度提示(規格書UX節)。純張數門檻(client端沒有上傳前的角度推斷能力，
   // 規格原文「可推斷的視角組成」是選配，這裡誠實只做張數這個可靠訊號)，跟Stage 1.5已上線的
   // 「人機分工」低信心標註是同一溝通方向的互補：那個是分析完事後標，這個是選片當下先設預期。
@@ -258,12 +361,14 @@
     // 籠統的"dims(低信心)"。
     const r3InsufficientMsgs = (data.messages || []).filter(m => /\[R3\].*(too_few_photos|low_diversity)/.test(m));
     let hintCardHtml = '';
+    p2tLastData = data; // 招1+招2共用：兩者的patch/merge都要能存取最近一次成功reconstruct的結果
     if(r3InsufficientMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.');
-      p2tLastData = data;
       hintCardHtml = buildHintCardHtml();
     }
     showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
+    // 招2(2026-08-23)：照片數<3時額外打一次型錄比對，跟主流程平行、不阻擋、失敗靜默降級。
+    if(list.length < 3) tryCatalogMatch(list);
   }
 
   document.getElementById('photo2tubFiles').addEventListener('change', (e)=>{
