@@ -4484,11 +4484,21 @@ animate();
     'Looking from above, is the base much narrower than the rim?': ['由上往下看，缸底是不是比缸口窄很多？', 'เมื่อมองจากด้านบน ฐานแคบกว่าขอบมากหรือไม่?', '由上往下看，缸底是不是比缸口窄很多？'],
     'Nearly vertical (base ≈ rim width)': ['几乎垂直(缸底缸口差不多宽)', 'เกือบตั้งตรง (ฐานกว้างใกล้เคียงขอบ)', '幾乎垂直(缸底缸口差不多寬)'],
     'Tapers inward a lot (base much narrower, like a flowerpot)': ['有明显往内收(缸底窄很多，像花盆)', 'สอบเข้าด้านในมาก (ฐานแคบกว่ามาก คล้ายกระถางต้นไม้)', '有明顯往內收(缸底窄很多，像花盆)'],
+    // H比例直算估計器(2026-08-24，Lyric親自指定方法)：無可用正交側視照片時高度沿用580mm預設，
+    // 這裡補第4題讓使用者手動估計——跟Q1(長度)同一種"快問快答+可再用滑桿微調"設計，觸發條件
+    // 獨立於Q1-3(too_few_photos/low_diversity)：只看後端spec的H_source==='default_no_side_view'，
+    // 見handlePhotoUpload()裡的heightDefaulted判斷。跟lib-edit3d-photo2tub.js同一份內容的兩份拷貝。
+    'About how tall is it, measured from the floor to the rim? You can fine-tune with the slider below afterward.': ['大概的整体高度(从地面到缸口)是多少？之后还能用下面滑杆微调。', 'ความสูงโดยประมาณเท่าไหร่ (จากพื้นถึงขอบอ่าง)? ปรับละเอียดได้ภายหลังด้วยสไลเดอร์ด้านล่าง', '大概的整體高度(從地面到缸口)是多少？之後還能用下面滑桿微調。'],
+    'Under 550mm': ['小于550mm', 'ต่ำกว่า 550มม.', '小於550mm'],
+    '550–650mm (most common)': ['550–650mm(最常见)', '550–650มม. (พบบ่อยที่สุด)', '550–650mm(最常見)'],
+    '650–750mm': ['650–750mm', '650–750มม.', '650–750mm'],
+    '750mm or more': ['750mm以上', '750มม. ขึ้นไป', '750mm以上'],
     '✓ Got it — updated: {field}': ['✓ 已记录，已更新：{field}', '✓ รับทราบ — อัปเดตแล้ว: {field}', '✓ 已記錄，已更新：{field}'],
     '✓ Got it (kept the automatic estimate)': ['✓ 已记录(维持自动估计值)', '✓ รับทราบ (คงค่าประมาณอัตโนมัติไว้)', '✓ 已記錄(維持自動估計值)'],
     'external length/width (your estimate)': ['外部长宽(你的估计)', 'ความยาว/ความกว้างภายนอก (ค่าประมาณของคุณ)', '外部長寬(你的估計)'],
     'symmetry (confirmed symmetric)': ['对称性(已确认对称)', 'ความสมมาตร (ยืนยันสมมาตรแล้ว)', '對稱性(已確認對稱)'],
     'base taper (confirmed nearly vertical)': ['底部收缩(已确认接近直壁)', 'ความสอบของฐาน (ยืนยันเกือบตั้งตรงแล้ว)', '底部收縮(已確認接近直壁)'],
+    'height (your estimate)': ['高度(你的估计)', 'ความสูง (ค่าประมาณของคุณ)', '高度(你的估計)'],
     // 招2「型錄檢索借參數」建議式借用UI(2026-08-23，Lyric裁定的安全轉向：單照片/ambiguous情境
     // 一律「建議+使用者確認」，不自動套用——見scripts/m6_catalog_match.py的三條安全紅線)。
     'We found a similar shape in our catalog — want to try it?': ['我们在型录里找到相似的造型——要套用看看吗？', 'เราพบรูปทรงที่คล้ายกันในแคตตาล็อกของเรา — ต้องการลองใช้ไหม?', '我們在型錄裡找到相似的造型——要套用看看嗎？'],
@@ -4535,11 +4545,17 @@ animate();
   // 規格書§1.3明列這是實作時的保守路線選擇，不是遺漏)。跟lib-edit3d-photo2tub.js同一份內容的
   // 兩份拷貝，改一邊要同步改另一邊。
   const P2T_HINT_LENGTH_MM = {lt1400: 1300, '1400-1600': 1500, '1600-1800': 1700, '1800plus': 1900};
+  // H比例直算估計器(2026-08-24)：Q4高度題的選項→mm對照，跟Q1同一種"取區間中點"設計
+  const P2T_HINT_HEIGHT_MM = {lt550: 500, '550-650': 600, '650-750': 700, '750plus': 800};
 
-  function buildHintCardHtml(){
+  function buildHintCardHtml(opts){
+    opts = opts || {};
+    const showQ123 = opts.showQ123 !== false;  // 預設true(向下相容既有呼叫點)
+    const showQ4 = !!opts.showQ4;
     const q1Labels = {lt1400:'Under 1400mm', '1400-1600':'1400–1600mm', '1600-1800':'1600–1800mm (most common)', '1800plus':'1800mm or more', unsure:'Not sure — use default'};
     const q2Labels = {sym:'Symmetric (both ends alike)', asym:'Asymmetric (one end noticeably narrower, egg-shaped)', unsure:'Not sure'};
     const q3Labels = {vertical:'Nearly vertical (base ≈ rim width)', tapered:'Tapers inward a lot (base much narrower, like a flowerpot)', unsure:'Not sure'};
+    const q4Labels = {lt550:'Under 550mm', '550-650':'550–650mm (most common)', '650-750':'650–750mm', '750plus':'750mm or more', unsure:'Not sure — use default'};
     const pill = (q, opt, label) => `<button type="button" class="p2t-hint-pill" data-q="${q}" data-opt="${opt}">${p2tT(label)}</button>`;
     const row = (q, title, opts) => `<div class="p2t-hint-row">
         <div class="p2t-hint-q">${p2tT(title)}</div>
@@ -4548,9 +4564,10 @@ animate();
       </div>`;
     return `<div class="p2t-hint-card" id="p2tHintCard">
         <div class="p2t-hint-header">${p2tT('A few quick questions can improve the estimate (optional — skip any you\'re not sure about):')}</div>
-        ${row(1, 'About how long is it (external length)? You can fine-tune with the slider below afterward.', q1Labels)}
-        ${row(2, 'Is this tub symmetric at both ends?', q2Labels)}
-        ${row(3, 'Looking from above, is the base much narrower than the rim?', q3Labels)}
+        ${showQ123 ? row(1, 'About how long is it (external length)? You can fine-tune with the slider below afterward.', q1Labels) : ''}
+        ${showQ123 ? row(2, 'Is this tub symmetric at both ends?', q2Labels) : ''}
+        ${showQ123 ? row(3, 'Looking from above, is the base much narrower than the rim?', q3Labels) : ''}
+        ${showQ4 ? row(4, 'About how tall is it, measured from the floor to the rim? You can fine-tune with the slider below afterward.', q4Labels) : ''}
       </div>`;
   }
 
@@ -4576,6 +4593,10 @@ animate();
       dp['底部收縮_pct'] = 90;
       fc['taper_pct'] = 'user_confirmed';
       updatedField = 'base taper (confirmed nearly vertical)';
+    } else if(q === '4' && opt !== 'unsure'){
+      dp['缸緣高度_前端_mm'] = P2T_HINT_HEIGHT_MM[opt];
+      fc['H_mm'] = 'user_confirmed';
+      updatedField = 'height (your estimate)';
     }
     if(updatedField){
       try { importSpecJSON(JSON.stringify(p2tLastData.spec)); } catch(err){ /* 靜默失敗不影響已選pill的視覺狀態 */ }
@@ -4761,14 +4782,18 @@ animate();
     const r3InsufficientMsgs = (data.messages || []).filter(m => /\[R3\].*(too_few_photos|low_diversity)/.test(m));
     // 招A(2026-08-23)：跟上面r3InsufficientMsgs是不同情境，故意分開偵測、分開文案——見上方i18n條目的註解。
     const r3QualityRejectMsgs = (data.messages || []).filter(m => /\[R3-低擬合品質\]/.test(m));
+    // H比例直算估計器(2026-08-24)：獨立於上面兩個R3觸發條件，見lib-edit3d-photo2tub.js同段註解。
+    const heightDefaulted = data.spec && data.spec['H_source'] === 'default_no_side_view';
     let hintCardHtml = '';
     p2tLastData = data; // 招1+招2共用：兩者的patch/merge都要能存取最近一次成功reconstruct的結果
     if(r3InsufficientMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.');
-      hintCardHtml = buildHintCardHtml();
+      hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted});
     } else if(r3QualityRejectMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not find a reliable match for this photo set — the traced outline may be distorted by glass reflections or obstructions in the scene, so a standard shape was used instead. The length/width ratio may also be affected, not just the outline — please manually confirm both the shape and dimensions, or retake photos avoiding glass/reflective surfaces.');
-      hintCardHtml = buildHintCardHtml();
+      hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted});
+    } else if(heightDefaulted){
+      hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:true});
     }
     showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
     // 招2(2026-08-23)：照片數<3時額外打一次型錄比對，跟主流程平行、不阻擋、失敗靜默降級。
