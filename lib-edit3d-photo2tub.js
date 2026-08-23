@@ -58,6 +58,14 @@
     // 什麼的提示)。偵測依據：`[R3]`訊息裡的too_few_photos/low_diversity字樣(見
     // r3_joint_fit.py的status/reason設計，跟multiBoxMsgs同一種"從data.messages篩關鍵字"手法。
     '⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.': ['⚠ 照片数量或角度多样性不足，无法进行联合形状拟合——尺寸/形状估计可能不可靠。请手动输入实际尺寸，或补拍不同角度的照片后重试。', '⚠ จำนวนรูปถ่ายหรือความหลากหลายของมุมไม่เพียงพอสำหรับการปรับรูปทรงร่วม — การประมาณขนาด/รูปทรงอาจไม่น่าเชื่อถือ กรุณากรอกขนาดจริงด้วยตนเอง หรือถ่ายภาพจากมุมต่างๆ ใหม่แล้วลองอีกครั้ง', '⚠ 照片數量或角度多樣性不足，無法進行聯合形狀擬合——尺寸/形狀估計可能不可靠。請手動輸入實際尺寸，或補拍不同角度的照片後重試。'],
+    // 遮罩抗干擾修正招A(2026-08-23，遮罩抗干擾修正_規格書.md)：R3有嘗試聯合擬合(輸入品質過關)
+    // 但殘差太差(low_iou)被自己拒絕——這跟上面「照片不足」是不同情境(這裡是"拍夠了但畫面有
+    // 干擾"，不是"沒拍夠")，故意用不同文案，不誤導使用者去補拍更多張(治標方向錯了，真正該做的
+    // 是避開玻璃反光/遮擋物)。偵測依據：後端`[R3-低擬合品質]`標籤(photo2tub_api_core.py)。
+    // 08審後補充(2026-08-23)：ADP_Glacier夾具案例的比例誤差達38.8%，顯示緣角點量測的長寬比
+    // 在這種案例上也不是安全假設(粗粒度不代表完全免疫)，文案補上「尺寸比例也可能受影響」的
+    // 提醒，不只警告外形——招1既有Q1(長度)追問卡剛好能讓使用者直接修正，動線是通的。
+    '⚠ The joint shape fit could not find a reliable match for this photo set — the traced outline may be distorted by glass reflections or obstructions in the scene, so a standard shape was used instead. The length/width ratio may also be affected, not just the outline — please manually confirm both the shape and dimensions, or retake photos avoiding glass/reflective surfaces.': ['⚠ 联合形状拟合找不到任何能合理解释这批照片的浴缸形状——描出的轮廓可能受画面中玻璃反光或遮挡物干扰而失真，已改用标准造型。长宽比例也可能一并受影响，不只是外形——请人工确认造型与尺寸是否正确，或补拍避开反光/遮挡的清晰照片。', '⚠ การปรับรูปทรงร่วมไม่พบรูปทรงอ่างอาบน้ำที่อธิบายชุดภาพนี้ได้อย่างน่าเชื่อถือ — โครงร่างที่ลากไว้อาจผิดเพี้ยนจากแสงสะท้อนกระจกหรือสิ่งกีดขวางในภาพ จึงใช้รูปทรงมาตรฐานแทน อัตราส่วนความยาว/ความกว้างอาจได้รับผลกระทบไปด้วย ไม่ใช่แค่รูปทรง กรุณายืนยันทั้งรูปทรงและขนาดด้วยตนเอง หรือถ่ายภาพใหม่โดยหลีกเลี่ยงกระจก/พื้นผิวสะท้อนแสง', '⚠ 聯合形狀擬合找不到任何能合理解釋這批照片的浴缸形狀——描出的輪廓可能受畫面中玻璃反光或遮擋物干擾而失真，已改用標準造型。長寬比例也可能一併受影響，不只是外形——請人工確認造型與尺寸是否正確，或補拍避開反光/遮擋的清晰照片。'],
     // 單照片救援包招1(2026-08-23，Lyric拍板1b)：R3因照片不足被擋下時，除了上面那句升級警示，
     // 再補3題快問快答當約束，答案直接patch data.spec後重新importSpecJSON()，純前端不動後端。
     'A few quick questions can improve the estimate (optional — skip any you\'re not sure about):': ['几个简单问题可以改善估计(可选——不确定的可以跳过)：', 'คำถามสั้นๆ ช่วยปรับปรุงการประมาณ (ไม่บังคับ — ข้ามข้อที่ไม่แน่ใจได้)：', '幾個簡單問題可以改善估計(可選——不確定的可以跳過)：'],
@@ -360,10 +368,16 @@
     // 保護(近圓形退化保護只做進了R3裡)，把R3已經算好的判定接成明確可執行的建議，不是又一句
     // 籠統的"dims(低信心)"。
     const r3InsufficientMsgs = (data.messages || []).filter(m => /\[R3\].*(too_few_photos|low_diversity)/.test(m));
+    // 招A(2026-08-23)：跟上面r3InsufficientMsgs是不同情境(輸入品質過關但擬合殘差差)，故意分開偵測、
+    // 分開文案——見上方i18n條目的註解。
+    const r3QualityRejectMsgs = (data.messages || []).filter(m => /\[R3-低擬合品質\]/.test(m));
     let hintCardHtml = '';
     p2tLastData = data; // 招1+招2共用：兩者的patch/merge都要能存取最近一次成功reconstruct的結果
     if(r3InsufficientMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.');
+      hintCardHtml = buildHintCardHtml();
+    } else if(r3QualityRejectMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not find a reliable match for this photo set — the traced outline may be distorted by glass reflections or obstructions in the scene, so a standard shape was used instead. The length/width ratio may also be affected, not just the outline — please manually confirm both the shape and dimensions, or retake photos avoiding glass/reflective surfaces.');
       hintCardHtml = buildHintCardHtml();
     }
     showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
