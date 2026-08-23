@@ -14,6 +14,7 @@
   const P2T_MIN_PHOTOS = 3, P2T_MAX_PHOTOS = 8;
 
   const banner = document.getElementById('p2tBanner');
+  let p2tLastData = null; // 招1(2026-08-23)：暫存最近一次成功reconstruct的完整回應，供追問卡片patch用
 
   // 2026-08-22：photo2tub上傳banner系統整套i18n化(佇列項8只還了photoCountHint那一句，
   // 其餘19條訊息當時刻意留債)。**這份字典跟photo2tub-app.html自己inline的同名P2T_I18N
@@ -57,6 +58,27 @@
     // 什麼的提示)。偵測依據：`[R3]`訊息裡的too_few_photos/low_diversity字樣(見
     // r3_joint_fit.py的status/reason設計，跟multiBoxMsgs同一種"從data.messages篩關鍵字"手法。
     '⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.': ['⚠ 照片数量或角度多样性不足，无法进行联合形状拟合——尺寸/形状估计可能不可靠。请手动输入实际尺寸，或补拍不同角度的照片后重试。', '⚠ จำนวนรูปถ่ายหรือความหลากหลายของมุมไม่เพียงพอสำหรับการปรับรูปทรงร่วม — การประมาณขนาด/รูปทรงอาจไม่น่าเชื่อถือ กรุณากรอกขนาดจริงด้วยตนเอง หรือถ่ายภาพจากมุมต่างๆ ใหม่แล้วลองอีกครั้ง', '⚠ 照片數量或角度多樣性不足，無法進行聯合形狀擬合——尺寸/形狀估計可能不可靠。請手動輸入實際尺寸，或補拍不同角度的照片後重試。'],
+    // 單照片救援包招1(2026-08-23，Lyric拍板1b)：R3因照片不足被擋下時，除了上面那句升級警示，
+    // 再補3題快問快答當約束，答案直接patch data.spec後重新importSpecJSON()，純前端不動後端。
+    'A few quick questions can improve the estimate (optional — skip any you\'re not sure about):': ['几个简单问题可以改善估计(可选——不确定的可以跳过)：', 'คำถามสั้นๆ ช่วยปรับปรุงการประมาณ (ไม่บังคับ — ข้ามข้อที่ไม่แน่ใจได้)：', '幾個簡單問題可以改善估計(可選——不確定的可以跳過)：'],
+    'About how long is it (external length)? You can fine-tune with the slider below afterward.': ['大概的外部长度是多少？之后还能用下面滑杆微调。', 'ความยาวภายนอกโดยประมาณเท่าไหร่? ปรับละเอียดได้ภายหลังด้วยสไลเดอร์ด้านล่าง', '大概的外部長度是多少？之後還能用下面滑桿微調。'],
+    'Under 1400mm': ['小于1400mm', 'ต่ำกว่า 1400มม.', '小於1400mm'],
+    '1400–1600mm': ['1400–1600mm', '1400–1600มม.', '1400–1600mm'],
+    '1600–1800mm (most common)': ['1600–1800mm(最常见)', '1600–1800มม. (พบบ่อยที่สุด)', '1600–1800mm(最常見)'],
+    '1800mm or more': ['1800mm以上', '1800มม. ขึ้นไป', '1800mm以上'],
+    'Not sure — use default': ['不确定，先用预设值', 'ไม่แน่ใจ — ใช้ค่าเริ่มต้น', '不確定，先用預設值'],
+    'Is this tub symmetric at both ends?': ['这款浴缸两端造型对称吗？', 'อ่างนี้สมมาตรทั้งสองด้านหรือไม่?', '這款浴缸兩端造型對稱嗎？'],
+    'Symmetric (both ends alike)': ['对称(两端一样)', 'สมมาตร (ทั้งสองด้านเหมือนกัน)', '對稱(兩端一樣)'],
+    'Asymmetric (one end noticeably narrower, egg-shaped)': ['不对称(一端明显比较窄，像蛋形)', 'ไม่สมมาตร (ปลายด้านหนึ่งแคบกว่าอย่างเห็นได้ชัด คล้ายรูปไข่)', '不對稱(一端明顯比較窄，像蛋形)'],
+    'Not sure': ['不确定', 'ไม่แน่ใจ', '不確定'],
+    'Looking from above, is the base much narrower than the rim?': ['由上往下看，缸底是不是比缸口窄很多？', 'เมื่อมองจากด้านบน ฐานแคบกว่าขอบมากหรือไม่?', '由上往下看，缸底是不是比缸口窄很多？'],
+    'Nearly vertical (base ≈ rim width)': ['几乎垂直(缸底缸口差不多宽)', 'เกือบตั้งตรง (ฐานกว้างใกล้เคียงขอบ)', '幾乎垂直(缸底缸口差不多寬)'],
+    'Tapers inward a lot (base much narrower, like a flowerpot)': ['有明显往内收(缸底窄很多，像花盆)', 'สอบเข้าด้านในมาก (ฐานแคบกว่ามาก คล้ายกระถางต้นไม้)', '有明顯往內收(缸底窄很多，像花盆)'],
+    '✓ Got it — updated: {field}': ['✓ 已记录，已更新：{field}', '✓ รับทราบ — อัปเดตแล้ว: {field}', '✓ 已記錄，已更新：{field}'],
+    '✓ Got it (kept the automatic estimate)': ['✓ 已记录(维持自动估计值)', '✓ รับทราบ (คงค่าประมาณอัตโนมัติไว้)', '✓ 已記錄(維持自動估計值)'],
+    'external length/width (your estimate)': ['外部长宽(你的估计)', 'ความยาว/ความกว้างภายนอก (ค่าประมาณของคุณ)', '外部長寬(你的估計)'],
+    'symmetry (confirmed symmetric)': ['对称性(已确认对称)', 'ความสมมาตร (ยืนยันสมมาตรแล้ว)', '對稱性(已確認對稱)'],
+    'base taper (confirmed nearly vertical)': ['底部收缩(已确认接近直壁)', 'ความสอบของฐาน (ยืนยันเกือบตั้งตรงแล้ว)', '底部收縮(已確認接近直壁)'],
   };
   // p2tT(key, vars)：跟共用t()同一套LANG查表邏輯，差別是多一個vars參數做{placeholder}取代
   function p2tT(key, vars){
@@ -83,6 +105,69 @@
     }).join('');
     return `<details id="p2tDetails"><summary>${p2tT('Pipeline notes ({n}) — click to expand', {n:messages.length})}</summary><ul>${items}</ul></details>`;
   }
+
+  // ===== 單照片救援包招1(2026-08-23，規格書§1)：R3因照片不足被擋下時的3題快問快答 =====
+  // 純前端spec後製patch——不呼叫新API、不改Modal後端。答案覆寫data.spec['設計參數']對應欄位後
+  // 重新importSpecJSON()。Q2答「不對稱」/Q3答「有明顯往內收」刻意不覆寫數值(維持既有估計，
+  // 規格書§1.3明列這是實作時的保守路線選擇，不是遺漏)。
+  const P2T_HINT_LENGTH_MM = {lt1400: 1300, '1400-1600': 1500, '1600-1800': 1700, '1800plus': 1900};
+
+  function buildHintCardHtml(){
+    const q1Labels = {lt1400:'Under 1400mm', '1400-1600':'1400–1600mm', '1600-1800':'1600–1800mm (most common)', '1800plus':'1800mm or more', unsure:'Not sure — use default'};
+    const q2Labels = {sym:'Symmetric (both ends alike)', asym:'Asymmetric (one end noticeably narrower, egg-shaped)', unsure:'Not sure'};
+    const q3Labels = {vertical:'Nearly vertical (base ≈ rim width)', tapered:'Tapers inward a lot (base much narrower, like a flowerpot)', unsure:'Not sure'};
+    const pill = (q, opt, label) => `<button type="button" class="p2t-hint-pill" data-q="${q}" data-opt="${opt}">${p2tT(label)}</button>`;
+    const row = (q, title, opts) => `<div class="p2t-hint-row">
+        <div class="p2t-hint-q">${p2tT(title)}</div>
+        <div class="p2t-hint-opts">${Object.entries(opts).map(([opt,label]) => pill(q, opt, label)).join('')}</div>
+        <div class="p2t-hint-status" id="p2tHintStatus${q}"></div>
+      </div>`;
+    return `<div class="p2t-hint-card" id="p2tHintCard">
+        <div class="p2t-hint-header">${p2tT('A few quick questions can improve the estimate (optional — skip any you\'re not sure about):')}</div>
+        ${row(1, 'About how long is it (external length)? You can fine-tune with the slider below afterward.', q1Labels)}
+        ${row(2, 'Is this tub symmetric at both ends?', q2Labels)}
+        ${row(3, 'Looking from above, is the base much narrower than the rim?', q3Labels)}
+      </div>`;
+  }
+
+  function applyHint(q, opt, btn){
+    if(!p2tLastData) return;
+    const dp = p2tLastData.spec['設計參數'] || {};
+    const fc = p2tLastData.spec['field_confidence'] || (p2tLastData.spec['field_confidence'] = {});
+    const statusEl = document.getElementById('p2tHintStatus' + q);
+    let updatedField = null;
+    if(q === '1' && opt !== 'unsure'){
+      const newL = P2T_HINT_LENGTH_MM[opt];
+      const oldL = dp['外部長度_mm'], oldW = dp['外部寬度_mm'];
+      if(oldL && oldW){ dp['外部寬度_mm'] = Math.round(oldW * (newL / oldL) * 10) / 10; }
+      dp['外部長度_mm'] = newL;
+      p2tLastData.spec['dims_mode'] = 'user_estimated';
+      fc['dims'] = 'user_estimated';
+      updatedField = 'external length/width (your estimate)';
+    } else if(q === '2' && opt === 'sym'){
+      dp['蛋形係數_pct'] = 0;
+      fc['egg_pct'] = 'user_confirmed';
+      updatedField = 'symmetry (confirmed symmetric)';
+    } else if(q === '3' && opt === 'vertical'){
+      dp['底部收縮_pct'] = 90;
+      fc['taper_pct'] = 'user_confirmed';
+      updatedField = 'base taper (confirmed nearly vertical)';
+    }
+    if(updatedField){
+      try { importSpecJSON(JSON.stringify(p2tLastData.spec)); } catch(err){ /* 靜默失敗不影響已選pill的視覺狀態 */ }
+      if(statusEl) statusEl.textContent = p2tT('✓ Got it — updated: {field}', {field: p2tT(updatedField)});
+    } else if(statusEl){
+      statusEl.textContent = p2tT('✓ Got it (kept the automatic estimate)');
+    }
+    const row = btn.closest('.p2t-hint-opts');
+    if(row) Array.from(row.children).forEach(b => b.classList.toggle('p2t-hint-pill-selected', b === btn));
+  }
+
+  banner.addEventListener('click', (e) => {
+    const btn = e.target.closest('.p2t-hint-pill');
+    if(!btn) return;
+    applyHint(btn.dataset.q, btn.dataset.opt, btn);
+  });
 
   // Phase 8佇列項8：照片張數→預期精度提示(規格書UX節)。純張數門檻(client端沒有上傳前的角度推斷能力，
   // 規格原文「可推斷的視角組成」是選配，這裡誠實只做張數這個可靠訊號)，跟Stage 1.5已上線的
@@ -172,10 +257,13 @@
     // 保護(近圓形退化保護只做進了R3裡)，把R3已經算好的判定接成明確可執行的建議，不是又一句
     // 籠統的"dims(低信心)"。
     const r3InsufficientMsgs = (data.messages || []).filter(m => /\[R3\].*(too_few_photos|low_diversity)/.test(m));
+    let hintCardHtml = '';
     if(r3InsufficientMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.');
+      p2tLastData = data;
+      hintCardHtml = buildHintCardHtml();
     }
-    showBanner('ok', title, sub, messagesToDetailsHtml(data.messages));
+    showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
   }
 
   document.getElementById('photo2tubFiles').addEventListener('change', (e)=>{
