@@ -51,6 +51,12 @@
     'a photo': ['一张照片', 'รูปหนึ่งรูป', '一張照片'],
     'some photos': ['部分照片', 'บางรูป', '部分照片'],
     'Pipeline notes ({n}) — click to expand': ['管线记录({n})——点击展开', 'บันทึกไพพ์ไลน์ ({n}) — คลิกเพื่อขยาย', '管線記錄({n})——點擊展開'],
+    // R3聯合擬合第一層(輸入品質)擋下時的升級警示(2026-08-23，08裁定「訊息層修法」)：
+    // R3判定「照片數/角度多樣性不足」是已經算好的訊號，原本擋完R3就丟掉，這裡接到既有
+    // dims低信心路徑，給使用者更明確的補救方向(而不是只列"dims(低信心)"這種不知道要做
+    // 什麼的提示)。偵測依據：`[R3]`訊息裡的too_few_photos/low_diversity字樣(見
+    // r3_joint_fit.py的status/reason設計，跟multiBoxMsgs同一種"從data.messages篩關鍵字"手法。
+    '⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.': ['⚠ 照片数量或角度多样性不足，无法进行联合形状拟合——尺寸/形状估计可能不可靠。请手动输入实际尺寸，或补拍不同角度的照片后重试。', '⚠ จำนวนรูปถ่ายหรือความหลากหลายของมุมไม่เพียงพอสำหรับการปรับรูปทรงร่วม — การประมาณขนาด/รูปทรงอาจไม่น่าเชื่อถือ กรุณากรอกขนาดจริงด้วยตนเอง หรือถ่ายภาพจากมุมต่างๆ ใหม่แล้วลองอีกครั้ง', '⚠ 照片數量或角度多樣性不足，無法進行聯合形狀擬合——尺寸/形狀估計可能不可靠。請手動輸入實際尺寸，或補拍不同角度的照片後重試。'],
   };
   // p2tT(key, vars)：跟共用t()同一套LANG查表邏輯，差別是多一個vars參數做{placeholder}取代
   function p2tT(key, vars){
@@ -161,6 +167,13 @@
     if(multiBoxMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ More than one bathtub-like shape was seen in {photoWord} — the largest was used. If that\'s wrong, re-photograph the target tub on its own.',
         {photoWord: p2tT(multiBoxMsgs.length===1 ? 'a photo' : 'some photos')});
+    }
+    // R3聯合擬合因輸入證據不足被擋下(2026-08-23)：接手的既有比例估計路徑對這種案例沒有專屬
+    // 保護(近圓形退化保護只做進了R3裡)，把R3已經算好的判定接成明確可執行的建議，不是又一句
+    // 籠統的"dims(低信心)"。
+    const r3InsufficientMsgs = (data.messages || []).filter(m => /\[R3\].*(too_few_photos|low_diversity)/.test(m));
+    if(r3InsufficientMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.');
     }
     showBanner('ok', title, sub, messagesToDetailsHtml(data.messages));
   }
