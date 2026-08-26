@@ -77,6 +77,11 @@
     <!-- Phase 6A Stage 1.5(2026-08-21)：攝影指導文案——Joplin實測證實正交側視照能讓側壁曲線
          自動還原，這行字是覆蓋率的槓桿(近乎零成本，比Stage 2的透視數學校正便宜得多) -->
     <div class="sub">💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.</div>
+    <!-- 雲端run-to-run非決定性已知限制(2026-08-24，8f裁定歸檔擱置＋補誠實預告)：疑GPU/容器層浮點
+         歸納順序差異，經家族邊界模糊的造型放大成可觀察的比例/家族差異；本機路徑已驗證零漂移，
+         版本一致性已排除；邊界收斂偵測是現行緩解(信心自動降級)。復活條件：使用者實際回報結果
+         不一致，或未來預算檢討騰出自一致性檢查的空間。詳見 R3_研究線總結案報告.md 第16項。 -->
+    <div class="sub">💡 Re-uploading the same photos may occasionally produce a slightly different result — if the shape looks off, try re-uploading or fine-tune it manually below.</div>
   </div>
   <div class="btns">
     <!-- Phase 5(2026-08-20)：照片轉3D，跟下面既有的T5「Site photo notes」是兩個不同功能——

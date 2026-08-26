@@ -15,6 +15,8 @@ const I18N = {
   // Phase 8佇列(2026-08-22)：缸型切換提升為一級控制的新標籤文字
   'Tub Type': ['浴缸类型', 'ประเภทอ่างอาบน้ำ', '浴缸類型'],
   '💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.': ['💡 建议加拍一张正对侧面、与缸缘同高的照片——这样系统可以自动还原侧壁曲线造型', '💡 แนะนำให้ถ่ายภาพหนึ่งใบจากด้านข้างตรงๆ ระดับเดียวกับขอบอ่าง — จะช่วยให้ระบบคืนรูปทรงผนังด้านข้างได้อัตโนมัติ', '💡 建議加拍一張正對側面、與缸緣同高的照片——這樣系統可以自動還原側壁曲線造型'],
+  // 雲端run-to-run非決定性已知限制的誠實預告(2026-08-24，8f裁定歸檔擱置＋補此提示，見R3_研究線總結案報告.md第16項)
+  '💡 Re-uploading the same photos may occasionally produce a slightly different result — if the shape looks off, try re-uploading or fine-tune it manually below.': ['💡 同一组照片重新上传，偶尔可能得到略有差异的结果——如果形状看起来不太对，可以试着重新上传，或在下方手动微调', '💡 การอัปโหลดรูปชุดเดิมซ้ำอาจได้ผลลัพธ์ที่แตกต่างเล็กน้อยในบางครั้ง — หากรูปทรงดูไม่ถูกต้อง ลองอัปโหลดใหม่ หรือปรับแต่งด้วยตนเองด้านล่าง', '💡 同一組照片重新上傳，偶爾可能得到略有差異的結果——如果形狀看起來不太對，可以試著重新上傳，或在下方手動微調'],
   '📷 Generate 3D from photos': ['📷 从照片生成 3D 模型', '📷 สร้างโมเดล 3D จากรูปถ่าย', '📷 從照片生成 3D 模型'],
   // Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)modal全部字串。
   // 注意：'📷 Upload photo'跟'Close'是既有UI(photoModal/arModal)也在用的字面，本來就欠翻

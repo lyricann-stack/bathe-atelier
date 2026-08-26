@@ -66,6 +66,12 @@
     // 在這種案例上也不是安全假設(粗粒度不代表完全免疫)，文案補上「尺寸比例也可能受影響」的
     // 提醒，不只警告外形——招1既有Q1(長度)追問卡剛好能讓使用者直接修正，動線是通的。
     '⚠ The joint shape fit could not find a reliable match for this photo set — the traced outline may be distorted by glass reflections or obstructions in the scene, so a standard shape was used instead. The length/width ratio may also be affected, not just the outline — please manually confirm both the shape and dimensions, or retake photos avoiding glass/reflective surfaces.': ['⚠ 联合形状拟合找不到任何能合理解释这批照片的浴缸形状——描出的轮廓可能受画面中玻璃反光或遮挡物干扰而失真，已改用标准造型。长宽比例也可能一并受影响，不只是外形——请人工确认造型与尺寸是否正确，或补拍避开反光/遮挡的清晰照片。', '⚠ การปรับรูปทรงร่วมไม่พบรูปทรงอ่างอาบน้ำที่อธิบายชุดภาพนี้ได้อย่างน่าเชื่อถือ — โครงร่างที่ลากไว้อาจผิดเพี้ยนจากแสงสะท้อนกระจกหรือสิ่งกีดขวางในภาพ จึงใช้รูปทรงมาตรฐานแทน อัตราส่วนความยาว/ความกว้างอาจได้รับผลกระทบไปด้วย ไม่ใช่แค่รูปทรง กรุณายืนยันทั้งรูปทรงและขนาดด้วยตนเอง หรือถ่ายภาพใหม่โดยหลีกเลี่ยงกระจก/พื้นผิวสะท้อนแสง', '⚠ 聯合形狀擬合找不到任何能合理解釋這批照片的浴缸形狀——描出的輪廓可能受畫面中玻璃反光或遮擋物干擾而失真，已改用標準造型。長寬比例也可能一併受影響，不只是外形——請人工確認造型與尺寸是否正確，或補拍避開反光/遮擋的清晰照片。'],
+    // degraded靜默缺口修法(2026-08-26，54裁定「degraded靜默」票的前端半)：緊急煞車逾時
+    // (photo2tub_api_core.py的`no_family_fit_completed`+`degraded=True`)是「系統這次忙、
+    // 不是照片的問題」，跟上面兩種「照片本身有問題」的情境刻意用不同文案——不建議人工輸入
+    // 尺寸(那是治標，治本是重試)，而是直接建議稍後重新上傳同一批照片。偵測依據：後端訊息裡
+    // 的`no_family_fit_completed`字樣(見photo2tub_api_core.py的訊息分流)。
+    '⚠ The joint shape fit could not finish within the time limit — the server was briefly overloaded, not a problem with your photos. The result shown uses a simpler fallback method instead; try re-uploading the same photos again in a minute or two for a more accurate multi-angle estimate.': ['⚠ 联合形状拟合这次没能在时限内跑完——服务器暂时负载过高，不是照片本身的问题，已改用较简单的备用方法呈现结果。建议稍后重新上传同一批照片，通常能拿到更准确的多角度估计。', '⚠ การปรับรูปทรงร่วมไม่สามารถเสร็จสิ้นภายในเวลาที่กำหนด — เซิร์ฟเวอร์มีภาระงานสูงชั่วคราว ไม่ใช่ปัญหาของรูปถ่ายของคุณ ระบบจึงแสดงผลด้วยวิธีสำรองที่ง่ายกว่าแทน ลองอัปโหลดรูปถ่ายชุดเดิมอีกครั้งในอีกสักครู่เพื่อผลลัพธ์ที่แม่นยำกว่า', '⚠ 聯合形狀擬合這次沒能在時限內跑完——伺服器暫時負載過高，不是照片本身的問題，已改用較簡單的備用方法呈現結果。建議稍後重新上傳同一批照片，通常能拿到更準確的多角度估計。'],
     // 單照片救援包招1(2026-08-23，Lyric拍板1b)：R3因照片不足被擋下時，除了上面那句升級警示，
     // 再補3題快問快答當約束，答案直接patch data.spec後重新importSpecJSON()，純前端不動後端。
     'A few quick questions can improve the estimate (optional — skip any you\'re not sure about):': ['几个简单问题可以改善估计(可选——不确定的可以跳过)：', 'คำถามสั้นๆ ช่วยปรับปรุงการประมาณ (ไม่บังคับ — ข้ามข้อที่ไม่แน่ใจได้)：', '幾個簡單問題可以改善估計(可選——不確定的可以跳過)：'],
@@ -392,6 +398,11 @@
     // 招A(2026-08-23)：跟上面r3InsufficientMsgs是不同情境(輸入品質過關但擬合殘差差)，故意分開偵測、
     // 分開文案——見上方i18n條目的註解。
     const r3QualityRejectMsgs = (data.messages || []).filter(m => /\[R3-低擬合品質\]/.test(m));
+    // degraded靜默缺口修法(2026-08-26，見上方i18n條目註解)：系統忙、不是照片問題，跟上面
+    // 兩種「照片本身有問題」情境互斥(後端joint_fit_shape每次只回傳一種status/reason)，
+    // 故意用else if排在同一串——不像r3InsufficientMsgs/r3QualityRejectMsgs那樣顯示
+    // 「手動輸入尺寸」的招1卡片，因為治本的動作是重試，不是幫使用者手動估尺寸。
+    const r3DegradedMsgs = (data.messages || []).filter(m => /\[R3\].*no_family_fit_completed/.test(m));
     // H比例直算估計器(2026-08-24)：獨立於上面兩個R3觸發條件——沒拍到正交側視照片時，
     // 不論R3輸入品質/擬合殘差如何都會發生(見photo2tub_api_core.py的H_source欄位)，所以
     // 這裡是第三個、互不排斥的觸發來源，Q4只在這個條件下顯示。
@@ -404,6 +415,8 @@
     } else if(r3QualityRejectMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not find a reliable match for this photo set — the traced outline may be distorted by glass reflections or obstructions in the scene, so a standard shape was used instead. The length/width ratio may also be affected, not just the outline — please manually confirm both the shape and dimensions, or retake photos avoiding glass/reflective surfaces.');
       hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted});
+    } else if(r3DegradedMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not finish within the time limit — the server was briefly overloaded, not a problem with your photos. The result shown uses a simpler fallback method instead; try re-uploading the same photos again in a minute or two for a more accurate multi-angle estimate.');
     } else if(heightDefaulted){
       hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:true});
     }

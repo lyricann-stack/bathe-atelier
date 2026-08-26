@@ -279,6 +279,8 @@
     <div class="sub">Upload 3–8 photos of a bathtub — the pipeline finds it, segments it, and reconstructs a shape automatically. Fine-tune the result below.</div>
     <div class="sub" style="color:#c99a4a">⚠ Please upload photos of a bathtub only — basins, shower trays, or washbasins cannot be reliably detected and will be reconstructed as an incorrect bathtub shape.</div>
     <div class="sub">💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.</div>
+    <!-- 雲端run-to-run非決定性已知限制(2026-08-24)，見pro.html同一行的註解與R3_研究線總結案報告.md第16項 -->
+    <div class="sub">💡 Re-uploading the same photos may occasionally produce a slightly different result — if the shape looks off, try re-uploading or fine-tune it manually below.</div>
   </div>
   <div class="btns">
     <select id="photo2tubType" style="background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
@@ -577,6 +579,8 @@ const I18N = {
   'Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there': ['画出任何形状 · 3D 实时雕塑 · 一键导出设计师可修改的 CAD — 之后交给我们制造', 'วาดรูปทรงใดก็ได้ · ปั้นแบบ 3D เรียลไทม์ · ส่งออก CAD ที่นักออกแบบแก้ไขได้ — จากนั้นเราผลิตให้', '客戶自主設計 → 參數化 3D 預覽 → 一鍵輸出設計師可修改之 CAD (DXF) 圖檔 → 模具製造'],
   '⚠ Please upload photos of a bathtub only — basins, shower trays, or washbasins cannot be reliably detected and will be reconstructed as an incorrect bathtub shape.': ['⚠ 请仅上传浴缸照片——系统目前无法可靠辨识底盆/淋浴盆/洗手盆，这类照片仍会被重建成一个错误的浴缸模型', '⚠ กรุณาอัปโหลดเฉพาะรูปถ่ายอ่างอาบน้ำ — ระบบไม่สามารถแยกแยะอ่างล้างหน้า/ถาดอาบน้ำได้อย่างน่าเชื่อถือ ภาพเหล่านี้จะถูกสร้างเป็นโมเดลอ่างอาบน้ำที่ผิดพลาด', '⚠ 請僅上傳浴缸照片——系統目前無法可靠辨識底盆/淋浴盆/洗手盆，這類照片仍會被重建成一個錯誤的浴缸模型'],
   '💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.': ['💡 建议加拍一张正对侧面、与缸缘同高的照片——这样系统可以自动还原侧壁曲线造型', '💡 แนะนำให้ถ่ายภาพหนึ่งใบจากด้านข้างตรงๆ ระดับเดียวกับขอบอ่าง — จะช่วยให้ระบบคืนรูปทรงผนังด้านข้างได้อัตโนมัติ', '💡 建議加拍一張正對側面、與缸緣同高的照片——這樣系統可以自動還原側壁曲線造型'],
+  // 雲端run-to-run非決定性已知限制的誠實預告(2026-08-24)，見lib-edit3d-i18n.js同一行的註解
+  '💡 Re-uploading the same photos may occasionally produce a slightly different result — if the shape looks off, try re-uploading or fine-tune it manually below.': ['💡 同一组照片重新上传，偶尔可能得到略有差异的结果——如果形状看起来不太对，可以试着重新上传，或在下方手动微调', '💡 การอัปโหลดรูปชุดเดิมซ้ำอาจได้ผลลัพธ์ที่แตกต่างเล็กน้อยในบางครั้ง — หากรูปทรงดูไม่ถูกต้อง ลองอัปโหลดใหม่ หรือปรับแต่งด้วยตนเองด้านล่าง', '💡 同一組照片重新上傳，偶爾可能得到略有差異的結果——如果形狀看起來不太對，可以試著重新上傳，或在下方手動微調'],
   '⬆ Upload CAD File': ['⬆ 上传 CAD 文件', '⬆ อัปโหลดไฟล์ CAD', '⬆ 上傳 CAD 檔案'],
   'Viewing external CAD model — adjust any parameter to return to the parametric model': ['外部 CAD 模型查看中 — 调整任何参数即可返回参数化模型', 'กำลังแสดงโมเดล CAD ภายนอก — ปรับพารามิเตอร์ใดก็ได้เพื่อกลับสู่โมเดลพาราเมตริก', '外部 CAD 模型檢視中 — 調整任何參數即可返回參數化模型'],
   '⚠ Could not parse this CAD file (supported: DXF from this tool, 2D outline DXF, STL, spec JSON from this tool)': ['⚠ 无法解析此 CAD 文件（支持：本系统 DXF、2D 轮廓 DXF、STL、本系统 JSON 规格表）', '⚠ ไม่สามารถอ่านไฟล์ CAD นี้ได้ (รองรับ: DXF จากระบบนี้, DXF โครงร่าง 2D, STL, JSON สเปกจากระบบนี้)', '⚠ 無法解析此 CAD 檔案（支援：本系統 DXF、2D 輪廓 DXF、STL、本系統 JSON 規格表）'],
