@@ -77,6 +77,19 @@
     // 尺寸(那是治標，治本是重試)，而是直接建議稍後重新上傳同一批照片。偵測依據：後端訊息裡
     // 的`no_family_fit_completed`字樣(見photo2tub_api_core.py的訊息分流)。
     '⚠ The joint shape fit could not finish within the time limit — the server was briefly overloaded, not a problem with your photos. The result shown uses a simpler fallback method instead; try re-uploading the same photos again in a minute or two for a more accurate multi-angle estimate.': ['⚠ 联合形状拟合这次没能在时限内跑完——服务器暂时负载过高，不是照片本身的问题，已改用较简单的备用方法呈现结果。建议稍后重新上传同一批照片，通常能拿到更准确的多角度估计。', '⚠ การปรับรูปทรงร่วมไม่สามารถเสร็จสิ้นภายในเวลาที่กำหนด — เซิร์ฟเวอร์มีภาระงานสูงชั่วคราว ไม่ใช่ปัญหาของรูปถ่ายของคุณ ระบบจึงแสดงผลด้วยวิธีสำรองที่ง่ายกว่าแทน ลองอัปโหลดรูปถ่ายชุดเดิมอีกครั้งในอีกสักครู่เพื่อผลลัพธ์ที่แม่นยำกว่า', '⚠ 聯合形狀擬合這次沒能在時限內跑完——伺服器暫時負載過高，不是照片本身的問題，已改用較簡單的備用方法呈現結果。建議稍後重新上傳同一批照片，通常能拿到更準確的多角度估計。'],
+    // Pipeline訊息i18n第二批(2026-08-27，54核准設計，見測試案例/pipeline訊息i18n_文案審稿.md)：
+    // 比例精度票(wl_ratio掃描段)7條+degraded分流票剩餘2條(low_iou/通用fallback)，都仿上面
+    // 既有訊息的手寫摘要風格，不是逐字翻譯後端log。{x}/{w}/{lo}/{hi}由呼叫端從後端中文訊息
+    // 正則抽取後代入，不是後端直接吐出的結構化欄位。
+    '⚠ Different photos measured different width/length ratios (up to {x}× apart) — the joint fit still gives a number, but treat the width with extra caution. Consider adding a clean top-down photo.': ['⚠ 各张照片单独量到的宽长比不一致(最大差到{x}倍)——系统仍会给出一个宽度数字，但这个数字的把握程度较低，建议人工核对，或补一张正俯视角照片。', 'อัตราส่วนกว้าง/ยาวที่วัดได้จากแต่ละรูปไม่ตรงกัน (ต่างกันสูงสุดถึง {x} เท่า) — ระบบยังคำนวณค่าความกว้างให้ แต่ความน่าเชื่อถือของตัวเลขนี้ค่อนข้างต่ำ แนะนำให้ตรวจสอบด้วยตนเอง หรือเพิ่มรูปถ่ายมุมมองจากด้านบนที่ชัดเจน', '⚠ 各張照片單獨量到的寬長比不一致(最大差到{x}倍)——系統仍會給出一個寬度數字，但這個數字的把握程度較低，建議人工核對，或補一張正俯視角照片。'],
+    '⚠ The environment was unusually slow, so the width refinement scan was skipped to stay within the processing time limit — the width shown uses the earlier estimate unchanged. This isn\'t normal behavior; try again later.': ['⚠ 这次环境耗时异常久，为避免超出处理时限，已跳过宽度精算扫描——显示的宽度维持先前的估计值不变。这不是正常状况，建议稍后重新上传再试一次。', 'ระบบใช้เวลาประมวลผลนานผิดปกติในครั้งนี้ จึงข้ามขั้นตอนคำนวณความกว้างแบบละเอียดเพื่อไม่ให้เกินเวลาที่กำหนด — ค่าความกว้างที่แสดงยังคงเป็นค่าประมาณการก่อนหน้า ซึ่งไม่ใช่สถานการณ์ปกติ แนะนำให้ลองอัปโหลดใหม่อีกครั้งในภายหลัง', '⚠ 這次環境耗時異常久，為避免超出處理時限，已跳過寬度精算掃描——顯示的寬度維持先前的估計值不變。這不是正常狀況，建議稍後重新上傳再試一次。'],
+    'The width estimate was refined after a closer scan of the joint fit — updated to {w}mm.': ['系统对宽度做了进一步的精算扫描，找到比原本更准确的落点——已更新宽度为{w}mm。', 'ระบบทำการสแกนคำนวณความกว้างอย่างละเอียดเพิ่มเติม พบค่าที่แม่นยำกว่าค่าเดิม — อัปเดตความกว้างเป็น {w} มม. แล้ว', '系統對寬度做了進一步的精算掃描，找到比原本更準確的落點——已更新寬度為{w}mm。'],
+    '⚠ These photos don\'t provide enough evidence to pin down an exact width — the {w}mm shown is only the midpoint of the scanned range, not a reliable number. Please enter the actual width manually, or add a clean top-down photo.': ['⚠ 这批照片的证据量不足以判定精确宽度——显示的{w}mm只是扫描范围的中点，不是可信数字。建议人工输入实际宽度，或补一张正俯视角照片。', 'ชุดรูปถ่ายนี้มีหลักฐานไม่เพียงพอที่จะระบุความกว้างที่แม่นยำ — ค่า {w} มม. ที่แสดงเป็นเพียงจุดกึ่งกลางของช่วงที่สแกน ไม่ใช่ตัวเลขที่เชื่อถือได้ แนะนำให้กรอกความกว้างจริงด้วยตนเอง หรือเพิ่มรูปถ่ายมุมมองจากด้านบนที่ชัดเจน', '⚠ 這批照片的證據量不足以判定精確寬度——顯示的{w}mm只是掃描範圍的中點，不是可信數字。建議人工輸入實際寬度，或補一張正俯視角照片。'],
+    '⚠ These photos only support a width range, not an exact number: {lo}–{hi}mm (the {w}mm shown is the midpoint, not a confident answer). Please confirm manually, or add a clean top-down photo, or enter the actual width.': ['⚠ 这批照片的证据只能框出一个宽度范围：{lo}~{hi}mm(显示的{w}mm是范围中点，不是高信心答案)。建议人工核对，或补一张正俯视角照片，或直接输入实际宽度。', 'หลักฐานจากชุดรูปถ่ายนี้ระบุได้เพียงช่วงความกว้าง: {lo}–{hi} มม. (ค่า {w} มม. ที่แสดงเป็นจุดกึ่งกลางของช่วง ไม่ใช่คำตอบที่มั่นใจสูง) แนะนำให้ตรวจสอบด้วยตนเอง หรือเพิ่มรูปถ่ายมุมมองจากด้านบนที่ชัดเจน หรือกรอกความกว้างจริงโดยตรง', '⚠ 這批照片的證據只能框出一個寬度範圍：{lo}~{hi}mm(顯示的{w}mm是範圍中點，不是高信心答案)。建議人工核對，或補一張正俯視角照片，或直接輸入實際寬度。'],
+    '⚠ The width evidence from these photos falls outside the scanned range even after extending it — width could not be determined. The {w}mm shown is not reliable; please enter the actual width manually.': ['⚠ 这批照片的宽度证据落在扫描范围外，即使扩大范围后仍量不出边界——无法判定宽度。显示的{w}mm不可信，建议直接人工输入实际宽度。', 'หลักฐานความกว้างจากชุดรูปถ่ายนี้อยู่นอกช่วงที่สแกน แม้จะขยายช่วงแล้วก็ยังหาขอบเขตไม่ได้ — ไม่สามารถระบุความกว้างได้ ค่า {w} มม. ที่แสดงไม่น่าเชื่อถือ แนะนำให้กรอกความกว้างจริงด้วยตนเองโดยตรง', '⚠ 這批照片的寬度證據落在掃描範圍外，即使擴大範圍後仍量不出邊界——無法判定寬度。顯示的{w}mm不可信，建議直接人工輸入實際寬度。'],
+    '⚠ The width refinement scan hit an unexpected error — the width shown keeps the earlier estimate unchanged.': ['⚠ 宽度精算扫描过程发生非预期错误——显示的宽度维持先前的估计值不变。', 'เกิดข้อผิดพลาดที่ไม่คาดคิดระหว่างการสแกนคำนวณความกว้างอย่างละเอียด — ค่าความกว้างที่แสดงยังคงเป็นค่าประมาณการก่อนหน้า', '⚠ 寬度精算掃描過程發生非預期錯誤——顯示的寬度維持先前的估計值不變。'],
+    '⚠ The multi-photo joint fit couldn\'t find a good match for this photo set (fit residual too high) — falling back to the existing single/limited-angle method. The outline may be affected by glare or obstructions in the photos; try again with cleaner, unobstructed shots.': ['⚠ 多照片联合拟合这次没能找到够好的匹配(拟合残差过大)——已改用既有的单张/有限角度估计方式。轮廓可能受画面反光或遮挡物影响，建议换一批背景干净、没有遮挡的照片重新上传。', 'การประมวลผลรูปทรงร่วมจากหลายรูปถ่ายไม่พบผลลัพธ์ที่แม่นยำเพียงพอในครั้งนี้ (ค่าความคลาดเคลื่อนสูงเกินไป) — ระบบจึงใช้วิธีประมาณการแบบมุมเดียว/มุมจำกัดแทน รูปทรงที่ได้อาจได้รับผลกระทบจากแสงสะท้อนหรือสิ่งกีดขวางในภาพ แนะนำให้ถ่ายรูปใหม่โดยพื้นหลังชัดเจนไม่มีสิ่งกีดขวาง', '⚠ 多照片聯合擬合這次沒能找到夠好的匹配(擬合殘差過大)——已改用既有的單張/有限角度估計方式。輪廓可能受畫面反光或遮擋物影響，建議換一批背景乾淨、沒有遮擋的照片重新上傳。'],
+    'The multi-photo joint fit wasn\'t used this time — falling back to the existing estimation method.': ['多照片联合拟合这次未被采用——已改用既有的估计方式。', 'การประมวลผลรูปทรงร่วมจากหลายรูปถ่ายไม่ได้ถูกใช้ในครั้งนี้ — ระบบใช้วิธีประมาณการแบบเดิมแทน', '多照片聯合擬合這次未被採用——已改用既有的估計方式。'],
     // 單照片救援包招1(2026-08-23，Lyric拍板1b)：R3因照片不足被擋下時，除了上面那句升級警示，
     // 再補3題快問快答當約束，答案直接patch data.spec後重新importSpecJSON()，純前端不動後端。
     'A few quick questions can improve the estimate (optional — skip any you\'re not sure about):': ['几个简单问题可以改善估计(可选——不确定的可以跳过)：', 'คำถามสั้นๆ ช่วยปรับปรุงการประมาณ (ไม่บังคับ — ข้ามข้อที่ไม่แน่ใจได้)：', '幾個簡單問題可以改善估計(可選——不確定的可以跳過)：'],
@@ -441,6 +454,43 @@
       sub += (sub?'<br>':'') + p2tT('⚠ More than one bathtub-like shape was seen in {photoWord} — the largest was used. If that\'s wrong, re-photograph the target tub on its own.',
         {photoWord: p2tT(multiBoxMsgs.length===1 ? 'a photo' : 'some photos')});
     }
+    // Pipeline訊息i18n第二批(2026-08-27，見上方i18n條目註解)：M3-比例分歧+R3-比例掃描6條，
+    // 都是「R3成功後」的附加提示，跟下面r3InsufficientMsgs~r3FallbackMsgs那條互斥鏈(R3被
+    // 略過/拒絕時才觸發，兩者後端互斥)彼此獨立——這裡兩者可能同時出現(R3成功但比例證據
+    // 分歧，同時掃描段又判定flat)，故意不共用同一條elif鏈，各自累加進sub。{x}/{w}/{lo}/{hi}
+    // 從後端中文訊息用正則抽取，不是結構化欄位。
+    const m3RatioDivergenceMsgs = (data.messages || []).filter(m => /\[M3-比例分歧\]/.test(m));
+    if(m3RatioDivergenceMsgs.length){
+      const mm = m3RatioDivergenceMsgs[0].match(/分歧達([\d.]+)倍/);
+      sub += (sub?'<br>':'') + p2tT('⚠ Different photos measured different width/length ratios (up to {x}× apart) — the joint fit still gives a number, but treat the width with extra caution. Consider adding a clean top-down photo.',
+        {x: mm ? mm[1] : '?'});
+    }
+    const r3ScanBrakeMsgs = (data.messages || []).filter(m => /\[R3-比例掃描\].*環境耗時異常久/.test(m));
+    const r3ScanPeakMsgs = (data.messages || []).filter(m => /\[R3-比例掃描\].*改用掃描找到的峰值/.test(m));
+    const r3ScanFlatFullMsgs = (data.messages || []).filter(m => /\[R3-比例掃描\].*證據量本身撐不起精確寬度/.test(m));
+    const r3ScanFlatPartialMsgs = (data.messages || []).filter(m => /\[R3-比例掃描\].*只能框出.*一個範圍/.test(m));
+    const r3ScanUndeterminedMsgs = (data.messages || []).filter(m => /\[R3-比例掃描\].*落在掃描範圍外/.test(m));
+    const r3ScanExceptionMsgs = (data.messages || []).filter(m => /\[R3-比例掃描\].*發生例外/.test(m));
+    if(r3ScanBrakeMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('⚠ The environment was unusually slow, so the width refinement scan was skipped to stay within the processing time limit — the width shown uses the earlier estimate unchanged. This isn\'t normal behavior; try again later.');
+    } else if(r3ScanPeakMsgs.length){
+      const mm = r3ScanPeakMsgs[0].match(/覆寫寬度為(\d+)mm/);
+      sub += (sub?'<br>':'') + p2tT('The width estimate was refined after a closer scan of the joint fit — updated to {w}mm.', {w: mm ? mm[1] : '?'});
+    } else if(r3ScanFlatFullMsgs.length){
+      const mm = r3ScanFlatFullMsgs[0].match(/顯示的(\d+)mm只是掃描範圍中點/);
+      sub += (sub?'<br>':'') + p2tT('⚠ These photos don\'t provide enough evidence to pin down an exact width — the {w}mm shown is only the midpoint of the scanned range, not a reliable number. Please enter the actual width manually, or add a clean top-down photo.',
+        {w: mm ? mm[1] : '?'});
+    } else if(r3ScanFlatPartialMsgs.length){
+      const mm = r3ScanFlatPartialMsgs[0].match(/框出.*範圍：(\d+)~(\d+)mm\(顯示值(\d+)mm/);
+      sub += (sub?'<br>':'') + p2tT('⚠ These photos only support a width range, not an exact number: {lo}–{hi}mm (the {w}mm shown is the midpoint, not a confident answer). Please confirm manually, or add a clean top-down photo, or enter the actual width.',
+        {lo: mm ? mm[1] : '?', hi: mm ? mm[2] : '?', w: mm ? mm[3] : '?'});
+    } else if(r3ScanUndeterminedMsgs.length){
+      const mm = r3ScanUndeterminedMsgs[0].match(/顯示的(\d+)mm不可信/);
+      sub += (sub?'<br>':'') + p2tT('⚠ The width evidence from these photos falls outside the scanned range even after extending it — width could not be determined. The {w}mm shown is not reliable; please enter the actual width manually.',
+        {w: mm ? mm[1] : '?'});
+    } else if(r3ScanExceptionMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('⚠ The width refinement scan hit an unexpected error — the width shown keeps the earlier estimate unchanged.');
+    }
     // R3聯合擬合因輸入證據不足被擋下(2026-08-23)：接手的既有比例估計路徑對這種案例沒有專屬
     // 保護(近圓形退化保護只做進了R3裡)，把R3已經算好的判定接成明確可執行的建議，不是又一句
     // 籠統的"dims(低信心)"。
@@ -453,6 +503,14 @@
     // 故意用else if排在同一串——不像r3InsufficientMsgs/r3QualityRejectMsgs那樣顯示
     // 「手動輸入尺寸」的招1卡片，因為治本的動作是重試，不是幫使用者手動估尺寸。
     const r3DegradedMsgs = (data.messages || []).filter(m => /\[R3\].*no_family_fit_completed/.test(m));
+    // Pipeline訊息i18n第二批(2026-08-27)：degraded分流票剩餘2條——low_iou跟上面r3QualityRejectMsgs
+    // (871行的[R3-低擬合品質]，另一個獨立觸發點，會連帶讓customPts失效+顯示招1/招3卡片)語意
+    // 相近但觸發點/後續影響不同，刻意不合併(54複審裁定)。正則刻意用`\[R3\]`(後面接空格)而不是
+    // `\[R3-低擬合品質\]`，兩者前綴文字本身就不同，不會互相命中。fallback正則鎖定「(跳過：」
+    // 這個只有真正catch-all分支才有的字樣，不會誤搶too_few_photos/low_diversity的訊息(它們
+    // 各自的括號內文字是「照片張數不足，」/「照片角度太接近，」，不含「跳過：」)。
+    const r3LowIouMsgs = (data.messages || []).filter(m => /\[R3\].*擬合殘差過大/.test(m));
+    const r3FallbackMsgs = (data.messages || []).filter(m => /\[R3\] 多照片聯合擬合本次未採用\(跳過：/.test(m));
     // H比例直算估計器(2026-08-24)：獨立於上面兩個R3觸發條件——沒拍到正交側視照片時，
     // 不論R3輸入品質/擬合殘差如何都會發生(見photo2tub_api_core.py的H_source欄位)，所以
     // 這裡是第三個、互不排斥的觸發來源，Q4只在這個條件下顯示。
@@ -467,6 +525,10 @@
       hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted});
     } else if(r3DegradedMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not finish within the time limit — the server was briefly overloaded, not a problem with your photos. The result shown uses a simpler fallback method instead; try re-uploading the same photos again in a minute or two for a more accurate multi-angle estimate.');
+    } else if(r3LowIouMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('⚠ The multi-photo joint fit couldn\'t find a good match for this photo set (fit residual too high) — falling back to the existing single/limited-angle method. The outline may be affected by glare or obstructions in the photos; try again with cleaner, unobstructed shots.');
+    } else if(r3FallbackMsgs.length){
+      sub += (sub?'<br>':'') + p2tT('The multi-photo joint fit wasn\'t used this time — falling back to the existing estimation method.');
     } else if(heightDefaulted){
       hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:true});
     }
