@@ -31,6 +31,11 @@
     'Uploading & processing…': ['上传处理中…', 'กำลังอัปโหลดและประมวลผล…', '上傳處理中…'],
     'Usually 30–90 seconds. First run after idle time (cold start) can take 2–3 minutes — please don\'t close this tab.': ['通常需要30–90秒。闲置后第一次运行(冷启动)可能需要2–3分钟——请勿关闭此分页。', 'โดยปกติใช้เวลา 30–90 วินาที การรันครั้งแรกหลังไม่มีการใช้งาน (cold start) อาจใช้เวลา 2–3 นาที — กรุณาอย่าปิดแท็บนี้', '通常需要30–90秒。閒置後第一次運行(冷啟動)可能需要2–3分鐘——請勿關閉此分頁。'],
     '⚠ Could not reach the reconstruction service': ['⚠ 无法连线到重建服务', '⚠ ไม่สามารถเชื่อมต่อบริการสร้างโมเดลได้', '⚠ 無法連線到重建服務'],
+    // 非同步輪詢API(2026-08-27，b8核准設計)新增——四階段進度提示+expired終端狀態。
+    'In queue…': ['排队中…', 'อยู่ในคิว…', '排隊中…'],
+    'Analyzing photos…': ['分析照片中…', 'กำลังวิเคราะห์รูปถ่าย…', '分析照片中…'],
+    'Computing shape…': ['计算造型中…', 'กำลังคำนวณรูปทรง…', '計算造型中…'],
+    'This took too long and the job expired — please try uploading again.': ['处理时间过长，工作已过期——请重新上传再试一次。', 'ใช้เวลานานเกินไปและงานหมดอายุ — กรุณาอัปโหลดใหม่อีกครั้ง', '處理時間過長，工作已過期——請重新上傳再試一次。'],
     // 文案審視backlog修正(2026-08-22，08裁定「處理掉」)："P3-M2 cloud deploy"是2026-08-20已完成的
     // 部署事件，原文案寫給開發期參考、雲端deploy完成後讀起來反而像還沒deploy，永久性過時(不會隨時間
     // 變回準確)，這次直接改寫英文原文+三語同步，不只是翻譯留債。
@@ -317,6 +322,39 @@
     return t('The most complete shape reconstruction this tool supports.');
   }
 
+  // 非同步輪詢API(2026-08-27，b8核准設計提案)：submit立即拿job_id(不等結果，繞開Modal
+  // edge閘道~150秒同步回應上限)，固定3秒輪詢status直到done/failed/expired。回傳形狀刻意
+  // 模仿舊版單次fetch的{resp, data}，讓呼叫端(handlePhotoUpload)既有的成功/失敗分流邏輯
+  // 幾乎不用改。onProgress(stageText)在每次仍在跑的輪詢時呼叫，更新banner文字。
+  async function reconstructAsync(fd, onProgress){
+    const submitResp = await fetch(P2T_API_BASE + '/reconstruct-submit', {
+      method: 'POST', headers: { 'x-api-token': P2T_API_TOKEN }, body: fd,
+    });
+    const submitData = await submitResp.json().catch(()=>null);
+    if(!submitResp.ok) return {resp: submitResp, data: submitData};
+    const jobId = submitData.job_id;
+    const stageText = {
+      queued: p2tT('In queue…'), segmenting: p2tT('Analyzing photos…'), computing: p2tT('Computing shape…'),
+    };
+    while(true){
+      await new Promise(r => setTimeout(r, 3000));
+      const statusResp = await fetch(`${P2T_API_BASE}/reconstruct-status/${jobId}`, {
+        headers: { 'x-api-token': P2T_API_TOKEN },
+      });
+      const status = await statusResp.json().catch(()=>null);
+      if(!statusResp.ok || !status) return {resp: statusResp, data: status};
+      if(status.status === 'queued' || status.status === 'running'){
+        onProgress(stageText[status.stage] || stageText.queued);
+        continue;
+      }
+      if(status.status === 'done') return {resp: {ok:true, status:200}, data: status};
+      if(status.status === 'expired') return {resp: {ok:false, status:408}, data: {expired:true}};
+      // status.status === 'failed'：資料品質(no_bathtub_detected)對映舊版422語意，其餘一律500。
+      const httpStatus = status.error_type === 'no_bathtub_detected' ? 422 : 500;
+      return {resp: {ok:false, status: httpStatus}, data: {detail: {messages: status.messages || []}}};
+    }
+  }
+
   async function handlePhotoUpload(files){
     const list = Array.from(files);
     if(list.length === 0) return;
@@ -336,41 +374,53 @@
     list.forEach(f => fd.append('files', f, f.name));
     fd.append('tub_type', document.getElementById('photo2tubType').value);  // P4-M4：接上P4-M3新增的tub_type參數
 
-    let resp, data;
+    // 送出鎖(2026-08-27，b8驗收要求)：每次submit=一個GPU job，鎖住按鈕防止重複點擊燒錢；
+    // finally保證不管哪個return路徑都會解鎖，不用在每個return前手動補一行容易漏。
+    const p2tBtn = document.getElementById('photo2tubBtn');
+    if(p2tBtn) p2tBtn.disabled = true;
     try {
-      resp = await fetch(P2T_API_BASE + '/reconstruct', {
-        method: 'POST',
-        headers: { 'x-api-token': P2T_API_TOKEN },
-        body: fd,
-      });
-      data = await resp.json().catch(()=>null);
-    } catch(err){
-      showBanner('err', p2tT('⚠ Could not reach the reconstruction service'),
-        p2tT('Network/CORS error — is the API endpoint reachable? ({err}). This can happen during a temporary connectivity issue, or if you\'re testing against a local API that isn\'t running.', {err:err.message}));
-      return;
-    }
+      let resp, data;
+      try {
+        // 非同步輪詢API(2026-08-27，b8核准設計提案)：submit立即拿job_id+固定3秒輪詢status，
+        // 繞開Modal edge閘道~150秒同步回應上限(比例精度票事故：舊版單次fetch在>150秒時
+        // 瀏覽器會收到CORS/503失敗，這個機制讓/reconstruct-status本身永遠是毫秒級查詢)。
+        const outcome = await reconstructAsync(fd, (stageMsg) => {
+          showBanner('progress', stageMsg, `${photoCountHint(list.length)} ${p2tT('Usually 30–90 seconds. First run after idle time (cold start) can take 2–3 minutes — please don\'t close this tab.')}`);
+        });
+        resp = outcome.resp; data = outcome.data;
+      } catch(err){
+        showBanner('err', p2tT('⚠ Could not reach the reconstruction service'),
+          p2tT('Network/CORS error — is the API endpoint reachable? ({err}). This can happen during a temporary connectivity issue, or if you\'re testing against a local API that isn\'t running.', {err:err.message}));
+        return;
+      }
 
-    const elapsed = ((performance.now() - t0) / 1000).toFixed(1);
+      if(data && data.expired){
+        showBanner('err', p2tT('⚠ Could not reach the reconstruction service'),
+          p2tT('This took too long and the job expired — please try uploading again.'));
+        return;
+      }
 
-    if(!resp.ok){
-      const detail = data && data.detail;
-      const msgs = (detail && detail.messages) || [];
-      let reason = p2tT('The pipeline could not produce a model from these photos.');
-      if(resp.status === 401) reason = p2tT('Authentication failed (bad API token) — this is a site configuration issue, not a problem with your photo.');
-      else if(resp.status === 400) reason = (detail && detail.detail) || p2tT('Please upload 1–8 photos.');
-      else if(resp.status === 422) reason = p2tT('No bathtub was found in any of the uploaded photos. Try a clearer shot with the tub filling more of the frame, or better lighting.');
-      else if(resp.status === 429) reason = p2tT('Too many attempts from this network in a short time — please wait a few minutes and try again.');
-      showBanner('err', '⚠ ' + reason, msgs.length ? '' : `(${resp.status}, ${elapsed}s)`, messagesToDetailsHtml(msgs));
-      return;
-    }
+      const elapsed = (data && data.elapsed_sec != null) ? data.elapsed_sec.toFixed(1) : ((performance.now() - t0) / 1000).toFixed(1);
 
-    // 成功：載入spec JSON進3D編輯器(跟⬆ Upload CAD File按鈕走同一個函式)
-    try {
-      importSpecJSON(JSON.stringify(data.spec));
-    } catch(err){
-      showBanner('err', p2tT('⚠ Model reconstructed but failed to load into the editor'), err.message);
-      return;
-    }
+      if(!resp.ok){
+        const detail = data && data.detail;
+        const msgs = (detail && detail.messages) || [];
+        let reason = p2tT('The pipeline could not produce a model from these photos.');
+        if(resp.status === 401) reason = p2tT('Authentication failed (bad API token) — this is a site configuration issue, not a problem with your photo.');
+        else if(resp.status === 400) reason = (detail && detail.detail) || p2tT('Please upload 1–8 photos.');
+        else if(resp.status === 422) reason = p2tT('No bathtub was found in any of the uploaded photos. Try a clearer shot with the tub filling more of the frame, or better lighting.');
+        else if(resp.status === 429) reason = p2tT('Too many attempts from this network in a short time — please wait a few minutes and try again.');
+        showBanner('err', '⚠ ' + reason, msgs.length ? '' : `(${resp.status}, ${elapsed}s)`, messagesToDetailsHtml(msgs));
+        return;
+      }
+
+      // 成功：載入spec JSON進3D編輯器(跟⬆ Upload CAD File按鈕走同一個函式)
+      try {
+        importSpecJSON(JSON.stringify(data.spec));
+      } catch(err){
+        showBanner('err', p2tT('⚠ Model reconstructed but failed to load into the editor'), err.message);
+        return;
+      }
 
     const dp = data.spec['設計參數'] || {};
     const dimsMode = data.spec['dims_mode'];
@@ -420,9 +470,12 @@
     } else if(heightDefaulted){
       hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:true});
     }
-    showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
-    // 招2(2026-08-23)：照片數<3時額外打一次型錄比對，跟主流程平行、不阻擋、失敗靜默降級。
-    if(list.length < 3) tryCatalogMatch(list);
+      showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
+      // 招2(2026-08-23)：照片數<3時額外打一次型錄比對，跟主流程平行、不阻擋、失敗靜默降級。
+      if(list.length < 3) tryCatalogMatch(list);
+    } finally {
+      if(p2tBtn) p2tBtn.disabled = false;
+    }
   }
 
   document.getElementById('photo2tubFiles').addEventListener('change', (e)=>{
