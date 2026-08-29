@@ -168,7 +168,7 @@
   // 規格書§1.3明列這是實作時的保守路線選擇，不是遺漏)。
   const P2T_HINT_LENGTH_MM = {lt1400: 1300, '1400-1600': 1500, '1600-1800': 1700, '1800plus': 1900};
   // H比例直算估計器(2026-08-24)：Q4高度題的選項→mm對照，跟Q1同一種"取區間中點"設計
-  const P2T_HINT_HEIGHT_MM = {lt550: 500, '550-650': 600, '650-750': 700, '750plus': 800};
+  const P2T_HINT_HEIGHT_MM = {lt550: 500, '550-650': 600, '650-750': 700, '750-900': 825, '900plus': 1000};
 
   function buildHintCardHtml(opts){
     opts = opts || {};
@@ -177,7 +177,7 @@
     const q1Labels = {lt1400:'Under 1400mm', '1400-1600':'1400–1600mm', '1600-1800':'1600–1800mm (most common)', '1800plus':'1800mm or more', unsure:'Not sure — use default'};
     const q2Labels = {sym:'Symmetric (both ends alike)', asym:'Asymmetric (one end noticeably narrower, egg-shaped)', unsure:'Not sure'};
     const q3Labels = {vertical:'Nearly vertical (base ≈ rim width)', tapered:'Tapers inward a lot (base much narrower, like a flowerpot)', unsure:'Not sure'};
-    const q4Labels = {lt550:'Under 550mm', '550-650':'550–650mm (most common)', '650-750':'650–750mm', '750plus':'750mm or more', unsure:'Not sure — use default'};
+    const q4Labels = {lt550:'Under 550mm', '550-650':'550–650mm (most common)', '650-750':'650–750mm', '750-900':'750–900mm', '900plus':'900mm or more', unsure:'Not sure — use default'};
     const pill = (q, opt, label) => `<button type="button" class="p2t-hint-pill" data-q="${q}" data-opt="${opt}">${p2tT(label)}</button>`;
     const row = (q, title, opts) => `<div class="p2t-hint-row">
         <div class="p2t-hint-q">${p2tT(title)}</div>
