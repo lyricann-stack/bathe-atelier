@@ -184,7 +184,11 @@
     const q2Labels = {sym:'Symmetric (both ends alike)', asym:'Asymmetric (one end noticeably narrower, egg-shaped)', unsure:'Not sure'};
     const q3Labels = {vertical:'Nearly vertical (base ≈ rim width)', tapered:'Tapers inward a lot (base much narrower, like a flowerpot)', unsure:'Not sure'};
     const q4Labels = {lt550:'Under 550mm', '550-650':'550–650mm (most common)', '650-750':'650–750mm', '750-900':'750–900mm', '900plus':'900mm or more', unsure:'Not sure — use default'};
-    const q5Labels = {lt650:'Under 650mm', '650-750':'650–750mm (most common)', '750-850':'750–850mm', '850-950':'850–950mm', '950plus':'950mm or more', unsure:'Not sure — use default'};
+    // WP-B文案修正(2026-08-30，監督angry-nightingale-a46d65-1d目檢發現)：Q4的"use default"
+    // 名副其實(580mm是有意義的預設值)，但Q5沒有"default"可用——所謂default就是上一行剛
+    // 講"可能不可信"的那個數字，用"use default"等於邀請使用者選擇一個我們自己說不可信的值，
+    // 把"知情"這件事的語氣降級成可有可無。改成明講後果，不用"default"這個字。
+    const q5Labels = {lt650:'Under 650mm', '650-750':'650–750mm (most common)', '750-850':'750–850mm', '850-950':'850–950mm', '950plus':'950mm or more', unsure:'Not sure — keep the shown estimate (may be inaccurate)'};
     const pill = (q, opt, label) => `<button type="button" class="p2t-hint-pill" data-q="${q}" data-opt="${opt}">${p2tT(label)}</button>`;
     const row = (q, title, opts) => `<div class="p2t-hint-row">
         <div class="p2t-hint-q">${p2tT(title)}</div>
@@ -197,7 +201,7 @@
         ${showQ123 ? row(2, 'Is this tub symmetric at both ends?', q2Labels) : ''}
         ${showQ123 ? row(3, 'Looking from above, is the base much narrower than the rim?', q3Labels) : ''}
         ${showQ4 ? row(4, 'About how tall is it, measured from the floor to the rim? You can fine-tune with the slider below afterward.', q4Labels) : ''}
-        ${showQ5 ? row(5, 'The width shown may not be reliable — about how wide is it (external width, the shorter side)? You can fine-tune with the slider below afterward.', q5Labels) : ''}
+        ${showQ5 ? row(5, 'The width shown may not be reliable — about how wide is it (external width, the shorter side)? Unlike the other questions, skipping this one means keeping that unreliable number.', q5Labels) : ''}
       </div>`;
   }
 
