@@ -169,15 +169,22 @@
   const P2T_HINT_LENGTH_MM = {lt1400: 1300, '1400-1600': 1500, '1600-1800': 1700, '1800plus': 1900};
   // H比例直算估計器(2026-08-24)：Q4高度題的選項→mm對照，跟Q1同一種"取區間中點"設計
   const P2T_HINT_HEIGHT_MM = {lt550: 500, '550-650': 600, '650-750': 700, '750-900': 825, '900plus': 1000};
+  // WP-B寬度追問卡(2026-08-30，監督angry-nightingale-a46d65-1d派工)：Q5寬度題的選項→mm對照，
+  // 跟Q4同一種"取區間中點"設計。跟Q1(外部長度)不同的是Q1只重新按舊比例縮放寬度(假設長寬比
+  // 本身沒問題)，這裡是後端已經明講「連長寬比本身都沒把握」的情境，需要使用者直接給寬度數字，
+  // 不能再靠舊比例推算。
+  const P2T_HINT_WIDTH_MM = {lt650: 600, '650-750': 700, '750-850': 800, '850-950': 900, '950plus': 1000};
 
   function buildHintCardHtml(opts){
     opts = opts || {};
     const showQ123 = opts.showQ123 !== false;  // 預設true(向下相容既有呼叫點)
     const showQ4 = !!opts.showQ4;
+    const showQ5 = !!opts.showQ5;
     const q1Labels = {lt1400:'Under 1400mm', '1400-1600':'1400–1600mm', '1600-1800':'1600–1800mm (most common)', '1800plus':'1800mm or more', unsure:'Not sure — use default'};
     const q2Labels = {sym:'Symmetric (both ends alike)', asym:'Asymmetric (one end noticeably narrower, egg-shaped)', unsure:'Not sure'};
     const q3Labels = {vertical:'Nearly vertical (base ≈ rim width)', tapered:'Tapers inward a lot (base much narrower, like a flowerpot)', unsure:'Not sure'};
     const q4Labels = {lt550:'Under 550mm', '550-650':'550–650mm (most common)', '650-750':'650–750mm', '750-900':'750–900mm', '900plus':'900mm or more', unsure:'Not sure — use default'};
+    const q5Labels = {lt650:'Under 650mm', '650-750':'650–750mm (most common)', '750-850':'750–850mm', '850-950':'850–950mm', '950plus':'950mm or more', unsure:'Not sure — use default'};
     const pill = (q, opt, label) => `<button type="button" class="p2t-hint-pill" data-q="${q}" data-opt="${opt}">${p2tT(label)}</button>`;
     const row = (q, title, opts) => `<div class="p2t-hint-row">
         <div class="p2t-hint-q">${p2tT(title)}</div>
@@ -190,6 +197,7 @@
         ${showQ123 ? row(2, 'Is this tub symmetric at both ends?', q2Labels) : ''}
         ${showQ123 ? row(3, 'Looking from above, is the base much narrower than the rim?', q3Labels) : ''}
         ${showQ4 ? row(4, 'About how tall is it, measured from the floor to the rim? You can fine-tune with the slider below afterward.', q4Labels) : ''}
+        ${showQ5 ? row(5, 'The width shown may not be reliable — about how wide is it (external width, the shorter side)? You can fine-tune with the slider below afterward.', q5Labels) : ''}
       </div>`;
   }
 
@@ -219,6 +227,15 @@
       dp['缸緣高度_前端_mm'] = P2T_HINT_HEIGHT_MM[opt];
       fc['H_mm'] = 'user_confirmed';
       updatedField = 'height (your estimate)';
+    } else if(q === '5' && opt !== 'unsure'){
+      // WP-B(2026-08-30)：跟Q1不同，這裡直接覆寫外部寬度_mm(不是按舊比例縮放)——後端
+      // W_source==='low_confidence'代表連長寬比本身都沒把握，舊比例本來就不可信，不能拿來
+      // 當縮放基準。使用者一旦回答，同時清空寬度區間_mm(不再是不確定範圍，是使用者確認值)。
+      dp['外部寬度_mm'] = P2T_HINT_WIDTH_MM[opt];
+      dp['寬度區間_mm'] = null;
+      fc['dims'] = 'user_confirmed';
+      p2tLastData.spec['W_source'] = 'user_confirmed';
+      updatedField = 'width (your estimate)';
     }
     if(updatedField){
       try { importSpecJSON(JSON.stringify(p2tLastData.spec)); } catch(err){ /* 靜默失敗不影響已選pill的視覺狀態 */ }
@@ -515,22 +532,26 @@
     // 不論R3輸入品質/擬合殘差如何都會發生(見photo2tub_api_core.py的H_source欄位)，所以
     // 這裡是第三個、互不排斥的觸發來源，Q4只在這個條件下顯示。
     const heightDefaulted = data.spec && data.spec['H_source'] === 'default_no_side_view';
+    // WP-B(2026-08-30，監督angry-nightingale-a46d65-1d派工)：跟heightDefaulted同一種獨立、
+    // 互不排斥的觸發來源——只讀後端明講的W_source欄位，前端不重新判斷任何dims_confidence/
+    // 訊息文字(見photo2tub_api_core.py的compute_W_source())。
+    const widthUncertain = data.spec && data.spec['W_source'] === 'low_confidence';
     let hintCardHtml = '';
     p2tLastData = data; // 招1+招2共用：兩者的patch/merge都要能存取最近一次成功reconstruct的結果
     if(r3InsufficientMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ Not enough photos or angle variety for the joint shape fit — the size/shape estimate may be unreliable. Please manually enter the actual dimensions, or retake photos from different angles and try again.');
-      hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted});
+      hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted, showQ5:widthUncertain});
     } else if(r3QualityRejectMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not find a reliable match for this photo set — the traced outline may be distorted by glass reflections or obstructions in the scene, so a standard shape was used instead. The length/width ratio may also be affected, not just the outline — please manually confirm both the shape and dimensions, or retake photos avoiding glass/reflective surfaces.');
-      hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted});
+      hintCardHtml = buildHintCardHtml({showQ123:true, showQ4:heightDefaulted, showQ5:widthUncertain});
     } else if(r3DegradedMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ The joint shape fit could not finish within the time limit — the server was briefly overloaded, not a problem with your photos. The result shown uses a simpler fallback method instead; try re-uploading the same photos again in a minute or two for a more accurate multi-angle estimate.');
     } else if(r3LowIouMsgs.length){
       sub += (sub?'<br>':'') + p2tT('⚠ The multi-photo joint fit couldn\'t find a good match for this photo set (fit residual too high) — falling back to the existing single/limited-angle method. The outline may be affected by glare or obstructions in the photos; try again with cleaner, unobstructed shots.');
     } else if(r3FallbackMsgs.length){
       sub += (sub?'<br>':'') + p2tT('The multi-photo joint fit wasn\'t used this time — falling back to the existing estimation method.');
-    } else if(heightDefaulted){
-      hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:true});
+    } else if(heightDefaulted || widthUncertain){
+      hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:heightDefaulted, showQ5:widthUncertain});
     }
       showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
       // 招2(2026-08-23)：照片數<3時額外打一次型錄比對，跟主流程平行、不阻擋、失敗靜默降級。
