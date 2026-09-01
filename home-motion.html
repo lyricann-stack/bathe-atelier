@@ -13,11 +13,6 @@
     /* page palette — Must Société reference (white, ink, caramel) */
     --ink:#101010; --paper:#ffffff; --cream:#f4f2ed; --line:rgba(16,16,16,.10);
     --muted:#6b6b6b; --accent:#c69e63; --accent-deep:#9a7b43;
-
-    /* film-card palette — the process sequence stays a contained dark card
-       until the bright-studio renders (製程五圖_提示詞_亮底版.md) replace it */
-    --film-ink:#131211; --film-paper:#ece7dc; --film-muted:#cfc7b6;
-    --film-accent:#e6c98a; --film-hair:rgba(236,231,220,.14);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -51,42 +46,41 @@
   .intro h1{font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
   .intro p{margin-top:20px;max-width:52ch;font-size:clamp(14px,1.3vw,17px);line-height:1.65;color:var(--muted)}
 
-  /* ===== scroll-driven manufacturing sequence — contained film card =====
-     Kept as the old dark render set for now (see 製程五圖_提示詞_亮底版.md):
-     once the bright-studio five images exist, swap the five plate URLs below
-     and this card can go full-bleed light like the rest of the page. */
+  /* ===== scroll-driven manufacturing sequence — contained white card =====
+     Bright-studio renders (製程五圖_提示詞_亮底版.md), so the card now reads
+     as an inset framed photo sequence rather than a separate dark section. */
   .filmwrap{padding:0 clamp(14px,3vw,40px) 10vh}
   .build{position:relative;height:600vh;max-width:1360px;margin:0 auto}
   @media(max-width:720px){.build{height:460vh}}
   .stage{position:sticky;top:88px;height:calc(100vh - 132px);min-height:520px;border-radius:26px;
-    overflow:hidden;display:flex;align-items:flex-end;box-shadow:0 40px 90px -30px rgba(16,16,16,.35)}
+    overflow:hidden;display:flex;align-items:flex-end;box-shadow:0 30px 70px -30px rgba(16,16,16,.18);
+    border:1px solid var(--line)}
   @media(max-width:720px){.stage{top:76px;height:calc(100vh - 108px);border-radius:18px}}
 
   .plates{position:absolute;inset:0;will-change:transform}
   .plate{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;
-    background-color:var(--film-ink);will-change:opacity}
+    background-color:var(--cream);will-change:opacity}
   .plate:not(:first-child){opacity:0}
   .vignette{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(to top,rgba(19,18,17,.90) 0%,rgba(19,18,17,.30) 34%,transparent 58%),
-               linear-gradient(to bottom,rgba(19,18,17,.60) 0%,transparent 24%)}
+    background:linear-gradient(to top,rgba(255,255,255,.96) 0%,rgba(255,255,255,.62) 30%,transparent 54%),
+               linear-gradient(to bottom,rgba(255,255,255,.55) 0%,transparent 20%)}
 
   .rail{position:absolute;left:clamp(18px,4vw,44px);top:50%;transform:translateY(-50%);
     display:flex;flex-direction:column;gap:13px;z-index:3}
-  .rail i{display:block;width:2px;height:34px;background:rgba(236,231,220,.20);position:relative;
+  .rail i{display:block;width:2px;height:34px;background:rgba(16,16,16,.14);position:relative;
     overflow:hidden;border-radius:2px}
-  .rail i::after{content:'';position:absolute;inset:0;background:var(--film-accent);transform:scaleY(0);
+  .rail i::after{content:'';position:absolute;inset:0;background:var(--accent-deep);transform:scaleY(0);
     transform-origin:top;transition:transform .45s ease}
   .rail i.on::after{transform:scaleY(1)}
   @media(max-width:720px){.rail{display:none}}
 
   /* Portrait phones: `cover` crops these wide renders down to a featureless
-     middle strip, so the object stops reading. The renders sit on the same
-     near-black as the card, so `contain` letterboxes invisibly — the object
-     stays whole and floats in the void, which is the point. Sitting it high
-     leaves the lower third for the caption. */
+     middle strip, so the object stops reading. `contain` letterboxes onto the
+     same near-white as the card, so the object stays whole and floats in the
+     frame, which is the point. Sitting it high leaves room for the caption. */
   @media(max-width:720px){
     .plate{background-size:contain;background-position:center 34%}
-    .vignette{background:linear-gradient(to top,rgba(19,18,17,.94) 0%,rgba(19,18,17,.55) 26%,transparent 46%)}
+    .vignette{background:linear-gradient(to top,rgba(255,255,255,.98) 0%,rgba(255,255,255,.75) 26%,transparent 46%)}
   }
 
   .caps{position:relative;z-index:4;width:100%;padding:0 clamp(18px,4vw,44px) clamp(48px,8vh,88px);
@@ -95,26 +89,27 @@
     max-width:680px;opacity:0;transform:translateY(16px);
     transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .cap.on{opacity:1;transform:none}
-  .cap .eyebrow{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--film-accent);margin-bottom:12px;font-weight:600}
+  .cap .eyebrow{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:12px;font-weight:600}
   .cap h2{font-size:clamp(26px,4.4vw,48px);font-weight:700;line-height:1.06;letter-spacing:-.01em;
-    color:#f4efe4;text-wrap:balance}
-  .cap p{margin-top:14px;max-width:46ch;font-size:clamp(13px,1.3vw,15.5px);line-height:1.62;color:var(--film-muted)}
+    color:var(--ink);text-wrap:balance}
+  .cap p{margin-top:14px;max-width:46ch;font-size:clamp(13px,1.3vw,15.5px);line-height:1.62;color:var(--muted)}
 
   .filmopen{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;
     justify-content:center;text-align:center;padding:0 22px;transition:opacity .4s ease}
-  .filmopen .eyebrow{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--film-muted);margin-bottom:20px;font-weight:600}
+  .filmopen .eyebrow{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:20px;font-weight:600}
   .filmopen h2{font-size:clamp(30px,6vw,72px);font-weight:700;line-height:1.02;letter-spacing:-.01em;
-    color:#f4efe4;text-wrap:balance}
-  .filmopen p{margin-top:18px;max-width:42ch;font-size:clamp(12.5px,1.3vw,15px);line-height:1.65;color:var(--film-muted)}
+    color:var(--ink);text-wrap:balance}
+  .filmopen p{margin-top:18px;max-width:42ch;font-size:clamp(12.5px,1.3vw,15px);line-height:1.65;color:var(--muted)}
   .cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);width:1px;height:46px;overflow:hidden}
-  .cue::after{content:'';position:absolute;left:0;top:-46px;width:1px;height:46px;background:var(--film-accent);
+  .cue::after{content:'';position:absolute;left:0;top:-46px;width:1px;height:46px;background:var(--accent-deep);
     animation:cue 2.2s ease-in-out infinite}
   @keyframes cue{55%,100%{transform:translateY(92px)}}
 
   .finalcta{position:absolute;right:clamp(18px,4vw,44px);bottom:clamp(48px,8vh,88px);z-index:6;
-    display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--film-ink);
+    display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);
     border-radius:999px;padding:13px 24px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-    opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+    opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;
+    box-shadow:0 10px 28px -8px rgba(16,16,16,.35)}
   .finalcta.on{opacity:1;transform:none;pointer-events:auto}
   @media(max-width:720px){
     .finalcta{left:clamp(18px,4vw,44px);right:auto;bottom:20px;padding:11px 18px;font-size:10px}
@@ -193,11 +188,11 @@
 <section class="build" id="build">
   <div class="stage">
     <div class="plates" id="plates">
-      <div class="plate" style="background-image:url(assets/make/make-1-sheet.jpg)"></div>
-      <div class="plate" style="background-image:url(assets/make/make-2-formed.jpg)"></div>
-      <div class="plate" style="background-image:url(assets/make/make-3-reinforced.jpg)"></div>
-      <div class="plate" style="background-image:url(assets/make/make-4-polished.jpg)"></div>
-      <div class="plate" style="background-image:url(assets/make/make-5-finished.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-1-sheet-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-2-formed-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-3-reinforced-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-4-polished-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-5-finished-light.jpg)"></div>
     </div>
     <div class="vignette"></div>
 
