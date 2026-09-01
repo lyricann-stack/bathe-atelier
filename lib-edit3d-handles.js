@@ -159,7 +159,12 @@ if(EDIT_MODE){ (function(){
   }
   function ensureBaseB(){
     captureOrig();
-    if(!baseB) baseB = { obL:P.obL, obW:P.obW, ibL:P.ibL, ibW:P.ibW };
+    // customPtsInner 快照(2026-09-02，Lyric要求：調底部時內缸要跟著動)：獨立內輪廓
+    // (照片重建常見)存的是「佔 P.L/P.W 的比例」，不是佔 obL/obW——沒有自己的快照就沒有
+    // 穩定的縮放基準可以算，recomputeBase()每次都要從「這次調整開始前」的原始形狀去縮放，
+    // 不能拿上一次recompute後已經被縮放過的當基準(不然會疊加縮放、越滾越大/越滾越小)。
+    if(!baseB) baseB = { obL:P.obL, obW:P.obW, ibL:P.ibL, ibW:P.ibW,
+      customPtsInner: P.customPtsInner ? P.customPtsInner.map(p=>p.slice()) : null };
   }
   // L/W 滑桿改變 → 節點基準（mm）等比縮放，避免下一次節點操作把尺寸彈回
   function syncBaseScale(){
@@ -248,6 +253,16 @@ if(EDIT_MODE){ (function(){
     P.obW = Math.max(200, Math.min(P.W-40, Math.round(baseB.obW+dW)));
     P.ibL = Math.min(P.obL-10, Math.round(P.obL*baseB.ibL/baseB.obL));
     P.ibW = Math.min(P.obW-10, Math.round(P.obW*baseB.ibW/baseB.obW));
+    // 內缸跟著底部一起調整(2026-09-02，Lyric要求)：上面 ibL/ibW 只在「簡單參數化內缸」時
+    // 看得出效果——有獨立內輪廓(customPtsInner，照片重建常見)時，innerOutlinePts()/innerDims()
+    // 一律優先讀 customPtsInner、完全不理 ibL/ibW(見 lib-edit3d-geometry.js)，導致調底部時
+    // 外殼變了、內缸卻凍結原地不動。這裡照 obL/obW 同一個縮放比例，把 customPtsInner 的快照
+    // 也等比例縮放回去——縮放基準用 baseB 在 ensureBaseB() 當下存的原始形狀，不是上一次
+    // recompute 後已經被縮放過的版本，才不會每次呼叫都疊加縮放。
+    if(P.customPtsInner && baseB.customPtsInner){
+      const kL = P.obL/baseB.obL, kW = P.obW/baseB.obW;
+      P.customPtsInner = baseB.customPtsInner.map(p=>[p[0]*kL, p[1]*kW]);
+    }
     if(typeof sanitizeBase==='function') sanitizeBase();
   }
   function recomputeData(){ recomputeOutline(); recomputeSide(); recomputeRim(); recomputeBase(); }
@@ -281,16 +296,31 @@ if(EDIT_MODE){ (function(){
     }
     return true;
   }
-  // 套用變更並驗證；違反內外缸限制就還原（拖曳停在邊界）
-  function applyChecked(mutate, revert){
-    mutate();
+  // 套用變更並驗證；違反內外缸限制就「停在邊界」，不是整套打回原狀（2026-09-02 修正，
+  // Lyric回報：多節點編輯時第二個點、甚至base底部線常常整個不能拖——舊版只要這次改動讓
+  // 任何一處壁厚不夠，就把這個節點的屬性整組打回這次拖曳前的狀態，跟超出邊界多少無關。
+  // 照片重建的浴缸內外殼本來就常常比較貼近下限（不像參數化浴缸內外形狀成比例、壁厚寬鬆），
+  // 稍微再往同方向調一點點就整個被打回去，使用者看起來就是「這個點拖不動」，即使還有一點
+  // 空間可以微調。改成：全套用(after)失敗時，二分搜尋 before(上次成功、已知合法)→after
+  // (這次目標、不合法)之間還合法的最大比例，停在那裡——才是工具提示原本寫的
+  // "drags stop at the limit"，不是"drags snap back to nothing changed"。
+  // nd：要改的節點物件；before/after：{屬性名:數值} 物件，只放這次真正要變的屬性即可
+  // （例如 outer 拖曳給 {dx,dy,dz}，side 給 {dk,v}，面板數值輸入通常只給單一屬性）。
+  function applyChecked(nd, before, after){
+    const keys = Object.keys(after);
+    keys.forEach(k=>{ nd[k]=after[k]; });
     recomputeData();
-    if(!shellsOK()){
-      revert();
+    if(shellsOK()) return true;
+    let lo=0, hi=1;
+    for(let iter=0; iter<7; iter++){
+      const mid=(lo+hi)/2;
+      keys.forEach(k=>{ nd[k]=before[k]+(after[k]-before[k])*mid; });
       recomputeData();
-      return false;
+      if(shellsOK()) lo=mid; else hi=mid;
     }
-    return true;
+    keys.forEach(k=>{ nd[k]=before[k]+(after[k]-before[k])*lo; });
+    recomputeData();
+    return lo>0;
   }
 
   // ---- 邊的 3D 曲線 ----
@@ -460,21 +490,20 @@ if(EDIT_MODE){ (function(){
   function panelSet(slot, val){
     if(!selNode || _sync) return;
     const nd = selNode;
-    let prev;
     if(nd.edge==='side'){
-      if(slot==='A'){ prev=nd.v; applyChecked(()=>{ nd.v=Math.max(0.05,Math.min(0.95,val/100)); }, ()=>{ nd.v=prev; }); }
-      else if(slot==='B'){ prev=nd.dk; applyChecked(()=>{ nd.dk=val/Math.max(50,rRawAt(nd)); }, ()=>{ nd.dk=prev; }); }
-      else if(slot==='C'){ prev=nd.sigma; applyChecked(()=>{ nd.sigma=Math.max(0.04,Math.min(0.4,val/100)); }, ()=>{ nd.sigma=prev; }); }
+      if(slot==='A'){ applyChecked(nd, {v:nd.v}, {v:Math.max(0.05,Math.min(0.95,val/100))}); }
+      else if(slot==='B'){ applyChecked(nd, {dk:nd.dk}, {dk:val/Math.max(50,rRawAt(nd))}); }
+      else if(slot==='C'){ applyChecked(nd, {sigma:nd.sigma}, {sigma:Math.max(0.04,Math.min(0.4,val/100))}); }
     } else if(nd.edge==='base'){
       const others = nodes.filter(n=>n.edge==='base' && n!==nd);
-      if(slot==='A'){ prev=nd.dL; applyChecked(()=>{ nd.dL=val-baseB.obL-others.reduce((s,n)=>s+n.dL,0); }, ()=>{ nd.dL=prev; }); }
-      else if(slot==='B'){ prev=nd.dW; applyChecked(()=>{ nd.dW=val-baseB.obW-others.reduce((s,n)=>s+n.dW,0); }, ()=>{ nd.dW=prev; }); }
+      if(slot==='A'){ applyChecked(nd, {dL:nd.dL}, {dL:val-baseB.obL-others.reduce((s,n)=>s+n.dL,0)}); }
+      else if(slot==='B'){ applyChecked(nd, {dW:nd.dW}, {dW:val-baseB.obW-others.reduce((s,n)=>s+n.dW,0)}); }
     } else {
       const base = (nd.edge==='outer'?baseO:baseI).pts[nd.i0];
-      if(slot==='A'){ prev=nd.dx; applyChecked(()=>{ nd.dx=val-base[0]; }, ()=>{ nd.dx=prev; }); }
-      else if(slot==='B'){ prev=nd.dy; applyChecked(()=>{ nd.dy=val-base[1]; }, ()=>{ nd.dy=prev; }); }
-      else if(slot==='C'){ prev=nd.sigma; applyChecked(()=>{ nd.sigma=Math.max(2,Math.min(24,val)); }, ()=>{ nd.sigma=prev; }); }
-      else if(slot==='D' && nd.edge==='outer'){ prev=nd.dz||0; applyChecked(()=>{ nd.dz=Math.max(-300,Math.min(450,val)); }, ()=>{ nd.dz=prev; }); }
+      if(slot==='A'){ applyChecked(nd, {dx:nd.dx}, {dx:val-base[0]}); }
+      else if(slot==='B'){ applyChecked(nd, {dy:nd.dy}, {dy:val-base[1]}); }
+      else if(slot==='C'){ applyChecked(nd, {sigma:nd.sigma}, {sigma:Math.max(2,Math.min(24,val))}); }
+      else if(slot==='D' && nd.edge==='outer'){ applyChecked(nd, {dz:nd.dz||0}, {dz:Math.max(-300,Math.min(450,val))}); }
     }
     requestBuild(); syncNodePanel();
   }
@@ -596,27 +625,22 @@ if(EDIT_MODE){ (function(){
       if(nd.edge==='outer'){
         // 3 軸拖曳（相機面板）：水平＝塑形、垂直＝缸緣高度
         const dxm = _hitPt.x - dragN.start.x, dym = _hitPt.y - dragN.start.y, dzm = _hitPt.z - dragN.start.z;
-        const p={dx:nd.dx, dy:nd.dy, dz:nd.dz||0};
-        applyChecked(
-          ()=>{ nd.dx=dragN.snap.dx+dxm; nd.dy=dragN.snap.dy+dzm; nd.dz=Math.max(-300,Math.min(450,dragN.snap.dz+dym)); },
-          ()=>{ nd.dx=p.dx; nd.dy=p.dy; nd.dz=p.dz; }
+        applyChecked(nd,
+          {dx:nd.dx, dy:nd.dy, dz:nd.dz||0},
+          {dx:dragN.snap.dx+dxm, dy:dragN.snap.dy+dzm, dz:Math.max(-300,Math.min(450,dragN.snap.dz+dym))}
         );
       } else if(nd.edge==='inner'){
         const base = baseI.pts[nd.i0];
-        const p={dx:nd.dx, dy:nd.dy};
-        applyChecked(
-          ()=>{ nd.dx=_hitPt.x-base[0]; nd.dy=_hitPt.z-base[1]; },
-          ()=>{ nd.dx=p.dx; nd.dy=p.dy; }
-        );
+        applyChecked(nd, {dx:nd.dx, dy:nd.dy}, {dx:_hitPt.x-base[0], dy:_hitPt.z-base[1]});
       } else if(nd.edge==='base'){
         const po = outMM()[nd.i0], k0=[baseB.obL/P.L, baseB.obW/P.W];
         const bx=po[0]*k0[0], bz=po[1]*k0[1];
         const others = nodes.filter(n=>n.edge==='base' && n!==nd);
-        const p={dL:nd.dL, dW:nd.dW};
-        applyChecked(()=>{
-          if(Math.abs(bx) > P.L*0.15) nd.dL = (Math.abs(_hitPt.x)-Math.abs(bx))*2 - others.reduce((s,n)=>s+n.dL,0);
-          if(Math.abs(bz) > P.W*0.15) nd.dW = (Math.abs(_hitPt.z)-Math.abs(bz))*2 - others.reduce((s,n)=>s+n.dW,0);
-        }, ()=>{ nd.dL=p.dL; nd.dW=p.dW; });
+        const before = {dL:nd.dL, dW:nd.dW};
+        const after = {dL:nd.dL, dW:nd.dW};
+        if(Math.abs(bx) > P.L*0.15) after.dL = (Math.abs(_hitPt.x)-Math.abs(bx))*2 - others.reduce((s,n)=>s+n.dL,0);
+        if(Math.abs(bz) > P.W*0.15) after.dW = (Math.abs(_hitPt.z)-Math.abs(bz))*2 - others.reduce((s,n)=>s+n.dW,0);
+        applyChecked(nd, before, after);
       } else {
         const po = outMM()[nd.i0];
         const saved=P.wallMod; P.wallMod=null; const k=shellKxy(nd.v,false); P.wallMod=saved;
@@ -626,11 +650,10 @@ if(EDIT_MODE){ (function(){
         const others = nodes.filter(n=>n.edge==='side' && n!==nd)
           .reduce((s,n)=>s + n.dk*Math.exp(-((nd.v-n.v)**2)/(2*n.sigma**2)), 0);
         const zt = rimTopAt(po[0], nd.i0);
-        const p={dk:nd.dk, v:nd.v};
-        applyChecked(
-          ()=>{ nd.dk = Math.max(-0.5, Math.min(2, rTarget/rr - 1 - others));
-                nd.v = Math.max(0.05, Math.min(0.95, _hitPt.y/Math.max(1, zt))); },   // 上下拖＝移動凸肚高度位置
-          ()=>{ nd.dk=p.dk; nd.v=p.v; }
+        applyChecked(nd,
+          {dk:nd.dk, v:nd.v},
+          {dk: Math.max(-0.5, Math.min(2, rTarget/rr - 1 - others)),
+           v: Math.max(0.05, Math.min(0.95, _hitPt.y/Math.max(1, zt)))}   // 上下拖＝移動凸肚高度位置
         );
       }
       requestBuild(); syncNodePanel();
