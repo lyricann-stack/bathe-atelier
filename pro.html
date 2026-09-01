@@ -42,6 +42,20 @@
   .p2t-hint-pill:hover { border-color:#9a7b43; color:#1b1a16; }
   .p2t-hint-pill-selected { background:#9a7b43; border-color:#9a7b43; color:#fff; font-weight:600; }
   .p2t-hint-status { color:#5a8a5a; font-size:11.5px; margin-top:4px; min-height:14px; }
+  /* 追問卡片改彈窗(2026-09-02，Lyric回報：卡片內嵌在版面裡會把下方3D模型往下推，
+     捲不到；改成蓋在頁面上的彈窗，答完按「完成」關掉，不佔版面高度)。 */
+  #p2tHintModal { position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:20px; }
+  #p2tHintModal.open { display:flex; }
+  #p2tHintModal .p2t-modal-backdrop { position:absolute; inset:0; background:rgba(27,26,22,.45); }
+  #p2tHintModal .p2t-modal-panel { position:relative; background:#fdfaf3; border:1px solid #ddd8cc; border-radius:14px;
+    width:min(560px,100%); max-height:80vh; display:flex; flex-direction:column; box-shadow:0 30px 70px -20px rgba(16,16,16,.35); }
+  #p2tHintModal .p2t-modal-scroll { overflow-y:auto; padding:20px 22px; }
+  #p2tHintModal .p2t-modal-scroll .p2t-hint-card { margin-top:0; max-width:none; margin-left:0; margin-right:0; padding:0; border:none; }
+  #p2tHintModal .p2t-modal-scroll .p2t-hint-card + .p2t-hint-card { margin-top:16px; padding-top:16px; border-top:1px solid #e6e1d5; }
+  #p2tHintModal .p2t-modal-foot { padding:12px 22px; border-top:1px solid #ddd8cc; display:flex; justify-content:flex-end; flex:none; }
+  #p2tHintModal .p2t-modal-done { border:none; background:#1b1a16; color:#fff; padding:10px 22px; border-radius:999px;
+    font-size:13px; font-weight:600; cursor:pointer; }
+  #p2tHintModal .p2t-modal-done:hover { opacity:.9; }
 </style>
 </head>
 <body>

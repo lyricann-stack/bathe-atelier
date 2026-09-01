@@ -179,6 +179,40 @@
       ${detailsHtml || ''}`;
   }
 
+  // 追問卡片改彈窗(2026-09-02，Lyric實測回報：卡片內嵌在#p2tBanner裡會把下方studio-strip／
+  // 3D檢視器往下推，body是height:100vh+overflow:hidden的單一視窗版面，推出視窗外的部分完全
+  // 捲不到)。改成蓋在頁面上的彈窗——p2t-hint-card／p2t-catalog-card這兩種卡片本身的HTML／
+  // class／data屬性、applyHint()等既有邏輯完全不動，只改「插進DOM的哪個容器」跟「怎麼關掉」。
+  function openHintModal(){
+    let modal = document.getElementById('p2tHintModal');
+    if(modal) return modal;
+    modal = document.createElement('div');
+    modal.id = 'p2tHintModal';
+    modal.innerHTML = `<div class="p2t-modal-backdrop"></div>
+      <div class="p2t-modal-panel">
+        <div class="p2t-modal-scroll" id="p2tHintModalBody"></div>
+        <div class="p2t-modal-foot"><button type="button" class="p2t-modal-done">${p2tT('Done')}</button></div>
+      </div>`;
+    document.body.appendChild(modal);
+    modal.querySelector('.p2t-modal-backdrop').addEventListener('click', closeHintModal);
+    modal.querySelector('.p2t-modal-done').addEventListener('click', closeHintModal);
+    return modal;
+  }
+  function closeHintModal(){
+    const modal = document.getElementById('p2tHintModal');
+    if(modal) modal.classList.remove('open');
+  }
+  // htmlOrNode：字串(追問卡片，來自buildHintCardHtml())或DOM節點(型錄建議卡，需要保留
+  // card.__candidate這個JS屬性，字串化會遺失，所以型錄卡走appendChild不走innerHTML)。
+  function addToHintModal(htmlOrNode){
+    if(!htmlOrNode) return;
+    const modal = openHintModal();
+    const body = modal.querySelector('#p2tHintModalBody');
+    if(typeof htmlOrNode === 'string') body.insertAdjacentHTML('beforeend', htmlOrNode);
+    else body.appendChild(htmlOrNode);
+    modal.classList.add('open');
+  }
+
   function messagesToDetailsHtml(messages){
     if(!messages || !messages.length) return '';
     const items = messages.map(m=>{
@@ -277,7 +311,9 @@
     if(row) Array.from(row.children).forEach(b => b.classList.toggle('p2t-hint-pill-selected', b === btn));
   }
 
-  banner.addEventListener('click', (e) => {
+  // 卡片改插進彈窗(document.body)之後不再是banner的子節點，委派監聽改掛document
+  // (原本掛banner)，判斷邏輯不變，只是「事件會不會冒泡經過banner」不再是前提。
+  document.addEventListener('click', (e) => {
     const btn = e.target.closest('.p2t-hint-pill');
     if(!btn) return;
     applyHint(btn.dataset.q, btn.dataset.opt, btn);
@@ -330,11 +366,11 @@
         <button type="button" class="p2t-hint-pill p2t-catalog-skip-btn">${p2tT('Not this one')}</button>
       </div>
       <div class="p2t-hint-status" id="p2tCatalogStatus"></div>`;
-    banner.appendChild(card);
+    addToHintModal(card);
     card.__candidate = candidate;
   }
 
-  banner.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const card = document.getElementById('p2tCatalogCard');
     if(!card) return;
     const candidate = card.__candidate;
@@ -583,7 +619,11 @@
     } else if(heightDefaulted || widthUncertain){
       hintCardHtml = buildHintCardHtml({showQ123:false, showQ4:heightDefaulted, showQ5:widthUncertain});
     }
-      showBanner('ok', title, sub, messagesToDetailsHtml(data.messages) + hintCardHtml);
+      // hintCardHtml 改插進彈窗(見上方addToHintModal)，不再併進detailsHtml塞進banner，
+      // 避免追問卡片把studio-strip／3D檢視器往下推出單一視窗版面(body是height:100vh+
+      // overflow:hidden，推出去的部分捲不到)。
+      showBanner('ok', title, sub, messagesToDetailsHtml(data.messages));
+      addToHintModal(hintCardHtml);
       // 招2(2026-08-23)：照片數<3時額外打一次型錄比對，跟主流程平行、不阻擋、失敗靜默降級。
       if(list.length < 3) tryCatalogMatch(list);
     } finally {
