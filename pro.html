@@ -56,6 +56,16 @@
   #p2tHintModal .p2t-modal-done { border:none; background:#1b1a16; color:#fff; padding:10px 22px; border-radius:999px;
     font-size:13px; font-weight:600; cursor:pointer; }
   #p2tHintModal .p2t-modal-done:hover { opacity:.9; }
+  /* 2026-09-02，Lyric回報：頁首說明太多、擠壓下方3D模型可視空間——三條上傳提示改成
+     預設收合，按「ⓘ Upload notes」才彈出浮層，不佔版面高度(用position:absolute浮動，
+     不會把main/#viewer往下推)。 */
+  .notes-toggle { font:inherit; font-size:12px; color:#9a7b43; background:none; border:1px solid #ddd8cc; border-radius:999px; padding:4px 12px; cursor:pointer; margin-top:4px; }
+  .notes-toggle:hover { border-color:#9a7b43; }
+  .notes-wrap { position:relative; display:inline-block; }
+  .notes-popover { display:none; position:absolute; top:calc(100% + 8px); left:0; z-index:150; width:min(420px,80vw); background:#fdfaf3; border:1px solid #ddd8cc; border-radius:12px; padding:14px 16px; box-shadow:0 20px 50px -15px rgba(16,16,16,.3); }
+  .notes-popover.open { display:block; }
+  .notes-popover .sub { margin-top:0; }
+  .notes-popover .sub + .sub { margin-top:8px; }
 </style>
 </head>
 <body>
@@ -87,15 +97,22 @@
     <div class="eyebrow">The Design Studio — Pro</div>
     <h1>Shape it. Watch it turn.</h1>
     <div class="sub">Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there</div>
-    <div class="sub" style="color:#c99a4a">⚠ Please upload photos of a bathtub only — basins, shower trays, or washbasins cannot be reliably detected and will be reconstructed as an incorrect bathtub shape.</div>
-    <!-- Phase 6A Stage 1.5(2026-08-21)：攝影指導文案——Joplin實測證實正交側視照能讓側壁曲線
-         自動還原，這行字是覆蓋率的槓桿(近乎零成本，比Stage 2的透視數學校正便宜得多) -->
-    <div class="sub">💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.</div>
-    <!-- 雲端run-to-run非決定性已知限制(2026-08-24，8f裁定歸檔擱置＋補誠實預告)：疑GPU/容器層浮點
-         歸納順序差異，經家族邊界模糊的造型放大成可觀察的比例/家族差異；本機路徑已驗證零漂移，
-         版本一致性已排除；邊界收斂偵測是現行緩解(信心自動降級)。復活條件：使用者實際回報結果
-         不一致，或未來預算檢討騰出自一致性檢查的空間。詳見 R3_研究線總結案報告.md 第16項。 -->
-    <div class="sub">💡 Re-uploading the same photos may occasionally produce a slightly different result — if the shape looks off, try re-uploading or fine-tune it manually below.</div>
+    <div class="notes-wrap">
+      <button type="button" class="notes-toggle" onclick="toggleUploadNotes(event)">ⓘ Upload notes</button>
+      <!-- 三條原本常駐的提示(缸型偵測警語／側拍技巧／重跑差異)收進浮層，預設收合不佔版面高度，
+           見上方.notes-popover樣式與下面toggleUploadNotes() -->
+      <div class="notes-popover" id="uploadNotesPopover">
+        <div class="sub" style="color:#c99a4a;margin-top:0">⚠ Please upload photos of a bathtub only — basins, shower trays, or washbasins cannot be reliably detected and will be reconstructed as an incorrect bathtub shape.</div>
+        <!-- Phase 6A Stage 1.5(2026-08-21)：攝影指導文案——Joplin實測證實正交側視照能讓側壁曲線
+             自動還原，這行字是覆蓋率的槓桿(近乎零成本，比Stage 2的透視數學校正便宜得多) -->
+        <div class="sub">💡 Include one photo taken square-on to the side, level with the rim — this lets us automatically recreate the side-wall profile shape.</div>
+        <!-- 雲端run-to-run非決定性已知限制(2026-08-24，8f裁定歸檔擱置＋補誠實預告)：疑GPU/容器層浮點
+             歸納順序差異，經家族邊界模糊的造型放大成可觀察的比例/家族差異；本機路徑已驗證零漂移，
+             版本一致性已排除；邊界收斂偵測是現行緩解(信心自動降級)。復活條件：使用者實際回報結果
+             不一致，或未來預算檢討騰出自一致性檢查的空間。詳見 R3_研究線總結案報告.md 第16項。 -->
+        <div class="sub">💡 Re-uploading the same photos may occasionally produce a slightly different result — if the shape looks off, try re-uploading or fine-tune it manually below.</div>
+      </div>
+    </div>
   </div>
   <div class="btns">
     <!-- Phase 5(2026-08-20)：照片轉3D，跟下面既有的T5「Site photo notes」是兩個不同功能——
@@ -105,7 +122,6 @@
     <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
     <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
-    <button class="btn btn-upl" onclick="openPhoto()">📷 Site photo notes</button>
     <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
     <!-- Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)——跟上面T5「Site photo notes」是兩個不同功能
          (T5=標註空間位置附詢價信；這裡=把設計缸疊進場景照輸出展示圖)，入口分開避免混淆 -->
@@ -373,27 +389,6 @@
   </div>
 </div>
 
-<!-- 照片分析（簡易版）：上傳現場照 → 手動圈出位置 → 隨詢價寄出（2026-08-17 會議 T5；不做 AI 自動辨識） -->
-<div id="photoModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
-  <div class="sk-box" style="width:min(760px,94vw)">
-    <h2>📷 Site photo notes</h2>
-    <div class="sk-sub">Upload a photo of the space, then draw directly on it to circle where the tub goes or what we should know. It is attached to your inquiry.</div>
-    <div class="sk-tools" style="margin-bottom:8px">
-      <label class="upl">📷 Upload photo<input type="file" id="photoFile" accept="image/*" style="display:none"></label>
-      <button onclick="photoClearStrokes()">Clear markings</button>
-    </div>
-    <div style="max-height:56vh;overflow:auto;border:1px solid #ddd8cc;border-radius:8px;background:#faf8f3;text-align:center">
-      <canvas id="photoPad" style="max-width:100%;cursor:crosshair;touch-action:none"></canvas>
-    </div>
-    <input type="text" id="photoNote" placeholder="Note (e.g. tub goes here, window on the left)" style="width:100%;margin-top:10px">
-    <div id="photoStatus" class="tip" style="margin-top:6px"></div>
-    <div class="sk-actions">
-      <button class="cancel" onclick="closePhoto()">Cancel</button>
-      <button class="ok" onclick="attachPhoto()">✔ Attach to inquiry</button>
-    </div>
-  </div>
-</div>
-
 <!-- Phase 8 M8-1b(2026-08-21)：在你的空間查看(AR)——同機iOS直接開Quick Look，
      其他裝置顯示QR給iPhone/iPad掃(Android v1不支援，見lib-edit3d-ar-ui.js開頭說明) -->
 <div id="arModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
@@ -444,6 +439,16 @@
 <script>
   // 三版本設定（必須在 lib 之前）
   window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true;
+
+  // 2026-09-02：頁首「Upload notes」浮層開關，點toggle開/關，點外面自動關閉
+  function toggleUploadNotes(e){
+    e.stopPropagation();
+    document.getElementById('uploadNotesPopover').classList.toggle('open');
+  }
+  document.addEventListener('click', (e)=>{
+    const pop = document.getElementById('uploadNotesPopover');
+    if(pop && pop.classList.contains('open') && !e.target.closest('.notes-wrap')) pop.classList.remove('open');
+  });
 </script>
 <!-- Phase 5(2026-08-20)：換底Edit3D共用核心(lib-edit3d-*.js)，取代lib-tub-engine/export/import/
      ui/sketch/wizard/handles/i18n八個舊模組；state/scene/pricing/orbit/boot四個核對後零差異沿用不動；
@@ -468,45 +473,4 @@
 <script src="lib-edit3d-photo2tub.js"></script>
 <script src="lib-edit3d-ar-ui.js"></script>
 <script src="lib-edit3d-photocompose.js"></script>
-<script>
-// ===== 照片分析（簡易圈選版）=====
-const _ph = { img:null, strokes:[], cur:null, scale:1 };
-const phCv = document.getElementById('photoPad'), phCtx = phCv.getContext('2d');
-function openPhoto(){ document.getElementById('photoModal').style.display='flex'; }
-function closePhoto(){ document.getElementById('photoModal').style.display='none'; }
-function photoRedraw(){
-  if(!_ph.img) return;
-  phCtx.drawImage(_ph.img, 0, 0, phCv.width, phCv.height);
-  phCtx.strokeStyle='#e03b2f'; phCtx.lineWidth=Math.max(3, phCv.width/220); phCtx.lineCap='round'; phCtx.lineJoin='round';
-  _ph.strokes.concat(_ph.cur?[_ph.cur]:[]).forEach(s=>{
-    phCtx.beginPath(); s.forEach((p,i)=> i?phCtx.lineTo(p[0],p[1]):phCtx.moveTo(p[0],p[1])); phCtx.stroke();
-  });
-}
-function photoClearStrokes(){ _ph.strokes=[]; _ph.cur=null; photoRedraw(); }
-document.getElementById('photoFile').addEventListener('change', e=>{
-  const f = e.target.files[0]; if(!f) return;
-  const img = new Image();
-  img.onload = ()=>{
-    const MAXW = 1100;
-    const k = Math.min(1, MAXW/img.width);
-    phCv.width = Math.round(img.width*k); phCv.height = Math.round(img.height*k);
-    _ph.img = img; _ph.strokes=[]; _ph.cur=null;
-    document.getElementById('photoStatus').textContent='';
-    photoRedraw();
-  };
-  img.src = URL.createObjectURL(f);
-});
-function phPos(e){ const r = phCv.getBoundingClientRect(); return [(e.clientX-r.left)*phCv.width/r.width, (e.clientY-r.top)*phCv.height/r.height]; }
-phCv.addEventListener('pointerdown', e=>{ if(!_ph.img) return; _ph.cur=[phPos(e)]; phCv.setPointerCapture(e.pointerId); });
-phCv.addEventListener('pointermove', e=>{ if(!_ph.cur) return; _ph.cur.push(phPos(e)); photoRedraw(); });
-phCv.addEventListener('pointerup', ()=>{ if(_ph.cur && _ph.cur.length>1) _ph.strokes.push(_ph.cur); _ph.cur=null; photoRedraw(); });
-function attachPhoto(){
-  if(!_ph.img){ document.getElementById('photoStatus').textContent = '⚠ Upload a photo first.'; return; }
-  photoRedraw();
-  window.EXTRA_QUOTE_ATTACH = [[DESIGN_ID + '_site-photo.jpg', phCv.toDataURL('image/jpeg', 0.85)]];
-  window.EXTRA_QUOTE_NOTE = (document.getElementById('photoNote').value || '').replace(/[<>]/g,'');
-  document.getElementById('photoStatus').textContent = '✔ Attached — it will be sent with your design inquiry.';
-  setTimeout(closePhoto, 700);
-}
-</script>
 </body>

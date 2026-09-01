@@ -422,6 +422,8 @@
   // edge閘道~150秒同步回應上限)，固定3秒輪詢status直到done/failed/expired。回傳形狀刻意
   // 模仿舊版單次fetch的{resp, data}，讓呼叫端(handlePhotoUpload)既有的成功/失敗分流邏輯
   // 幾乎不用改。onProgress(stageText)在每次仍在跑的輪詢時呼叫，更新banner文字。
+  const P2T_CLIENT_TIMEOUT_MS = 120000; // 2026-09-02：前端逾時上限，超過就叫使用者重試而不是無限等待(見reconstructAsync)
+
   async function reconstructAsync(fd, onProgress){
     const submitResp = await fetch(P2T_API_BASE + '/reconstruct-submit', {
       method: 'POST', headers: { 'x-api-token': P2T_API_TOKEN }, body: fd,
@@ -432,6 +434,7 @@
     const stageText = {
       queued: p2tT('In queue…'), segmenting: p2tT('Analyzing photos…'), computing: p2tT('Computing shape…'),
     };
+    const pollStart = performance.now();
     while(true){
       await new Promise(r => setTimeout(r, 3000));
       const statusResp = await fetch(`${P2T_API_BASE}/reconstruct-status/${jobId}`, {
@@ -440,6 +443,9 @@
       const status = await statusResp.json().catch(()=>null);
       if(!statusResp.ok || !status) return {resp: statusResp, data: status};
       if(status.status === 'queued' || status.status === 'running'){
+        if(performance.now() - pollStart > P2T_CLIENT_TIMEOUT_MS){
+          return {resp: {ok:false, status:408}, data: {expired:true}};
+        }
         onProgress(stageText[status.stage] || stageText.queued);
         continue;
       }
