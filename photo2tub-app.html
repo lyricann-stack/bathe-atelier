@@ -4540,29 +4540,30 @@ animate();
     'Undo': ['撤销', 'ยกเลิก', '撤銷'],
   };
 
-  // field_confidence欄位代號→人話標籤(2026-09-01，WP-W信心宣稱修法第①輪)：填補{fields}變數
-  // 本身完全沒有i18n的洞(見校準集/WPW_預登記_bathe-atelier文案讀者清單_20260901.md)——p2tT()
-  // 只翻譯句子模板，{fields}是翻完後才字面代入，過去客戶不管切哪個語言看到的都是英文欄位代號。
-  // 用詞優先沿用P2T_I18N既有137條裡出現過的概念(造型/對稱性/收縮/長寬/高度)，查不到才新譯——
-  // 標記於下方註解。**泰文全部未經母語者校對**，dH/side_profile/wall_r/rim_mod四條中文也是
-  // 新譯(無既有precedent)，部署前必須先經人工核對(見預登記文件)。
+  // field_confidence欄位代號→人話標籤(2026-09-01，WP-W信心宣稱修法第①輪；英文標籤2026-09-01
+  // 部署前補上，見校準集/WPW_預登記_bathe-atelier文案讀者清單_20260901.md)：填補{fields}變數
+  // 本身完全沒有i18n的洞——p2tT()只翻譯句子模板，{fields}是翻完後才字面代入，過去客戶不管
+  // 切哪個語言(含英文)看到的都是英文欄位代號本身(shape_code/egg_pct等)。用詞優先沿用
+  // P2T_I18N既有137條裡出現過的概念(英文：shape/symmetry/base taper/external length-width/
+  // height；中文：造型/對稱性/收縮/長寬/高度)，查不到才新譯——標記於下方註解。**泰文全部
+  // 未經母語者校對**，dH/side_profile/wall_r/rim_mod四條(中英文皆)也是新譯(無既有precedent)，
+  // 部署前必須先經人工核對(見預登記文件)。陣列順序[en, zhS, th, zhT]。
   const P2T_FIELD_LABEL = {
-    shape_code:   ['造型', 'รูปทรง', '造型'],                                    // 沿用既有「造型」
-    egg_pct:      ['对称性', 'ความสมมาตร', '對稱性'],                              // 沿用既有「對稱性」
-    taper_pct:    ['底部收缩', 'ความสอบของฐาน', '底部收縮'],                        // 沿用既有「底部收縮」
-    dims:         ['外部长宽', 'ความยาว/ความกว้างภายนอก', '外部長寬'],              // 沿用既有「外部長寬」
-    H_mm:         ['整体高度', 'ความสูงโดยรวม', '整體高度'],                        // 中文沿用既有「整體高度」，泰文由既有詞根組合(非逐字既有句)
-    dH:           ['靠背增高', 'ความสูงพนักพิง', '靠背增高'],                       // 新譯，中文取自後端欄位名「靠背增高判讀」
-    side_profile: ['侧壁曲线', 'เส้นโค้งผนังด้านข้าง', '側壁曲線'],                  // 新譯，無precedent
-    wall_r:       ['缸壁圆角', 'รัศมีมุมผนังอ่าง', '缸壁圓角'],                      // 新譯，無precedent
-    rim_mod:      ['缸缘起伏', 'ความลาดของขอบอ่าง', '缸緣起伏'],                    // 新譯，無precedent
+    shape_code:   ['shape', '造型', 'รูปทรง', '造型'],                                              // 沿用既有(en:「a similar shape in our catalog」等多處；中/泰同前)
+    egg_pct:      ['symmetry', '对称性', 'ความสมมาตร', '對稱性'],                                     // 沿用既有(en:「symmetry (confirmed symmetric)」)
+    taper_pct:    ['base taper', '底部收缩', 'ความสอบของฐาน', '底部收縮'],                             // 沿用既有(en:「base taper (confirmed nearly vertical)」)
+    dims:         ['external length/width', '外部长宽', 'ความยาว/ความกว้างภายนอก', '外部長寬'],       // 沿用既有(en:「external length/width (your estimate)」)
+    H_mm:         ['height', '整体高度', 'ความสูงโดยรวม', '整體高度'],                                 // en沿用既有「height (your estimate)」；中文沿用既有「整體高度」，泰文由既有詞根組合(非逐字既有句)
+    dH:           ['backrest rise', '靠背增高', 'ความสูงพนักพิง', '靠背增高'],                         // 新譯，無precedent，中文取自後端欄位名「靠背增高判讀」
+    side_profile: ['side wall curve', '侧壁曲线', 'เส้นโค้งผนังด้านข้าง', '側壁曲線'],                  // 新譯，無precedent
+    wall_r:       ['wall corner radius', '缸壁圆角', 'รัศมีมุมผนังอ่าง', '缸壁圓角'],                   // 新譯，無precedent
+    rim_mod:      ['rim contour', '缸缘起伏', 'ความลาดของขอบอ่าง', '缸緣起伏'],                        // 新譯，無precedent
   };
   function p2tFieldLabel(k){
     const entry = P2T_FIELD_LABEL[k];
     if(!entry) return k; // 查不到就退回原始英文代號(不是隱藏)，符合這個repo「寧可露代號也不隱藏警告」的既有精神
-    return (typeof LANG !== 'undefined' && LANG !== 'en')
-      ? entry[LANG === 'zhS' ? 0 : (LANG === 'th' ? 1 : 2)]
-      : k; // 英文模式維持原始代號(欄位代號本身就是英文，跟其他訊息模板英文模式=key的行為一致)
+    if(typeof LANG === 'undefined' || LANG === 'en') return entry[0];
+    return entry[LANG === 'zhS' ? 1 : (LANG === 'th' ? 2 : 3)];
   }
   function p2tT(key, vars){
     let s = (typeof LANG !== 'undefined' && LANG !== 'en')
