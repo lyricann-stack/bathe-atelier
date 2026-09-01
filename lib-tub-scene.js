@@ -4,7 +4,7 @@ const canvas = document.getElementById('canvas3d');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
 renderer.setPixelRatio(window.devicePixelRatio);
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x131211);   // Noir 近黑（與新首頁銜接）
+scene.background = new THREE.Color(0xf4f1ea);   // Must Société 米白（2026-09-02，與新首頁銜接；原 Noir 近黑 0x131211）
 
 const camera = new THREE.PerspectiveCamera(42, 1, 10, 30000);
 let orbit = { theta: Math.PI/4, phi: Math.PI/3.2, radius: 3400, target: new THREE.Vector3(0, 280, 0) };
@@ -31,13 +31,14 @@ dir2.position.set(-1800, 1200, -1000);
 scene.add(dir2);
 
 // 地板（單面Material：轉到下方仰視時地板自動消失，不會擋住視線）
-// 深色底座：與白色缸體拉開對比，細節（缸緣、收縮、斜底）看得清楚
+// 淺色底座（2026-09-02，原深色 0x1d1b18 隨 Noir 主題換成米白棚拍感）：
+// 白色缸體改靠陰影／邊緣高光讀出輪廓，不再靠深淺對比
 const floor = new THREE.Mesh(
   new THREE.CircleGeometry(5000, 64),
-  new THREE.MeshStandardMaterial({color:0x1d1b18, roughness:0.95})
+  new THREE.MeshStandardMaterial({color:0xe6e1d5, roughness:0.95})
 );
 floor.rotation.x = -Math.PI/2;
 scene.add(floor);
-const grid = new THREE.GridHelper(6000, 30, 0x2e2a24, 0x24211d);
+const grid = new THREE.GridHelper(6000, 30, 0xc9c2b3, 0xddd8cc);
 grid.position.y = 1;
 scene.add(grid);

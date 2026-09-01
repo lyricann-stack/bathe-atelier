@@ -86,13 +86,13 @@
   }
 /* ===== atelier-skin ===== */
   /* ===== Bathe Atelier 換膚：覆蓋工具風配色，向 B2C 站設計語言對齊 ===== */
-  * { font-family:"DM Sans","Noto Sans TC",system-ui,sans-serif; }
+  * { font-family:"Hanken Grotesk","Noto Sans TC",system-ui,sans-serif; }
   body { background:#f4f1ea; color:#1b1a16; }
   header { background:rgba(244,241,234,.9); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid #ddd8cc; color:#1b1a16; padding:12px clamp(20px,3vw,40px); }
-  header h1 { font-family:'Playfair Display',serif; font-weight:600; font-size:21px; color:#1b1a16; letter-spacing:.01em; }
+  header h1 { font-weight:700; font-size:21px; color:#1b1a16; letter-spacing:-.01em; }
   header .sub { color:#66614f; }
   .brand { text-decoration:none; color:#1b1a16; display:flex; align-items:baseline; gap:8px; letter-spacing:.28em; font-size:14px; font-weight:600; margin-right:18px; }
-  .brand span { font-family:'Playfair Display',serif; font-style:italic; letter-spacing:.02em; font-weight:500; color:#9a7b43; font-size:15px; }
+  .brand span { font-style:normal; letter-spacing:.01em; font-weight:700; color:#9a7b43; font-size:15px; }
   .backlink { color:#66614f; font-size:13px; text-decoration:none; margin-right:16px; white-space:nowrap; }
   .backlink:hover { color:#9a7b43; }
   .lang-sw button { border:1px solid #ddd8cc; color:#66614f; background:transparent; border-radius:999px; }
@@ -123,7 +123,7 @@
   input[type=text] { border:1px solid #ddd8cc; background:#fff; border-radius:8px; }
   .sw.active { border-color:#9a7b43; box-shadow:0 0 0 2px rgba(154,123,67,.28); }
   .sk-box { border-radius:18px; background:#fbfaf6; }
-  .sk-box h2 { font-family:'Playfair Display',serif; color:#1b1a16; }
+  .sk-box h2 { font-weight:700; color:#1b1a16; }
   .sk-col h4 { color:#9a7b43; }
   canvas.pad { border:2px solid #ddd8cc; }
   .sk-tools button, .sk-tools label.upl { border:1px solid #ddd8cc; background:#fff; color:#4a463d; border-radius:999px; }
@@ -134,7 +134,7 @@
   /* 標題帶（與站上頁面開頭一致的語氣） */
   .studio-strip { flex:none; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px 20px; padding:16px clamp(20px,5vw,56px) 14px; background:#f4f1ea; border-bottom:1px solid #e6e1d5; }
   .studio-strip .eyebrow { font-size:11px; letter-spacing:.32em; text-transform:uppercase; color:#9a7b43; font-weight:600; margin-bottom:5px; }
-  .studio-strip h1 { font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(22px,2.4vw,30px); color:#1b1a16; line-height:1.15; }
+  .studio-strip h1 { font-weight:700; font-size:clamp(22px,2.4vw,30px); color:#1b1a16; line-height:1.13; letter-spacing:-.01em; }
   .studio-strip .sub { color:#66614f; font-size:12.5px; margin-top:4px; }
   .studio-strip .btns { display:flex; gap:8px; flex-wrap:wrap; }
   @media (max-width:900px){ [data-nav-links]{ display:none !important; } }
@@ -149,58 +149,9 @@
   .pc-body .pc-price { color:#9a7b43; font-weight:600; font-size:12px; margin-top:2px; }
   #wizModal .rim-label { margin-top:12px; }
   @media (max-width:700px){ #propGrid { grid-template-columns:1fr; } }
-/* ===== noir-skin ===== */
-  /* ===== Noir 換膚（2026-07-24 Yodezeen 式改版）：深色底＋暖白字＋金色點綴，與新首頁銜接 ===== */
-  body { background:#131211; color:#ece7dc; }
-  /* 導覽列（原為米白玻璃，改深色玻璃；蓋過 inline style 需 !important） */
-  body > nav { background:rgba(19,18,17,.82) !important; border-bottom:1px solid #2a2723 !important; backdrop-filter:blur(14px); }
-  body > nav a { color:#cfc7b6 !important; }
-  body > nav a[href="index.html"] { color:#ece7dc !important; }
-  body > nav a[href="customize.html"] { color:#e6c98a !important; }
-  body > nav a[href="contact.html"] { background:transparent !important; border:1px solid #9a7b43 !important; color:#e6c98a !important; }
-  #langSel { border:1px solid #3a352e !important; color:#cfc7b6 !important; background:#131211 !important; }
-  /* 標題帶 */
-  .studio-strip { background:#131211; border-bottom:1px solid #2a2723; }
-  .studio-strip h1 { color:#f4efe4; }
-  .studio-strip .sub { color:#9b937f; }
-  .studio-strip .eyebrow { color:#9a7b43; }
-  .btn-upl { border:1px solid #4a4438; color:#cfc7b6; background:transparent; }
-  .btn-dxf { background:#9a7b43; color:#131211; }
-  .btn-json { background:#ece7dc; color:#131211; }
-  /* 左側面板 */
-  #panel { background:#191714; border-right:1px solid #2a2723; }
-  .group, details.group { background:#201d19; border:1px solid #2e2a24; }
-  .group h3, details.group summary { color:#ece7dc; }
-  .row label, .rim-label, .chk, .chk label { color:#b5ac9c; }
-  .row .val input { background:#131211; border:1px solid #3a352e; color:#ece7dc; }
-  .row .val span, .tip, .desc { color:#8f8776; }
-  .shape-btns button, .drain-btns button { background:#191714; border:1px solid #3a352e; color:#cfc7b6; }
-  .shape-btns button.active, .drain-btns button.active { background:#ece7dc; border-color:#ece7dc; color:#131211; }
-  .preset { background:#241f18; border:1px dashed #9a7b43; color:#e6c98a; }
-  .preset:hover { background:#2c261d; }
-  input[type=text], input[type=email] { background:#131211 !important; border:1px solid #3a352e !important; color:#ece7dc !important; }
-  #spec td { color:#b5ac9c; border-bottom:1px dashed #2e2a24; }
-  #spec td:last-child { color:#ece7dc; }
-  .flow { background:#191714; color:#8f8776; }
-  .flow b { color:#e6c98a; }
-  #warn { color:#e08a5e; }
-  select#shipDest { background:#131211 !important; border:1px solid #3a352e !important; color:#ece7dc !important; }
-  #quoteBtn { background:#9a7b43 !important; color:#131211 !important; }
-  #priceRows span { color:#b5ac9c !important; }
-  #priceRows div span:last-child { color:#ece7dc !important; }
-  /* 價格區 inline 深色文字反白 */
-  #tierName, #fromTotal, #totVal { color:#e6c98a !important; }
-  .group label span { color:#cfc7b6; }
-  .group b { color:#ece7dc; }
-  /* 對話框（手繪／精靈） */
-  .sk-box { background:#1c1a17; }
-  .sk-box h2, #wizModal h2 { color:#ece7dc; }
-  .sk-box .sk-sub, #wizModal .sk-sub { color:#8f8776; }
-  .sk-col h4 { color:#e6c98a; }
-  .sk-tools button, .sk-tools label.upl { background:#191714; border:1px solid #3a352e; color:#cfc7b6; }
-  .sk-actions .ok { background:#9a7b43; color:#131211; }
-  .sk-actions .cancel { background:#2a2723; color:#cfc7b6; }
-  .prop-card { background:#191714; border-color:#3a352e; }
-  .pc-body b { color:#ece7dc; }
-  .pc-body span { color:#8f8776; }
-  canvas.pad { border:2px solid #3a352e; }   /* 手繪畫布維持白底好作畫 */
+/* ===== noir-skin 已於 2026-09-02 移除（換成 Must Société 亮色風格對齊 home-motion.html）=====
+   原始深色規則不放在這裡註解掉：這個區塊裡本來就有幾個單行註解，CSS 註解
+   不支援巢狀，外層註解會在遇到的第一個內層結尾記號提早結束，導致部分規則
+   悄悄留著生效，這裡就踩到過一次，已修正，改成整段刪除。
+   要復用深色版：git show 05844d3:studio.css 叫出這次改版前的完整檔案，
+   或直接看 medium.html 裡同一份規則（用 type text/plain 停用、原樣保留）。 */

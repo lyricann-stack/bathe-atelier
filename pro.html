@@ -8,7 +8,7 @@
 <meta name="description" content="Full parametric control: factory arcs, hand-sketch, CAD import, dimensioned DXF. The manufacturing CAD pack ships with your firm quote.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fflate@0.7.4/umd/index.js"></script>
@@ -18,37 +18,37 @@
 <link rel="stylesheet" href="studio.css">
 <!-- Phase 5(2026-08-20)：Photo2Tub上傳banner樣式，逐字抽自photo2tub-app.html -->
 <style id="p2t-skin">
-  #p2tBanner { padding:12px clamp(20px,5vw,56px); background:#1c1a17; border-bottom:1px solid #2a2723; font-size:13px; max-height:50vh; overflow-y:auto; }
+  #p2tBanner { padding:12px clamp(20px,5vw,56px); background:#fbfaf6; border-bottom:1px solid #e6e1d5; font-size:13px; max-height:50vh; overflow-y:auto; }
   #p2tBanner .p2t-row { display:flex; align-items:center; gap:12px; max-width:1280px; margin:0 auto; }
-  #p2tBanner .p2t-spinner { width:16px; height:16px; border-radius:50%; border:2px solid #3a352e; border-top-color:#9a7b43; animation:p2tspin .8s linear infinite; flex:none; }
+  #p2tBanner .p2t-spinner { width:16px; height:16px; border-radius:50%; border:2px solid #ddd8cc; border-top-color:#9a7b43; animation:p2tspin .8s linear infinite; flex:none; }
   @keyframes p2tspin { to { transform:rotate(360deg); } }
   #p2tBanner.ok { border-left:3px solid #6f9a6f; }
   #p2tBanner.warn { border-left:3px solid #b3541e; }
   #p2tBanner.err { border-left:3px solid #b3413e; }
-  #p2tBanner .p2t-title { font-weight:600; color:#ece7dc; }
-  #p2tBanner .p2t-sub { color:#9b937f; margin-top:2px; }
+  #p2tBanner .p2t-title { font-weight:700; color:#1b1a16; }
+  #p2tBanner .p2t-sub { color:#66614f; margin-top:2px; }
   #p2tDetails { margin-top:8px; max-width:1280px; margin-left:auto; margin-right:auto; }
-  #p2tDetails summary { cursor:pointer; color:#e6c98a; font-size:12px; }
-  #p2tDetails ul { margin:6px 0 0 18px; padding:0; color:#9b937f; font-size:12px; line-height:1.6; }
-  #p2tDetails li.p2t-warn-item { color:#d19a5c; }
+  #p2tDetails summary { cursor:pointer; color:#9a7b43; font-size:12px; }
+  #p2tDetails ul { margin:6px 0 0 18px; padding:0; color:#66614f; font-size:12px; line-height:1.6; }
+  #p2tDetails li.p2t-warn-item { color:#a0611e; }
   /* 單照片救援包招1(2026-08-23)：追問卡片樣式 */
-  .p2t-hint-card { margin-top:10px; max-width:1280px; margin-left:auto; margin-right:auto; padding:10px 14px; background:#221f1a; border:1px solid #3a352e; border-radius:8px; }
-  .p2t-hint-header { color:#e6c98a; font-size:12px; margin-bottom:8px; }
+  .p2t-hint-card { margin-top:10px; max-width:1280px; margin-left:auto; margin-right:auto; padding:10px 14px; background:#fdfaf3; border:1px solid #ddd8cc; border-radius:8px; }
+  .p2t-hint-header { color:#9a7b43; font-size:12px; margin-bottom:8px; }
   .p2t-hint-row { margin-bottom:8px; }
   .p2t-hint-row:last-child { margin-bottom:0; }
-  .p2t-hint-q { color:#ece7dc; font-size:12.5px; margin-bottom:5px; }
+  .p2t-hint-q { color:#1b1a16; font-size:12.5px; margin-bottom:5px; }
   .p2t-hint-opts { display:flex; flex-wrap:wrap; gap:6px; }
-  .p2t-hint-pill { font:inherit; font-size:12px; padding:5px 12px; border-radius:999px; border:1px solid #4a453c; background:#2a2723; color:#c9c2b3; cursor:pointer; }
-  .p2t-hint-pill:hover { border-color:#9a7b43; color:#ece7dc; }
-  .p2t-hint-pill-selected { background:#9a7b43; border-color:#9a7b43; color:#1c1a17; font-weight:600; }
-  .p2t-hint-status { color:#8fb08f; font-size:11.5px; margin-top:4px; min-height:14px; }
+  .p2t-hint-pill { font:inherit; font-size:12px; padding:5px 12px; border-radius:999px; border:1px solid #ddd8cc; background:#fff; color:#4a463d; cursor:pointer; }
+  .p2t-hint-pill:hover { border-color:#9a7b43; color:#1b1a16; }
+  .p2t-hint-pill-selected { background:#9a7b43; border-color:#9a7b43; color:#fff; font-weight:600; }
+  .p2t-hint-status { color:#5a8a5a; font-size:11.5px; margin-top:4px; min-height:14px; }
 </style>
 </head>
 <body>
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
 <nav style="flex:none;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
   <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:20px">
-    <a href="index.html" style="text-decoration:none;color:#1b1a16;display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-family:'Playfair Display',serif;font-style:italic;letter-spacing:.02em;font-weight:500;color:#9a7b43;font-size:16px">Atelier</span></a>
+    <a href="index.html" style="text-decoration:none;color:#1b1a16;display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-style:normal;letter-spacing:.01em;font-weight:700;color:#9a7b43;font-size:16px">Atelier</span></a>
     <div style="display:flex;align-items:center;gap:26px" data-nav-links>
       <a href="materials.html" style="text-decoration:none;color:#4a463d;font-size:14px;letter-spacing:.01em">Materials</a>
       <a href="how-it-works.html" style="text-decoration:none;color:#4a463d;font-size:14px">How it works</a>
@@ -233,7 +233,7 @@
       <h3>⑧ Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>
-        <b id="tierName" style="font-family:'Playfair Display',serif;font-size:18px;color:#9a7b43"></b>
+        <b id="tierName" style="font-weight:700;font-size:18px;color:#9a7b43"></b>
       </div>
       <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
       <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer">
@@ -254,7 +254,7 @@
       <div id="priceRows" style="font-size:13px;border-top:1px solid #ddd8cc;padding-top:7px"></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 10px;border-bottom:2px solid #1b1a16;margin-bottom:10px">
         <span style="font-size:12.5px;color:#8a8478">Estimated price</span>
-        <b id="fromTotal" style="font-family:'Playfair Display',serif;font-size:20px;color:#9a7b43"></b>
+        <b id="fromTotal" style="font-weight:700;font-size:20px;color:#9a7b43"></b>
       </div>
       <div style="margin:2px 0 12px">
         <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Ship to</div>
