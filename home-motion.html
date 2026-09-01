@@ -18,11 +18,9 @@
   ::selection{background:var(--brass);color:var(--ink)}
   a{color:inherit;text-decoration:none}
 
-  /* prototype ribbon */
   .ribbon{position:fixed;z-index:90;left:0;top:0;background:var(--brass);color:var(--ink);
     font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:5px 12px;font-weight:700}
 
-  /* nav */
   nav{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;justify-content:space-between;
     padding:24px clamp(18px,4vw,56px);transition:background .35s ease,padding .35s ease,border-color .35s ease;
     border-bottom:1px solid transparent}
@@ -36,61 +34,59 @@
   nav .cta:hover{background:var(--brass);color:var(--ink)}
   @media(max-width:720px){nav .links{display:none}}
 
-  /* ============ A1 scroll-driven build hero ============ */
-  .build{position:relative;height:520vh}
-  @media(max-width:720px){.build{height:400vh}}
+  /* ===== scroll-driven manufacturing sequence ===== */
+  .build{position:relative;height:600vh}
+  @media(max-width:720px){.build{height:460vh}}
   .stage{position:sticky;top:0;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:flex-end}
 
-  .plate{position:absolute;inset:0;background-size:cover;background-position:center;
-    transform:scale(1.16);filter:blur(30px) brightness(.34) saturate(.18);will-change:filter,transform}
-  .warm{position:absolute;inset:0;opacity:0;pointer-events:none;
-    background:radial-gradient(120% 80% at 50% 62%,rgba(230,201,138,.30) 0%,rgba(154,123,67,.10) 42%,transparent 72%)}
+  .plates{position:absolute;inset:0;will-change:transform}
+  .plate{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;
+    background-color:var(--ink);will-change:opacity}
+  .plate:not(:first-child){opacity:0}
   .vignette{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(to top,rgba(19,18,17,.86) 0%,rgba(19,18,17,.25) 38%,transparent 62%),
-               linear-gradient(to bottom,rgba(19,18,17,.55) 0%,transparent 26%)}
+    background:linear-gradient(to top,rgba(19,18,17,.90) 0%,rgba(19,18,17,.30) 34%,transparent 58%),
+               linear-gradient(to bottom,rgba(19,18,17,.60) 0%,transparent 24%)}
 
-  /* progress rail */
   .rail{position:absolute;left:clamp(18px,4vw,56px);top:50%;transform:translateY(-50%);
-    display:flex;flex-direction:column;gap:14px;z-index:3}
-  .rail i{display:block;width:2px;height:40px;background:rgba(236,231,220,.20);position:relative;overflow:hidden;border-radius:2px}
+    display:flex;flex-direction:column;gap:13px;z-index:3}
+  .rail i{display:block;width:2px;height:34px;background:rgba(236,231,220,.20);position:relative;
+    overflow:hidden;border-radius:2px}
   .rail i::after{content:'';position:absolute;inset:0;background:var(--brass-lt);transform:scaleY(0);
     transform-origin:top;transition:transform .45s ease}
   .rail i.on::after{transform:scaleY(1)}
   @media(max-width:720px){.rail{display:none}}
 
-  /* captions */
   .caps{position:relative;z-index:4;width:100%;padding:0 clamp(18px,4vw,56px) clamp(56px,9vh,104px);
     padding-left:clamp(48px,8vw,120px)}
   .cap{position:absolute;bottom:clamp(56px,9vh,104px);left:clamp(48px,8vw,120px);right:clamp(18px,4vw,56px);
-    max-width:760px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+    max-width:760px;opacity:0;transform:translateY(16px);
+    transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .cap.on{opacity:1;transform:none}
   .cap .eyebrow{font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--brass-lt);margin-bottom:14px}
-  .cap h2{font-family:'Anton',sans-serif;font-size:clamp(40px,7.4vw,104px);line-height:.95;letter-spacing:.02em;
+  .cap h2{font-family:'Anton',sans-serif;font-size:clamp(36px,6.6vw,92px);line-height:.96;letter-spacing:.02em;
     text-transform:uppercase;color:#f4efe4;text-wrap:balance}
-  .cap p{margin-top:16px;max-width:44ch;font-size:clamp(13px,1.35vw,16px);line-height:1.65;color:var(--muted)}
+  .cap p{margin-top:16px;max-width:46ch;font-size:clamp(13px,1.35vw,16px);line-height:1.65;color:var(--muted)}
 
-  /* hero opening caption (centred) */
-  .opening{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:0 22px;transition:opacity .4s ease}
+  .opening{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:0 22px;transition:opacity .4s ease}
   .opening .eyebrow{font-size:10.5px;letter-spacing:.36em;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
   .opening h1{font-family:'Anton',sans-serif;font-size:clamp(46px,9.6vw,142px);line-height:.94;letter-spacing:.02em;
     text-transform:uppercase;color:#f4efe4;text-wrap:balance}
-  .opening p{margin-top:20px;max-width:40ch;font-size:clamp(12.5px,1.3vw,15px);line-height:1.7;color:var(--muted)}
+  .opening p{margin-top:20px;max-width:42ch;font-size:clamp(12.5px,1.3vw,15px);line-height:1.7;color:var(--muted)}
   .cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:1px;height:54px;overflow:hidden}
   .cue::after{content:'';position:absolute;left:0;top:-54px;width:1px;height:54px;background:var(--brass-lt);
     animation:cue 2.2s ease-in-out infinite}
   @keyframes cue{55%,100%{transform:translateY(108px)}}
 
-  /* final CTA */
-  .finalcta{position:absolute;right:clamp(18px,4vw,56px);bottom:clamp(56px,9vh,104px);z-index:5;
+  .finalcta{position:absolute;right:clamp(18px,4vw,56px);bottom:clamp(56px,9vh,104px);z-index:6;
     display:inline-flex;align-items:center;gap:10px;background:var(--brass);color:var(--ink);
     border-radius:999px;padding:14px 26px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
     opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .finalcta.on{opacity:1;transform:none;pointer-events:auto}
   @media(max-width:720px){.finalcta{left:clamp(18px,4vw,56px);right:auto;bottom:24px}}
 
-  /* ============ below the fold ============ */
-  .after{position:relative;z-index:6;background:var(--ink)}
+  /* ===== below the fold ===== */
+  .after{position:relative;z-index:7;background:var(--ink)}
   .band{padding:clamp(80px,13vh,160px) clamp(18px,4vw,56px);max-width:1180px;margin:0 auto}
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
   .reveal.in{opacity:1;transform:none}
@@ -119,8 +115,8 @@
 
   .collection{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,22px);margin-top:20px}
   @media(max-width:800px){.collection{grid-template-columns:1fr}}
-  .piece{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:3/2;background-size:cover;background-position:center;
-    transition:transform .5s ease}
+  .piece{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:3/2;background-size:cover;
+    background-position:center;transition:transform .5s ease}
   .piece:hover{transform:translateY(-6px)}
   .piece span{position:absolute;left:18px;bottom:16px;font-family:'Anton',sans-serif;font-size:20px;
     letter-spacing:.06em;text-transform:uppercase;color:#f4efe4;text-shadow:0 2px 20px rgba(0,0,0,.6)}
@@ -128,7 +124,6 @@
   .sectitle{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass-lt);margin-bottom:22px}
   footer{border-top:1px solid var(--hair);padding:40px clamp(18px,4vw,56px) 64px;text-align:center;
     font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(207,199,182,.55)}
-
 
   @media(prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important}
@@ -151,39 +146,49 @@
 
 <section class="build" id="build">
   <div class="stage">
-    <div class="plate" id="plate" style="background-image:url(assets/hero-darwin.jpg)"></div>
-    <div class="warm" id="warm"></div>
+    <div class="plates" id="plates">
+      <div class="plate" style="background-image:url(assets/make/make-1-sheet.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-2-formed.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-3-reinforced.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-4-polished.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-5-finished.jpg)"></div>
+    </div>
     <div class="vignette"></div>
 
-    <div class="rail" id="rail"><i></i><i></i><i></i><i></i></div>
+    <div class="rail" id="rail"><i></i><i></i><i></i><i></i><i></i></div>
 
     <div class="opening" id="opening">
       <div class="eyebrow">Sculptural Bathtubs · Made to Order</div>
       <h1>Scroll to<br>shape it</h1>
-      <p>A block of nothing on Monday. A single sculpted piece, sanded and filled with light, by the end of it.</p>
+      <p>A flat sheet of acrylic on Monday. One sculpted piece, filled with light, by the end of it.</p>
       <div class="cue"></div>
     </div>
 
     <div class="caps">
       <article class="cap" data-i="0">
-        <div class="eyebrow">01 — The block</div>
-        <h2>It starts as nothing</h2>
-        <p>No mould, no catalogue page. Every Atelier tub begins as a shape that does not exist yet — drawn to your room, not to a warehouse.</p>
+        <div class="eyebrow">01 — The sheet</div>
+        <h2>It starts as a flat sheet</h2>
+        <p>No mould pulled off a shelf, no catalogue page. Twenty millimetres of cast acrylic, still under its film, cut to the footprint your room asked for.</p>
       </article>
       <article class="cap" data-i="1">
-        <div class="eyebrow">02 — The shell</div>
-        <h2>The shell takes its curve</h2>
-        <p>The form is pulled in one continuous surface. No seams to hide, because there is nothing to join.</p>
+        <div class="eyebrow">02 — The pull</div>
+        <h2>One pull, one piece</h2>
+        <p>Heated until it gives, then drawn down in a single vacuum pull. The waste flange stays on for now — proof it came out of the sheet whole, with nothing joined.</p>
       </article>
       <article class="cap" data-i="2">
-        <div class="eyebrow">03 — The surface</div>
-        <h2>Sanded until it stops being a surface</h2>
-        <p>Worked back by hand through every grade, until the eye reads it as one piece of material rather than something manufactured.</p>
+        <div class="eyebrow">03 — The reinforcement</div>
+        <h2>The half you never see</h2>
+        <p>The flange comes off and the outside is backed by hand. Coarse, matte, unphotographed — this is the half that decides whether the tub is still true in twenty years.</p>
       </article>
       <article class="cap" data-i="3">
-        <div class="eyebrow">04 — The finish</div>
+        <div class="eyebrow">04 — The surface</div>
+        <h2>Sanded until it stops being a surface</h2>
+        <p>Worked back through every grade until the eye reads one piece of material rather than something manufactured. One overflow hole is the only interruption.</p>
+      </article>
+      <article class="cap" data-i="4">
+        <div class="eyebrow">05 — The finish</div>
         <h2>Filled with light</h2>
-        <p>Set where the light falls across it. This one is yours alone — the file is closed the day it ships.</p>
+        <p>Set where the light falls across it, brassware run before a pipe is soldered. This one is yours alone — the drawing is retired the day it ships.</p>
       </article>
     </div>
 
@@ -199,12 +204,12 @@
     </div>
     <div class="split">
       <div class="shot reveal" style="background-image:url(assets/act-darwin.jpg)"></div>
-      <div class="body reveal">Most bathtubs are a size decision dressed up as a design decision. We start the other way around — the room, the light, the way you actually get into it — and only then work out how the shape has to behave. Every piece is made once, to one drawing, and the drawing is retired with it.</div>
+      <div class="body reveal">Most bathtubs are a size decision dressed up as a design decision. We start the other way around — the room, the light, the way you actually get into it — and only then work out how the shape has to behave. Every piece is drawn once, pulled once, and the drawing is retired with it.</div>
     </div>
     <div class="stats" id="stats">
       <div class="stat reveal"><b data-to="1" data-suffix=" of 1">0</b><span>Made to one drawing</span><u>true by design</u></div>
-      <div class="stat reveal"><b data-to="3" data-suffix="">0</b><span>Pieces in the collection</span><u>Darwin · Marbella · Victoria</u></div>
-      <div class="stat reveal"><b data-to="0" data-suffix="">0</b><span>Repeats ever made</span><u>the file is closed on ship</u></div>
+      <div class="stat reveal"><b data-to="5" data-suffix="">0</b><span>Stages from sheet to bath</span><u>sheet · pull · backing · sand · finish</u></div>
+      <div class="stat reveal"><b data-to="0" data-suffix="">0</b><span>Repeats ever made</span><u>the drawing is retired on ship</u></div>
     </div>
   </div>
 
@@ -217,21 +222,29 @@
     </div>
   </div>
 
-
   <footer>Bathe Atelier · Prototype 2026-09-01</footer>
 </div>
 
 <script>
 (function(){
-  var build=document.getElementById('build'), plate=document.getElementById('plate'),
-      warm=document.getElementById('warm'), opening=document.getElementById('opening'),
+  var build=document.getElementById('build'),
+      plates=[].slice.call(document.querySelectorAll('.plate')),
+      wrap=document.getElementById('plates'),
+      opening=document.getElementById('opening'),
       nav=document.getElementById('nav'), cta=document.getElementById('finalcta'),
       caps=[].slice.call(document.querySelectorAll('.cap')),
       ticks=[].slice.call(document.querySelectorAll('.rail i')),
+      N=plates.length,
       reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function lerp(a,b,t){return a+(b-a)*t}
   function clamp(v,a,b){return v<a?a:v>b?b:v}
+  function lerp(a,b,t){return a+(b-a)*t}
+
+  // preload so a stage never flashes in mid-scroll
+  plates.forEach(function(p){
+    var m=/url\(["']?(.*?)["']?\)/.exec(p.style.backgroundImage);
+    if(m){ var im=new Image(); im.src=m[1]; }
+  });
 
   var raf=null;
   function frame(){
@@ -240,41 +253,39 @@
     var total=build.offsetHeight-window.innerHeight;
     var p=clamp(-r.top/total,0,1);
 
-    // opening fades out over the first 12%
-    var o=clamp(p/0.12,0,1);
+    // opening title clears over the first 11%
+    var o=clamp(p/0.11,0,1);
     opening.style.opacity=String(1-o);
 
-    // build progress runs from 8% to 96%
-    var b=clamp((p-0.08)/0.88,0,1);
-    var eased=b*b*(3-2*b);
+    // stage position 0..N-1 across the build range
+    var b=clamp((p-0.07)/0.88,0,1);
+    var pos=b*(N-1);
 
-    var defocus=(1-b)*(1-b);           // blur clears early, light comes later
-    plate.style.filter='blur('+(30*defocus).toFixed(2)+'px) brightness('+
-      lerp(.34,1.04,eased).toFixed(3)+') saturate('+lerp(.18,1.06,eased).toFixed(3)+')';
-    plate.style.transform='scale('+lerp(1.16,1.0,eased).toFixed(4)+')';
-    warm.style.opacity=clamp((eased-0.62)/0.38,0,1).toFixed(3);
-
-    // stage index 0..3 over the build range
-    var idx=Math.min(3,Math.floor(b*4.0));
-    for(var i=0;i<caps.length;i++){
-      caps[i].classList.toggle('on', i===idx && o>0.85);
-      if(ticks[i]) ticks[i].classList.toggle('on', i<=idx && o>0.85);
+    // layer 0 is the base; each upper layer ramps in over its own step,
+    // so exactly one crossfade is in flight and total opacity stays 1
+    for(var i=1;i<N;i++){
+      plates[i].style.opacity=clamp(pos-i+1,0,1).toFixed(3);
     }
-    cta.classList.toggle('on', b>0.86);
-    nav.classList.toggle('solid', p>0.985 || window.scrollY>build.offsetHeight-window.innerHeight*0.4);
+    wrap.style.transform='scale('+lerp(1.05,1.0,b).toFixed(4)+')';
+
+    var idx=Math.min(N-1,Math.round(pos));
+    for(var j=0;j<caps.length;j++){
+      caps[j].classList.toggle('on', j===idx && o>0.85);
+      if(ticks[j]) ticks[j].classList.toggle('on', j<=idx && o>0.85);
+    }
+    cta.classList.toggle('on', b>0.88);
+    nav.classList.toggle('solid', window.scrollY>build.offsetHeight-window.innerHeight*0.4);
   }
   function onScroll(){ if(raf===null) raf=requestAnimationFrame(frame); }
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll);
   frame();
 
-  // scroll reveal
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:0.16});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  // count-up
   var counted=new WeakSet();
   var io2=new IntersectionObserver(function(es){
     es.forEach(function(e){
@@ -295,5 +306,6 @@
   document.querySelectorAll('.stat b').forEach(function(el){ io2.observe(el); });
 })();
 </script>
+
 </body>
 </html>
