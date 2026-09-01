@@ -187,6 +187,26 @@
   .matnote{margin-top:18px;font-size:13.5px;color:var(--muted)}
   .matnote a{color:var(--accent-deep);font-weight:700;border-bottom:1px solid var(--accent);padding-bottom:2px}
 
+  /* three ways into the studio */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px);margin-top:22px}
+  @media(max-width:900px){.tiers{grid-template-columns:1fr}}
+  .tier{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,34px);background:var(--paper);
+    display:flex;flex-direction:column;transition:transform .35s ease,box-shadow .35s ease}
+  .tier:hover{transform:translateY(-5px);box-shadow:0 24px 46px -18px rgba(16,16,16,.18)}
+  .tier .meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .tier .name{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep)}
+  .tier .time{font-size:11px;letter-spacing:.08em;color:var(--muted)}
+  .tier h3{margin-top:12px;font-size:21px;font-weight:700;letter-spacing:-.01em}
+  .tier .lede{margin-top:10px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+  .tier ul{margin-top:16px;list-style:none;flex:1}
+  .tier li{padding:8px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--muted)}
+  .tier li::before{content:'—';color:var(--accent);margin-right:9px}
+  .tier .go{margin-top:20px;display:inline-block;border:1px solid var(--ink);border-radius:999px;padding:11px 20px;
+    text-align:center;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink);
+    transition:background .25s,color .25s}
+  .tier:hover .go{background:var(--ink);color:var(--paper)}
+  .tier.featured{background:var(--cream)}
+
   /* two ways to start */
   .ways{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,24px);margin-top:26px}
   @media(max-width:800px){.ways{grid-template-columns:1fr}}
@@ -247,7 +267,7 @@
     <a href="#materials">Materials</a>
     <a href="#how">How it works</a>
   </div>
-  <a class="cta" href="customize.html">Open the Design Studio</a>
+  <a class="cta" href="#studio">Open the Design Studio</a>
 </nav>
 
 <div class="intro">
@@ -305,12 +325,52 @@
       </article>
     </div>
 
-    <a class="finalcta" id="finalcta" href="customize.html">Open the Design Studio →</a>
+    <a class="finalcta" id="finalcta" href="#studio">Open the Design Studio →</a>
   </div>
 </section>
 </div>
 
 <div class="after">
+  <div class="band" id="studio">
+    <div class="sectitle reveal">Design Studio · Three ways in</div>
+    <div class="seclede reveal">Same atelier, same craft — choose how deep you go.</div>
+    <div class="tiers">
+      <a class="tier reveal" href="basic.html">
+        <div class="meta"><span class="name">Basic</span><span class="time">≈ 2 minutes</span></div>
+        <h3>Designed around you</h3>
+        <p class="lede">Answer five questions — we design four tubs for your space and body.</p>
+        <ul>
+          <li>No tools to learn</li>
+          <li>Four proposals, ergonomically sized</li>
+          <li>Adjust size &amp; colour, then get your quote</li>
+        </ul>
+        <span class="go">Start with 5 questions →</span>
+      </a>
+      <a class="tier featured reveal" href="medium.html">
+        <div class="meta"><span class="name">Medium</span><span class="time">≈ 10 minutes</span></div>
+        <h3>Edit it in 3D</h3>
+        <p class="lede">Upload a photo, drawing or CAD — or start from a shape — and pull the outline directly on the tub.</p>
+        <ul>
+          <li>Photos &amp; drawings auto-traced into a tub</li>
+          <li>Pull edge nodes live on the 3D model</li>
+          <li>Instant price as you edit</li>
+        </ul>
+        <span class="go">Open the studio →</span>
+      </a>
+      <a class="tier reveal" href="pro.html">
+        <div class="meta"><span class="name">Pro</span><span class="time">No limits</span></div>
+        <h3>Full parametric control</h3>
+        <p class="lede">For designers — factory arcs, hand-sketch, CAD import, dimensioned DXF.</p>
+        <ul>
+          <li>Factory-grade mould parameters</li>
+          <li>Sketch or import your own CAD</li>
+          <li>Manufacturing CAD pack with your firm quote</li>
+        </ul>
+        <span class="go">Enter Pro →</span>
+      </a>
+    </div>
+  </div>
+
   <div class="band" id="way">
     <div class="quote reveal">
       <div class="eyebrow">The Atelier Way</div>
@@ -502,7 +562,7 @@
         </div>
         <div class="col">
           <span>Start</span>
-          <a href="customize.html">Design studio</a>
+          <a href="#studio">Design studio</a>
           <a href="contact.html">Free sample kit</a>
           <a href="contact.html">Design consultation</a>
           <a href="guides.html">All guides</a>
