@@ -246,9 +246,7 @@
     if(m){ var im=new Image(); im.src=m[1]; }
   });
 
-  var raf=null;
   function frame(){
-    raf=null;
     var r=build.getBoundingClientRect();
     var total=build.offsetHeight-window.innerHeight;
     var p=clamp(-r.top/total,0,1);
@@ -276,9 +274,11 @@
     cta.classList.toggle('on', b>0.88);
     nav.classList.toggle('solid', window.scrollY>build.offsetHeight-window.innerHeight*0.4);
   }
-  function onScroll(){ if(raf===null) raf=requestAnimationFrame(frame); }
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',onScroll);
+  // called straight from the scroll event: the browser already throttles passive
+  // scroll listeners to the frame rate, and an rAF flag would stay latched in a
+  // background tab where rAF never fires, freezing the sequence
+  window.addEventListener('scroll',frame,{passive:true});
+  window.addEventListener('resize',frame);
   frame();
 
   var io=new IntersectionObserver(function(es){
