@@ -7,63 +7,81 @@
 <title>Bathe Atelier — Motion Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#131211; --paper:#ece7dc; --muted:#cfc7b6;
-    --brass:#9a7b43; --brass-lt:#e6c98a; --hair:rgba(236,231,220,.14);
+    /* page palette — Must Société reference (white, ink, caramel) */
+    --ink:#101010; --paper:#ffffff; --cream:#f4f2ed; --line:rgba(16,16,16,.10);
+    --muted:#6b6b6b; --accent:#c69e63; --accent-deep:#9a7b43;
+
+    /* film-card palette — the process sequence stays a contained dark card
+       until the bright-studio renders (製程五圖_提示詞_亮底版.md) replace it */
+    --film-ink:#131211; --film-paper:#ece7dc; --film-muted:#cfc7b6;
+    --film-accent:#e6c98a; --film-hair:rgba(236,231,220,.14);
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--ink);color:var(--paper);font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-  ::selection{background:var(--brass);color:var(--ink)}
+  body{background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--ink)}
   a{color:inherit;text-decoration:none}
 
-  .ribbon{position:fixed;z-index:90;left:0;top:0;background:var(--brass);color:var(--ink);
+  .ribbon{position:fixed;z-index:90;left:0;top:0;background:var(--ink);color:var(--paper);
     font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:5px 12px;font-weight:700}
 
   nav{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:24px clamp(18px,4vw,56px);transition:background .35s ease,padding .35s ease,border-color .35s ease;
-    border-bottom:1px solid transparent}
-  nav.solid{background:rgba(19,18,17,.88);backdrop-filter:blur(14px);padding-block:15px;border-bottom-color:var(--hair)}
+    padding:22px clamp(18px,4vw,56px);transition:background .3s ease,padding .3s ease,border-color .3s ease,box-shadow .3s ease;
+    background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid transparent}
+  nav.solid{border-bottom-color:var(--line);box-shadow:0 1px 0 var(--line);padding-block:15px}
   nav .links{display:flex;gap:clamp(14px,3vw,40px)}
-  nav .links a{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.82;transition:opacity .2s}
+  nav .links a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;transition:opacity .2s}
   nav .links a:hover{opacity:1}
-  nav .brand{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.09em;text-transform:uppercase}
-  nav .cta{border:1px solid var(--brass);border-radius:999px;padding:9px 17px;color:var(--brass-lt);
-    font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;transition:background .25s,color .25s}
-  nav .cta:hover{background:var(--brass);color:var(--ink)}
+  nav .brand{font-size:16px;font-weight:700;letter-spacing:.01em}
+  nav .cta{border:1px solid var(--ink);border-radius:999px;padding:9px 18px;color:var(--ink);
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:background .25s,color .25s}
+  nav .cta:hover{background:var(--ink);color:var(--paper)}
   @media(max-width:720px){nav .links{display:none}}
   @media(max-width:480px){
     nav{padding-inline:16px}
-    nav .brand{font-size:15px}
-    nav .cta{font-size:9.5px;letter-spacing:.12em;padding:8px 12px}
+    nav .brand{font-size:14px}
+    nav .cta{font-size:9.5px;letter-spacing:.06em;padding:8px 12px}
   }
 
-  /* ===== scroll-driven manufacturing sequence ===== */
-  .build{position:relative;height:600vh}
+  /* ===== opening band (light) ===== */
+  .intro{padding:calc(96px + 14vh) clamp(18px,4vw,56px) 10vh;max-width:900px}
+  .intro .eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:20px;font-weight:600}
+  .intro h1{font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+  .intro p{margin-top:20px;max-width:52ch;font-size:clamp(14px,1.3vw,17px);line-height:1.65;color:var(--muted)}
+
+  /* ===== scroll-driven manufacturing sequence — contained film card =====
+     Kept as the old dark render set for now (see 製程五圖_提示詞_亮底版.md):
+     once the bright-studio five images exist, swap the five plate URLs below
+     and this card can go full-bleed light like the rest of the page. */
+  .filmwrap{padding:0 clamp(14px,3vw,40px) 10vh}
+  .build{position:relative;height:600vh;max-width:1360px;margin:0 auto}
   @media(max-width:720px){.build{height:460vh}}
-  .stage{position:sticky;top:0;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:flex-end}
+  .stage{position:sticky;top:88px;height:calc(100vh - 132px);min-height:520px;border-radius:26px;
+    overflow:hidden;display:flex;align-items:flex-end;box-shadow:0 40px 90px -30px rgba(16,16,16,.35)}
+  @media(max-width:720px){.stage{top:76px;height:calc(100vh - 108px);border-radius:18px}}
 
   .plates{position:absolute;inset:0;will-change:transform}
   .plate{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;
-    background-color:var(--ink);will-change:opacity}
+    background-color:var(--film-ink);will-change:opacity}
   .plate:not(:first-child){opacity:0}
   .vignette{position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(to top,rgba(19,18,17,.90) 0%,rgba(19,18,17,.30) 34%,transparent 58%),
                linear-gradient(to bottom,rgba(19,18,17,.60) 0%,transparent 24%)}
 
-  .rail{position:absolute;left:clamp(18px,4vw,56px);top:50%;transform:translateY(-50%);
+  .rail{position:absolute;left:clamp(18px,4vw,44px);top:50%;transform:translateY(-50%);
     display:flex;flex-direction:column;gap:13px;z-index:3}
   .rail i{display:block;width:2px;height:34px;background:rgba(236,231,220,.20);position:relative;
     overflow:hidden;border-radius:2px}
-  .rail i::after{content:'';position:absolute;inset:0;background:var(--brass-lt);transform:scaleY(0);
+  .rail i::after{content:'';position:absolute;inset:0;background:var(--film-accent);transform:scaleY(0);
     transform-origin:top;transition:transform .45s ease}
   .rail i.on::after{transform:scaleY(1)}
   @media(max-width:720px){.rail{display:none}}
 
   /* Portrait phones: `cover` crops these wide renders down to a featureless
      middle strip, so the object stops reading. The renders sit on the same
-     near-black as the page, so `contain` letterboxes invisibly — the object
+     near-black as the card, so `contain` letterboxes invisibly — the object
      stays whole and floats in the void, which is the point. Sitting it high
      leaves the lower third for the caption. */
   @media(max-width:720px){
@@ -71,78 +89,80 @@
     .vignette{background:linear-gradient(to top,rgba(19,18,17,.94) 0%,rgba(19,18,17,.55) 26%,transparent 46%)}
   }
 
-  .caps{position:relative;z-index:4;width:100%;padding:0 clamp(18px,4vw,56px) clamp(56px,9vh,104px);
-    padding-left:clamp(48px,8vw,120px)}
-  .cap{position:absolute;bottom:clamp(56px,9vh,104px);left:clamp(48px,8vw,120px);right:clamp(18px,4vw,56px);
-    max-width:760px;opacity:0;transform:translateY(16px);
+  .caps{position:relative;z-index:4;width:100%;padding:0 clamp(18px,4vw,44px) clamp(48px,8vh,88px);
+    padding-left:clamp(40px,7vw,96px)}
+  .cap{position:absolute;bottom:clamp(48px,8vh,88px);left:clamp(40px,7vw,96px);right:clamp(18px,4vw,44px);
+    max-width:680px;opacity:0;transform:translateY(16px);
     transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .cap.on{opacity:1;transform:none}
-  .cap .eyebrow{font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--brass-lt);margin-bottom:14px}
-  .cap h2{font-family:'Anton',sans-serif;font-size:clamp(36px,6.6vw,92px);line-height:.96;letter-spacing:.02em;
-    text-transform:uppercase;color:#f4efe4;text-wrap:balance}
-  .cap p{margin-top:16px;max-width:46ch;font-size:clamp(13px,1.35vw,16px);line-height:1.65;color:var(--muted)}
+  .cap .eyebrow{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--film-accent);margin-bottom:12px;font-weight:600}
+  .cap h2{font-size:clamp(26px,4.4vw,48px);font-weight:700;line-height:1.06;letter-spacing:-.01em;
+    color:#f4efe4;text-wrap:balance}
+  .cap p{margin-top:14px;max-width:46ch;font-size:clamp(13px,1.3vw,15.5px);line-height:1.62;color:var(--film-muted)}
 
-  .opening{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;
+  .filmopen{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;
     justify-content:center;text-align:center;padding:0 22px;transition:opacity .4s ease}
-  .opening .eyebrow{font-size:10.5px;letter-spacing:.36em;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
-  .opening h1{font-family:'Anton',sans-serif;font-size:clamp(46px,9.6vw,142px);line-height:.94;letter-spacing:.02em;
-    text-transform:uppercase;color:#f4efe4;text-wrap:balance}
-  .opening p{margin-top:20px;max-width:42ch;font-size:clamp(12.5px,1.3vw,15px);line-height:1.7;color:var(--muted)}
-  .cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:1px;height:54px;overflow:hidden}
-  .cue::after{content:'';position:absolute;left:0;top:-54px;width:1px;height:54px;background:var(--brass-lt);
+  .filmopen .eyebrow{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--film-muted);margin-bottom:20px;font-weight:600}
+  .filmopen h2{font-size:clamp(30px,6vw,72px);font-weight:700;line-height:1.02;letter-spacing:-.01em;
+    color:#f4efe4;text-wrap:balance}
+  .filmopen p{margin-top:18px;max-width:42ch;font-size:clamp(12.5px,1.3vw,15px);line-height:1.65;color:var(--film-muted)}
+  .cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);width:1px;height:46px;overflow:hidden}
+  .cue::after{content:'';position:absolute;left:0;top:-46px;width:1px;height:46px;background:var(--film-accent);
     animation:cue 2.2s ease-in-out infinite}
-  @keyframes cue{55%,100%{transform:translateY(108px)}}
+  @keyframes cue{55%,100%{transform:translateY(92px)}}
 
-  .finalcta{position:absolute;right:clamp(18px,4vw,56px);bottom:clamp(56px,9vh,104px);z-index:6;
-    display:inline-flex;align-items:center;gap:10px;background:var(--brass);color:var(--ink);
-    border-radius:999px;padding:14px 26px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+  .finalcta{position:absolute;right:clamp(18px,4vw,44px);bottom:clamp(48px,8vh,88px);z-index:6;
+    display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--film-ink);
+    border-radius:999px;padding:13px 24px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
     opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .finalcta.on{opacity:1;transform:none;pointer-events:auto}
-  /* narrow screens stack the CTA under the caption, so lift the caption clear of it */
   @media(max-width:720px){
-    .finalcta{left:clamp(18px,4vw,56px);right:auto;bottom:24px}
-    .cap{bottom:100px}
+    .finalcta{left:clamp(18px,4vw,44px);right:auto;bottom:20px;padding:11px 18px;font-size:10px}
+    .cap{bottom:88px}
   }
 
-  /* ===== below the fold ===== */
-  .after{position:relative;z-index:7;background:var(--ink)}
-  .band{padding:clamp(80px,13vh,160px) clamp(18px,4vw,56px);max-width:1180px;margin:0 auto}
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  /* ===== below the fold — light page ===== */
+  .after{position:relative;z-index:7;background:var(--paper)}
+  .band{padding:clamp(70px,11vh,140px) clamp(18px,4vw,56px);max-width:1180px;margin:0 auto}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
   .reveal.in{opacity:1;transform:none}
 
-  .quote{border:1px solid var(--hair);border-radius:14px;padding:clamp(28px,4.5vw,54px);background:rgba(236,231,220,.035)}
-  .quote .eyebrow{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass-lt);margin-bottom:20px}
-  .quote p{font-family:'Anton',sans-serif;font-size:clamp(26px,4.2vw,54px);line-height:1.12;letter-spacing:.01em;
-    text-transform:uppercase;color:#f4efe4;text-wrap:balance}
-  .quote p em{font-style:normal;color:var(--brass-lt)}
+  .quote{border:1px solid var(--line);border-radius:18px;padding:clamp(28px,4.5vw,54px);background:var(--cream)}
+  .quote .eyebrow{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:18px;font-weight:600}
+  .quote p{font-size:clamp(22px,3.4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.01em;
+    color:var(--ink);text-wrap:balance}
+  .quote p em{font-style:normal;color:var(--accent-deep)}
 
-  .split{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(18px,3vw,40px);margin-top:20px}
+  .split{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(18px,3vw,40px);margin-top:22px}
   @media(max-width:800px){.split{grid-template-columns:1fr}}
-  .split .shot{border-radius:14px;overflow:hidden;background:#0d0c0b;aspect-ratio:4/3;
+  .split .shot{border-radius:16px;overflow:hidden;background:var(--cream);aspect-ratio:4/3;
     background-size:cover;background-position:center}
-  .split .body{border:1px solid var(--hair);border-radius:14px;padding:clamp(22px,3vw,38px);
-    font-size:clamp(13px,1.35vw,15.5px);line-height:1.8;color:var(--muted);display:flex;align-items:center}
+  .split .body{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,38px);
+    font-size:clamp(13.5px,1.3vw,16px);line-height:1.8;color:var(--muted);display:flex;align-items:center}
 
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,22px);margin-top:20px}
   @media(max-width:720px){.stats{grid-template-columns:1fr}}
-  .stat{border:1px solid var(--hair);border-radius:14px;padding:clamp(20px,2.6vw,32px)}
-  .stat b{display:block;font-family:'Anton',sans-serif;font-size:clamp(34px,5vw,58px);letter-spacing:.02em;
-    color:var(--brass-lt);font-variant-numeric:tabular-nums;line-height:1}
-  .stat span{display:block;margin-top:10px;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
-  .stat u{display:block;margin-top:12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-    color:rgba(207,199,182,.5);text-decoration:none}
+  .stat{border:1px solid var(--line);border-radius:16px;padding:clamp(20px,2.6vw,32px)}
+  .stat b{display:block;font-size:clamp(32px,4.6vw,52px);font-weight:800;letter-spacing:-.02em;
+    color:var(--accent-deep);font-variant-numeric:tabular-nums;line-height:1}
+  .stat span{display:block;margin-top:10px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+  .stat u{display:block;margin-top:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);text-decoration:none}
 
-  .collection{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,22px);margin-top:20px}
-  @media(max-width:800px){.collection{grid-template-columns:1fr}}
-  .piece{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:3/2;background-size:cover;
-    background-position:center;transition:transform .5s ease}
-  .piece:hover{transform:translateY(-6px)}
-  .piece span{position:absolute;left:18px;bottom:16px;font-family:'Anton',sans-serif;font-size:20px;
-    letter-spacing:.06em;text-transform:uppercase;color:#f4efe4;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+  .collection{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px);margin-top:22px}
+  @media(max-width:900px){.collection{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.collection{grid-template-columns:1fr}}
+  .piece{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--paper);
+    transition:transform .35s ease,box-shadow .35s ease;display:block}
+  .piece:hover{transform:translateY(-5px);box-shadow:0 24px 46px -18px rgba(16,16,16,.18)}
+  .piece .img{aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--cream)}
+  .piece .info{padding:16px 18px 20px}
+  .piece .name{display:block;font-size:15px;font-weight:700}
+  .piece .tag{display:block;margin-top:4px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 
-  .sectitle{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass-lt);margin-bottom:22px}
-  footer{border-top:1px solid var(--hair);padding:40px clamp(18px,4vw,56px) 64px;text-align:center;
-    font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(207,199,182,.55)}
+  .sectitle{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:22px;font-weight:600}
+  footer{border-top:1px solid var(--line);padding:36px clamp(18px,4vw,56px) 60px;text-align:center;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
   @media(prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important}
@@ -163,6 +183,13 @@
   <a class="cta" href="#">Open the Design Studio</a>
 </nav>
 
+<div class="intro">
+  <div class="eyebrow">Sculptural Bathtubs · Made to Order</div>
+  <h1>One drawing. One bathtub. Scroll to watch it take shape.</h1>
+  <p>A flat sheet of acrylic on Monday. One sculpted piece, filled with light, by the end of it — shown below exactly as it leaves the workshop.</p>
+</div>
+
+<div class="filmwrap">
 <section class="build" id="build">
   <div class="stage">
     <div class="plates" id="plates">
@@ -176,10 +203,10 @@
 
     <div class="rail" id="rail"><i></i><i></i><i></i><i></i><i></i></div>
 
-    <div class="opening" id="opening">
-      <div class="eyebrow">Sculptural Bathtubs · Made to Order</div>
-      <h1>Scroll to<br>shape it</h1>
-      <p>A flat sheet of acrylic on Monday. One sculpted piece, filled with light, by the end of it.</p>
+    <div class="filmopen" id="opening">
+      <div class="eyebrow">Five stages, one piece</div>
+      <h2>Scroll to<br>shape it</h2>
+      <p>No mould pulled off a shelf, no catalogue page — a single sheet, drawn out by hand.</p>
       <div class="cue"></div>
     </div>
 
@@ -214,6 +241,7 @@
     <a class="finalcta" id="finalcta" href="#">Open the Design Studio →</a>
   </div>
 </section>
+</div>
 
 <div class="after">
   <div class="band" id="way">
@@ -222,7 +250,7 @@
       <p>The half you can see is the curve.<br>The half that matters is <em>that no one else has it.</em></p>
     </div>
     <div class="split">
-      <div class="shot reveal" style="background-image:url(assets/act-darwin.jpg)"></div>
+      <div class="shot reveal" style="background-image:url(assets/product/prod-boulder-scene.jpg)"></div>
       <div class="body reveal">Most bathtubs are a size decision dressed up as a design decision. We start the other way around — the room, the light, the way you actually get into it — and only then work out how the shape has to behave. Every piece is drawn once, pulled once, and the drawing is retired with it.</div>
     </div>
     <div class="stats" id="stats">
@@ -235,9 +263,30 @@
   <div class="band" id="collection">
     <div class="sectitle reveal">The Collection</div>
     <div class="collection">
-      <a class="piece reveal" style="background-image:url(assets/act-darwin.jpg)"><span>Darwin</span></a>
-      <a class="piece reveal" style="background-image:url(assets/act-marbella.jpg)"><span>Marbella</span></a>
-      <a class="piece reveal" style="background-image:url(assets/act-victoria.jpg)"><span>Victoria</span></a>
+      <a class="piece reveal">
+        <div class="img" style="background-image:url(assets/product/prod-sherman.jpg)"></div>
+        <div class="info"><span class="name">Sherman</span><span class="tag">Wall-set, faceted</span></div>
+      </a>
+      <a class="piece reveal">
+        <div class="img" style="background-image:url(assets/product/prod-taranto.jpg)"></div>
+        <div class="info"><span class="name">Taranto</span><span class="tag">Freestanding, sculpted</span></div>
+      </a>
+      <a class="piece reveal">
+        <div class="img" style="background-image:url(assets/product/prod-vik.jpg)"></div>
+        <div class="info"><span class="name">Vik</span><span class="tag">Freestanding, soft oval</span></div>
+      </a>
+      <a class="piece reveal">
+        <div class="img" style="background-image:url(assets/product/prod-colmar.jpg)"></div>
+        <div class="info"><span class="name">Colmar</span><span class="tag">Freestanding, oval</span></div>
+      </a>
+      <a class="piece reveal">
+        <div class="img" style="background-image:url(assets/product/prod-hickory.jpg)"></div>
+        <div class="info"><span class="name">Hickory</span><span class="tag">Freestanding, stackable</span></div>
+      </a>
+      <a class="piece reveal">
+        <div class="img" style="background-image:url(assets/product/prod-warren.jpg)"></div>
+        <div class="info"><span class="name">Warren</span><span class="tag">Freestanding, slipper</span></div>
+      </a>
     </div>
   </div>
 
@@ -291,7 +340,7 @@
       if(ticks[j]) ticks[j].classList.toggle('on', j<=idx && o>0.85);
     }
     cta.classList.toggle('on', b>0.88);
-    nav.classList.toggle('solid', window.scrollY>build.offsetHeight-window.innerHeight*0.4);
+    nav.classList.toggle('solid', window.scrollY>40);
   }
   // called straight from the scroll event: the browser already throttles passive
   // scroll listeners to the frame rate, and an rAF flag would stay latched in a
