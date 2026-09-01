@@ -1,11 +1,15 @@
 /* studio.css — 由 customize.html 的三個 <style> 區塊（基礎＋atelier-skin＋noir-skin）逐字抽出，供 basic/medium/pro 三版本頁共用 */
   * { margin:0; padding:0; box-sizing:border-box; font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; }
-  /* min-height + scroll fallback, not a hard height:100vh + overflow:hidden (2026-09-02 fix):
-     dynamic content pushed above <main> (the Photo2Tub analysis banner, follow-up hint
-     cards) can make the page taller than one viewport — with a fixed height the excess
-     was clipped with no way to reach it (nothing below scrolled into view). Now it only
-     scrolls when content actually doesn't fit; the normal no-banner case is unaffected. */
-  body { display:flex; flex-direction:column; min-height:100vh; overflow-y:auto; background:#f0f2f5; }
+  /* 2026-09-02：曾短暫改成 min-height:100vh + overflow-y:auto 想解決「內容被推出視窗外
+     捲不到」——結果引入更嚴重的問題：body 一旦沒有明確高度，main/​#panel/​#viewer 這組
+     flex 版面就失去可以拿來算「剩餘空間」的基準，#panel 自己的 overflow-y:auto 不會再
+     觸發（它需要父層給一個明確高度才擠得出捲軸），逼著 #viewer 跟著 #panel 的完整內容
+     長度一起撐高到 1700px 以上——3D 模型因此被推到非常下面，滑鼠一放到模型上想往下拉
+     頁面，又被 canvas 自己的 wheel 事件搶去做縮放，兩個問題疊在一起更難用。
+     真正的根因其實已經在追問卡片改彈窗那次修掉了（本來會撐爆版面的是卡片，不是這個
+     body 規則）；卡片不再內嵌之後，#p2tBanner 自己的 max-height:50vh+overflow-y:auto
+     已經夠用，不需要也不該讓整個 body 跟著捲動。改回原本單一視窗版面。 */
+  body { display:flex; flex-direction:column; height:100vh; overflow:hidden; background:#f0f2f5; }
   header { background:#1a2b3c; color:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
   header h1 { font-size:17px; font-weight:600; }
   header .sub { font-size:12px; color:#9db4cc; }
@@ -70,7 +74,7 @@
   #skErr { color:#c0392b; font-size:12px; margin-top:8px; display:none; }
   /* 手機版排版：3D 檢視固定在上方、控制面板在下方捲動（電商配置器慣例） */
   @media (max-width: 700px){
-    body { min-height:100dvh; }
+    body { height:100dvh; }
     nav a[href="contact.html"] { display:none; }               /* 省空間：CTA 交給面板內的詢價按鈕 */
     .studio-strip { padding:10px 16px 8px; }
     .studio-strip .sub { display:none; }
