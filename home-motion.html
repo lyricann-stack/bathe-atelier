@@ -33,6 +33,11 @@
     font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;transition:background .25s,color .25s}
   nav .cta:hover{background:var(--brass);color:var(--ink)}
   @media(max-width:720px){nav .links{display:none}}
+  @media(max-width:480px){
+    nav{padding-inline:16px}
+    nav .brand{font-size:15px}
+    nav .cta{font-size:9.5px;letter-spacing:.12em;padding:8px 12px}
+  }
 
   /* ===== scroll-driven manufacturing sequence ===== */
   .build{position:relative;height:600vh}
@@ -55,6 +60,16 @@
     transform-origin:top;transition:transform .45s ease}
   .rail i.on::after{transform:scaleY(1)}
   @media(max-width:720px){.rail{display:none}}
+
+  /* Portrait phones: `cover` crops these wide renders down to a featureless
+     middle strip, so the object stops reading. The renders sit on the same
+     near-black as the page, so `contain` letterboxes invisibly — the object
+     stays whole and floats in the void, which is the point. Sitting it high
+     leaves the lower third for the caption. */
+  @media(max-width:720px){
+    .plate{background-size:contain;background-position:center 34%}
+    .vignette{background:linear-gradient(to top,rgba(19,18,17,.94) 0%,rgba(19,18,17,.55) 26%,transparent 46%)}
+  }
 
   .caps{position:relative;z-index:4;width:100%;padding:0 clamp(18px,4vw,56px) clamp(56px,9vh,104px);
     padding-left:clamp(48px,8vw,120px)}
