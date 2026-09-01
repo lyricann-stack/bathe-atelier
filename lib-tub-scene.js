@@ -31,14 +31,15 @@ dir2.position.set(-1800, 1200, -1000);
 scene.add(dir2);
 
 // 地板（單面Material：轉到下方仰視時地板自動消失，不會擋住視線）
-// 淺色底座（2026-09-02，原深色 0x1d1b18 隨 Noir 主題換成米白棚拍感）：
-// 白色缸體改靠陰影／邊緣高光讀出輪廓，不再靠深淺對比
+// 深色底座（2026-09-02 改回：淺色底座跟白色缸體同色系疊在一起，輪廓看不清楚，
+// Lyric 實測回報後改回深色圓盤——場景背景本身仍是亮色 0xf4f1ea，
+// 圓盤在淺色面板裡浮出一塊深色舞台，跟 home-motion.html 的深色卡片同一手法）
 const floor = new THREE.Mesh(
   new THREE.CircleGeometry(5000, 64),
-  new THREE.MeshStandardMaterial({color:0xe6e1d5, roughness:0.95})
+  new THREE.MeshStandardMaterial({color:0x1d1b18, roughness:0.95})
 );
 floor.rotation.x = -Math.PI/2;
 scene.add(floor);
-const grid = new THREE.GridHelper(6000, 30, 0xc9c2b3, 0xddd8cc);
+const grid = new THREE.GridHelper(6000, 30, 0x2e2a24, 0x24211d);
 grid.position.y = 1;
 scene.add(grid);
