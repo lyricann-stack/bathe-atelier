@@ -207,6 +207,8 @@ const I18N = {
   'Order Info (exported to CAD / spec)': ['订单信息（输出至 CAD / 规格表）', 'ข้อมูลคำสั่งซื้อ (ส่งออกไป CAD / สเปก)', '訂單資訊（輸出至 CAD / 規格表）'],
   'Live Specifications': ['实时规格计算', 'สเปกแบบเรียลไทม์', '即時規格計算'],
   'Price & Quote': ['价格与询价', 'ราคาและใบเสนอราคา', '價格與詢價'],
+  // B2(2026-09-02) Basic 新增：Order Info 標題改名，Basic 無 CAD 語境
+  'Your details': ['您的资料', 'ข้อมูลของคุณ', '您的資料'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
