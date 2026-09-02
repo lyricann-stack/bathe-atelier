@@ -232,6 +232,8 @@ const I18N = {
   "We'll reply to": ['我们会回复到', 'เราจะตอบกลับไปที่', '我們會回覆到'],
   'with a firm quote within one business day.': ['一个工作日内附上正式报价。', 'พร้อมใบเสนอราคาที่ชัดเจนภายในหนึ่งวันทำการ', '一個工作日內附上正式報價。'],
   'Submitted ✓': ['已送出 ✓', 'ส่งแล้ว ✓', '已送出 ✓'],
+  // A2(2026-09-02) Basic 新增：選定提案後長寬滑桿上限提示
+  'Sized to your space — up to': ['依您的空间调整 — 最大可至', 'ปรับตามพื้นที่ของคุณ — สูงสุด', '依您的空間調整 — 最大可至'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -284,5 +286,6 @@ function applyLang(){
   if(typeof updateSpec === 'function' && tubGroup) updateSpec();
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
   if(typeof updateColorNote === 'function') updateColorNote();   // B6b(2026-09-02)：語言切換時重翻色票提示
+  if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'; }   // A2(2026-09-02)
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項

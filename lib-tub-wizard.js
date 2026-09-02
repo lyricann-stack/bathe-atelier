@@ -53,7 +53,7 @@ function briefTargets(){
   const innerL = { recline: hmm*0.82, stretch: hmm*0.93, deep: hmm*0.62 };
   const clampL = v => Math.max(1200, Math.min(maxL, Math.round((v + 40 + (two?150:0))/10)*10));
   const clampW = v => Math.max(600, Math.min(maxW, Math.round((v + 40)/10)*10));
-  return { two, innerL, clampL, clampW };
+  return { two, innerL, clampL, clampW, maxL, maxW };
 }
 let PROPS = [];
 let BRIEF_APPLIED = null;   // A1(2026-09-02)：客人選定提案當下的五題答案快照（之後改滑桿不影響），供詢價信／PDF 帶入
@@ -109,6 +109,14 @@ function applyProposal(i){
   Object.assign(P, p.params);
   P.customPts = null; P.customProfile = null;
   sanitizeBase();
+  // A2(2026-09-02)：長寬滑桿上限跟客人空間連動（絕對上限 2200/1200 仍守住；下限保護避免 max<min）
+  const T = briefTargets();
+  const capL = Math.max(1200, T.maxL), capW = Math.max(600, T.maxW);
+  [['rL','nL',capL],['rW','nW',capW]].forEach(([rid,nid,cap])=>{ const r=document.getElementById(rid), n=document.getElementById(nid); if(r) r.max = cap; if(n) n.max = cap; });
+  if(P.L > capL) P.L = capL;
+  if(P.W > capW) P.W = capW;
+  const sc = document.getElementById('spaceCap');
+  if(sc){ sc.style.display = 'block'; sc.textContent = t('Sized to your space — up to') + ' ' + capL + ' × ' + capW + ' mm'; }
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim === P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain === P.drain));
   document.querySelectorAll('.shape-btns button').forEach(b=>b.classList.toggle('active', b.dataset.shape === P.shape));
