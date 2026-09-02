@@ -225,16 +225,8 @@ const I18N = {
   "Tap below to view this design in AR, right where you're standing.": ['点击下方按钮，在您所在的位置以 AR 查看此设计。', 'แตะด้านล่างเพื่อดูแบบนี้ในโหมด AR ตรงตำแหน่งที่คุณยืนอยู่', '點擊下方按鈕，在您所在的位置以 AR 檢視此設計。'],
   '👁 View in AR': ['👁 以 AR 查看', '👁 ดูในโหมด AR', '👁 以 AR 檢視'],
   'Scan with an iPhone or iPad to view this design in AR.': ['用 iPhone 或 iPad 扫描，以 AR 查看此设计。', 'สแกนด้วย iPhone หรือ iPad เพื่อดูแบบนี้ในโหมด AR', '用 iPhone 或 iPad 掃描，以 AR 檢視此設計。'],
-  'Android AR support is on our roadmap — for now, this works on iPhone/iPad.': ['Android 的 AR 支援已在规划中 — 目前仅支援 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนของเรา — ตอนนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援已在規劃中 — 目前僅支援 iPhone/iPad。'],
+  'Android AR support is on our roadmap — for now, this works on iPhone/iPad.': ['Android 的 AR 支持已在规划中 — 目前仅支持 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนของเรา — ตอนนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援已在規劃中 — 目前僅支援 iPhone/iPad。'],
   'Close': ['关闭', 'ปิด', '關閉'],
-  // C1a(2026-09-02) Basic 新增：檢查腳本額外抓到的導覽列殘留英文（body 內、collectI18nNodes 可觸及）
-  'Materials': ['材质', 'วัสดุ', '材質'],
-  'How it works': ['运作方式', 'วิธีการทำงาน', '運作方式'],
-  'For designers': ['设计师专区', 'สำหรับนักออกแบบ', '設計師專區'],
-  'Portfolio': ['作品集', 'ผลงาน', '作品集'],
-  'Design studio': ['设计工作室', 'สตูดิโอออกแบบ', '設計工作室'],
-  'Get free sample kit': ['免费索取样品套组', 'รับชุดตัวอย่างฟรี', '免費索取樣品套組'],
-  'Guides': ['指南', 'คู่มือ', '指南'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
