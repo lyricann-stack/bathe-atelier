@@ -22,23 +22,6 @@
   .ribbon{position:fixed;z-index:90;left:0;top:0;background:var(--ink);color:var(--paper);
     font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:5px 12px;font-weight:700}
 
-  nav{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:22px clamp(18px,4vw,56px);transition:background .3s ease,padding .3s ease,border-color .3s ease,box-shadow .3s ease;
-    background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid transparent}
-  nav.solid{border-bottom-color:var(--line);box-shadow:0 1px 0 var(--line);padding-block:15px}
-  nav .links{display:flex;gap:clamp(14px,3vw,40px)}
-  nav .links a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;transition:opacity .2s}
-  nav .links a:hover{opacity:1}
-  nav .brand{font-size:16px;font-weight:700;letter-spacing:.01em}
-  nav .cta{border:1px solid var(--ink);border-radius:999px;padding:9px 18px;color:var(--ink);
-    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:background .25s,color .25s}
-  nav .cta:hover{background:var(--ink);color:var(--paper)}
-  @media(max-width:720px){nav .links{display:none}}
-  @media(max-width:480px){
-    nav{padding-inline:16px}
-    nav .brand{font-size:14px}
-    nav .cta{font-size:9.5px;letter-spacing:.06em;padding:8px 12px}
-  }
 
   /* ===== opening band (light) ===== */
   .intro{padding:calc(96px + 14vh) clamp(18px,4vw,56px) 10vh;max-width:900px}
@@ -175,19 +158,8 @@
 </style>
 </head>
 <body>
+<script src="lib-site-nav.js"></script>
 <div class="ribbon">Prototype · Motion Concept</div>
-
-<nav id="nav">
-  <a class="brand" href="home-motion.html">Bathe Atelier</a>
-  <div class="links">
-    <a href="atelier-way.html">The Atelier Way</a>
-    <a href="collection.html">Collection</a>
-    <a href="materials.html">Materials</a>
-    <a href="how-it-works.html">How it works</a>
-    <a href="guides.html">Guides</a>
-  </div>
-  <a class="cta" href="#studio">Open the Design Studio</a>
-</nav>
 
 <div class="intro">
   <div class="eyebrow">Sculptural Bathtubs · Made to Order</div>
@@ -354,7 +326,7 @@
       plates=[].slice.call(document.querySelectorAll('.plate')),
       wrap=document.getElementById('plates'),
       opening=document.getElementById('opening'),
-      nav=document.getElementById('nav'), cta=document.getElementById('finalcta'),
+      cta=document.getElementById('finalcta'),
       caps=[].slice.call(document.querySelectorAll('.cap')),
       ticks=[].slice.call(document.querySelectorAll('.rail i')),
       N=plates.length,
@@ -395,7 +367,6 @@
       if(ticks[j]) ticks[j].classList.toggle('on', j<=idx && o>0.85);
     }
     cta.classList.toggle('on', b>0.88);
-    nav.classList.toggle('solid', window.scrollY>40);
   }
   // called straight from the scroll event: the browser already throttles passive
   // scroll listeners to the frame rate, and an rAF flag would stay latched in a
