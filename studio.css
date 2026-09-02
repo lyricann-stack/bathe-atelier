@@ -167,3 +167,5 @@
 
 /* ===== Basic 收斂修正 v1（2026-09-02）：只作用於 body[data-page="basic"]，pro.html 不受影響 ===== */
 body[data-page="basic"] .field-err { border-color:#b3541e !important; }
+body[data-page="basic"] .pc-why{font-size:11.5px;color:#4a463d}
+body[data-page="basic"] .pc-note{font-size:10.5px;color:#b3541e}
