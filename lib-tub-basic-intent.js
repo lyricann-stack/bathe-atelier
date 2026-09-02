@@ -18,8 +18,9 @@ function intentWriteP(sizeOnly){
   const fL = INTENT_FOOT_BASE_L + (INTENT.footprint - 50) * INTENT_FOOT_STEP;
   const fW = INTENT_FOOT_BASE_W + (INTENT.footprint - 50) * INTENT_FOOT_STEP;
   P.obL = intentRound2(fL * L); P.obW = intentRound2(fW * W);
-  P.ibL = P.obL - intentRound2(INTENT_IB_GAP_L * L);
-  P.ibW = P.obW - intentRound2(INTENT_IB_GAP_W * W);
+  // S1-1b(2026-09-02)：與 darwinScaled 同樣直接取偶（0.744−0.0515＝0.6925、0.75−0.1025＝0.6475），提案往返逐位元一致
+  P.ibL = intentRound2((fL - INTENT_IB_GAP_L) * L);
+  P.ibW = intentRound2((fW - INTENT_IB_GAP_W) * W);
   const m = Math.pow(2, (INTENT.profile - 50) / INTENT_PROFILE_SPAN);
   P.riL = Math.round(intentClamp(INTENT_R_BASE.riL * L * m, INTENT_R_MIN, INTENT_R_MAX));
   P.riW = Math.round(intentClamp(INTENT_R_BASE.riW * W * m, INTENT_R_MIN, INTENT_R_MAX));
@@ -79,7 +80,7 @@ function syncIntentFromP(){
     r.addEventListener('input', () => { INTENT[key] = +r.value; n.value = r.value; applyIntent(key); });
     n.addEventListener('change', () => {
       let v = parseInt(String(n.value).replace(/[^\d-]/g,''), 10);
-      if(isNaN(v)) v = +r.min;
+      if(isNaN(v)) v = INTENT[key];   // S1-1b(2026-09-02)：非數字→維持原值，不跳到 min
       v = Math.round(intentClamp(v, +r.min, +r.max) / step) * step;
       INTENT[key] = v; applyIntent(key);
     });
