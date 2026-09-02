@@ -527,7 +527,9 @@ async function sendQuote(btn){
     // A1(2026-09-02)：五題答案帶進詢價信（沒載 wizard 的頁面 typeof 為 undefined → 整段跳過；載了但未走精靈 → 填 not via guided design）
     if(typeof BRIEF_APPLIED !== 'undefined'){
       const ba = BRIEF_APPLIED, nv = '(not via guided design)';
-      fd.append('brief_space', ba ? ba.spL + ' x ' + ba.spW + ' mm' : nv);
+      // W1b(2026-09-02)：空間不限（9999）改顯示 no limit
+      const spTxt = v => (v >= 9999 ? 'no limit' : v + ' mm');
+      fd.append('brief_space', ba ? spTxt(ba.spL) + ' x ' + spTxt(ba.spW) : nv);
       fd.append('brief_bather_height', ba ? ba.height + ' cm' : nv);
       fd.append('brief_posture', ba ? ba.posture : nv);
       fd.append('brief_bathers', ba ? String(ba.bathers) : nv);
@@ -805,7 +807,8 @@ async function exportConceptPDF(btn){
       ['Design ID', DESIGN_ID],
       ['Date', new Date().toISOString().slice(0,10)],
       // A1(2026-09-02)：走過精靈才有這列
-      ...((typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED) ? [['Designed for', 'Space ' + BRIEF_APPLIED.spL + ' x ' + BRIEF_APPLIED.spW + ' mm - bather ' + BRIEF_APPLIED.height + ' cm - ' + BRIEF_APPLIED.posture + ' - ' + BRIEF_APPLIED.bathers + ' person(s)']] : []),
+      // W1b(2026-09-02)：空間不限（9999）改顯示 no limit
+      ...((typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED) ? [['Designed for', 'Space ' + (BRIEF_APPLIED.spL >= 9999 ? 'no limit' : BRIEF_APPLIED.spL + ' mm') + ' x ' + (BRIEF_APPLIED.spW >= 9999 ? 'no limit' : BRIEF_APPLIED.spW + ' mm') + ' - bather ' + BRIEF_APPLIED.height + ' cm - ' + BRIEF_APPLIED.posture + ' - ' + BRIEF_APPLIED.bathers + ' person(s)']] : []),
       ['Silhouette', P.shape === 'custom' ? 'Custom sketch' : P.shape],
       ['Overall size', P.L + ' x ' + P.W + ' x ' + P.H + ' mm (rim rear ' + (P.H + P.dH) + ' mm)'],
       ['Material', P.material === 'solid' ? 'Solid surface (matte)' : 'Premium acrylic (gloss)'],
