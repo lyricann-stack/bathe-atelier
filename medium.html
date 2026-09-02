@@ -270,7 +270,7 @@
   </div>
   <div class="btns">
     <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
-    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+    <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <!-- 2026-08-22：Medium展示型功能下放，比照pro.html -->
     <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
@@ -293,7 +293,7 @@
         <option value="wall">Wall-mounted</option>
       </select>
     </div>
-    <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <button class="preset" data-keep="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
       <h3>① Tub Shape (Freestanding)</h3>
       <div class="shape-btns">
@@ -386,7 +386,7 @@
       <div class="row" style="margin-top:12px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
       <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
     </div>
-    <div class="group">
+    <div class="group" id="matGroup" data-keep="1">
       <h3>⑤ Material & Colour</h3>
       <div class="drain-btns mat-btns" style="margin-bottom:10px">
         <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
@@ -402,17 +402,17 @@
       </div>
       <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level (translucent blue = water)</label></div>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1">
       <h3>⑥ Order Info (exported to CAD / spec)</h3>
       <input type="text" id="custName" placeholder="Customer name">
       <input type="email" id="custEmail" placeholder="Email (optional)">
       <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
     </div>
-    <div class="group">
+    <div class="group" data-keep="1">
       <h3>⑦ Live Specifications</h3>
       <table id="spec"></table>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1">
       <h3>⑧ Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>

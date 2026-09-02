@@ -45,11 +45,13 @@ if(EDIT_MODE){ (function(){
   const panel = document.getElementById('panel');
   panel.querySelectorAll(':scope > .group, :scope > button.preset').forEach(g=>{
     const h = g.querySelector ? g.querySelector('h3') : null;
-    const keep = h && (h.textContent.includes('⑦') || h.textContent.includes('⑤'));
+    // M1(2026-09-02)：頁面可用 data-keep="1" 標記要保留的群組／preset 按鈕（medium.html 用）；沒標記的頁面維持只留 ⑤⑦，pro.html／inspire.html 零變化
+    const keep = (g.dataset && g.dataset.keep === '1') || (h && (h.textContent.includes('⑦') || h.textContent.includes('⑤')));
     if(!keep) g.style.display = 'none';
   });
   document.querySelectorAll('.btns .btn').forEach(b=>{
-    if(b.textContent.includes('Concept PDF')) b.style.display = 'none';
+    // M1(2026-09-02)：data-keep="1" 的 Concept PDF 按鈕不藏（medium.html）
+    if(!(b.dataset && b.dataset.keep === '1') && b.textContent.includes('Concept PDF')) b.style.display = 'none';
   });
   panel.insertAdjacentHTML('afterbegin', `
   <div class="group" id="editIntro">
@@ -85,7 +87,8 @@ if(EDIT_MODE){ (function(){
     const tip = document.createElement('div'); tip.className = 'tip';
     tip.textContent = 'Flat = square edge · Rounded = soft bullnose curve · Beveled = chamfered edge. Applies around the whole rim.';
     g.appendChild(h); g.appendChild(rimBtns); g.appendChild(tip);
-    const specGroup = [...panel.querySelectorAll(':scope > .group')].find(x=>{
+    // M1(2026-09-02)：medium.html 的材質群組有 id="matGroup"，去編號後仍能定位；其他頁照舊以 ⑤ 為錨點
+    const specGroup = document.getElementById('matGroup') || [...panel.querySelectorAll(':scope > .group')].find(x=>{
       const hh = x.querySelector('h3'); return hh && hh.textContent.includes('⑤');
     });
     panel.insertBefore(g, specGroup || null);
