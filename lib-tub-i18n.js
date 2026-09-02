@@ -209,6 +209,8 @@ const I18N = {
   'Price & Quote': ['价格与询价', 'ราคาและใบเสนอราคา', '價格與詢價'],
   // B2(2026-09-02) Basic 新增：Order Info 標題改名，Basic 無 CAD 語境
   'Your details': ['您的资料', 'ข้อมูลของคุณ', '您的資料'],
+  // B2b(2026-09-02) Basic 新增：被擋訊息不再引用已改名的區塊標題
+  'Please enter your email so we can reply with your quote.': ['请填写 Email，我们才能回复您的报价。', 'กรุณากรอกอีเมลของคุณ เพื่อให้เราตอบกลับพร้อมใบเสนอราคา', '請填寫 Email，我們才能回覆您的報價。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
