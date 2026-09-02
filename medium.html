@@ -195,6 +195,17 @@
   /* M15a(2026-09-02)：手機工具列短字，放在 .studio-strip .btns 的 flex-wrap:wrap 之後才蓋得掉 */
   .btn-short{display:none}
   @media (max-width:700px){ .btn-long{display:none} .btn-short{display:inline} .studio-strip .btns{flex-wrap:nowrap;overflow-x:auto} }
+  /* M15b(2026-09-03)：手機固定底部 CTA，複製 studio.css D1 區塊去掉 body[data-page="basic"] 前綴 */
+  #mobileCta{display:none}
+  @media (max-width:700px){
+    #mobileCta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(250,248,242,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #ddd8cc}
+    #mobileCta .mc-price{display:flex;flex-direction:column;line-height:1.15}
+    #mobileCta .mc-label{font-size:10.5px;color:#8a8478}
+    #mobileCta #mobileCtaPrice{font-size:15px;font-weight:700;color:#9a7b43}
+    #mobileCta .mc-btn{background:#1b1a16;color:#f4f1ea;border:none;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+    #panel{padding-bottom:72px}
+    #viewer{height:30vh;min-height:200px}
+  }
 </style>
 <style id="noir-skin" type="text/plain">
   /* 停用（2026-09-02，換成 Must Société 亮色風格對齊 home-motion.html）：type="text/plain" 讓瀏覽器不當 CSS 解析，內容整段保留；要復用深色版把 type 屬性拿掉即可 */
@@ -486,6 +497,11 @@
     <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
   </div>
 </main>
+<!-- M15b(2026-09-03)：手機版固定底部 CTA——面板在 375px 可視高不到 200px 卻要捲 2400px 以上，客人找不到送出按鈕；桌面 display:none -->
+<div id="mobileCta">
+  <div class="mc-price"><span class="mc-label">Estimated price</span><b id="mobileCtaPrice"></b></div>
+  <button type="button" class="mc-btn" onclick="mobileCtaGo()">Get a firm quote →</button>
+</div>
 
 <!-- 手繪模式對話框 -->
 <div id="sketchModal">
@@ -662,6 +678,7 @@
 <script src="lib-tub-boot.js"></script>
 <script src="lib-edit3d-ar-ui.js"></script>
 <script src="lib-edit3d-photocompose.js"></script>
+<script src="lib-tub-basic-mobile.js"></script>
 <script>
 // 08裁定1a(2026-08-22)：T5照片分析（簡易圈選版）下放Medium，逐字複製自pro.html，零修改。
 const _ph = { img:null, strokes:[], cur:null, scale:1 };
