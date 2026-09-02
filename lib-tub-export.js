@@ -527,7 +527,11 @@ async function sendQuote(btn){
     fd.append('options', optList.join('; ') || 'none');
     fd.append('est_total', shipR != null ? 'from USD $' + (pp.total + shipR).toLocaleString('en-US') : '-');
     fd.append('estimate_range', 'from USD $' + pp.total.toLocaleString('en-US') + ' + shipping (tier pricing per 2026-07 structure; $399 design fee credited)');
-    fd.append('_subject', 'Bathe Atelier — Design Studio (designer quote)');
+    // A4(2026-09-02)：Basic 進來的詢價主旨與 designer quote 分流，業務一眼分辨
+    const subj = window.PAGE_TAG === 'design-studio-basic'
+      ? 'Bathe Atelier — Guided design enquiry [' + DESIGN_ID + ']'
+      : 'Bathe Atelier — Design Studio (designer quote)';
+    fd.append('_subject', subj);
     fd.append('_template', 'table');
     fd.append('_captcha', 'false');
     // 附上完整規格 JSON（含手繪輪廓／剖面），設計師可直接匯回本工具
