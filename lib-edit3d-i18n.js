@@ -318,6 +318,17 @@ const I18N = {
   'Deleting a node restores that region to its original curve. The outer shell can never cross inside the inner bowl — drags stop at the limit.': ['删除节点会让该区域恢复原本的曲线。外壳永远不会穿进内缸——拖曳到极限就会停住。', 'การลบจุดจะทำให้บริเวณนั้นกลับไปเป็นเส้นโค้งเดิม เปลือกนอกจะไม่มีวันทะลุเข้าไปในอ่างด้านใน — การลากจะหยุดที่ขีดจำกัด', '刪除節點會讓該區域恢復原本的曲線。外殼永遠不會穿進內缸——拖曳到極限就會停住。'],
   '📐 Angled photo? Fix perspective (4 points)': ['📐 照片是斜角拍的？校正透视（4 个点）', '📐 รูปถ่ายเอียงมุม? แก้ไขมุมมอง (4 จุด)', '📐 照片是斜角拍的？校正透視（4 個點）'],
   'How upload works': ['上传怎么运作', 'วิธีการอัปโหลดทำงานอย่างไร', '上傳怎麼運作'],
+  // M15a(2026-09-02) Medium 新增：工具列手機短字＋按鈕無 emoji 版全文（PDF 匯出後 innerHTML 還原用）
+  'Concept PDF (free)': ['概念 PDF（免费）', 'Concept PDF (ฟรี)', '概念 PDF（免費）'],
+  'Preview in your space': ['在您的空间预览', 'พรีวิวในพื้นที่ของคุณ', '在您的空間預覽'],
+  // M15a(2026-09-02) Medium 新增：無 emoji 版，三語照既有含 emoji 鍵去掉 emoji（機翻待校）
+  'Place in a photo': ['放进照片里', 'วางลงในรูปถ่าย', '放進照片裡'],
+  'Site photo notes': ['现场照片标注', 'บันทึกภาพหน้างาน', '現場照片標註'],
+  'Upload CAD File': ['上传 CAD 文件', 'อัปโหลดไฟล์ CAD', '上傳 CAD 檔案'],
+  // M15a(2026-09-02) Medium 新增：手機短字，自譯機翻待校（PDF／AR 沿用英文不翻不加鍵）
+  'Photo': ['照片', 'รูปภาพ', '照片'],
+  'Notes': ['备注', 'บันทึก', '備註'],
+  'Upload': ['上传', 'อัปโหลด', '上傳'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
