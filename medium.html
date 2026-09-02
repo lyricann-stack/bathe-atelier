@@ -264,19 +264,19 @@
 <!-- 標題帶：沿用原 Design Studio 的頁面語氣 -->
 <div class="studio-strip">
   <div>
-    <div class="eyebrow">The Design Studio</div>
+    <div class="eyebrow">The Design Studio — Medium</div>
     <h1>Shape it. Watch it turn.</h1>
-    <div class="sub">Sketch any shape · sculpt it live in 3D · export designer-ready CAD — we build it from there</div>
+    <div class="sub">Sculpt it yourself — drag the edges in 3D, pick material & colour, get a firm quote.</div>
   </div>
   <div class="btns">
-    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
     <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
-    <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <!-- 2026-08-22：Medium展示型功能下放，比照pro.html -->
     <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
     <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 Place in a photo</button>
     <!-- 08裁定1a(2026-08-22)：T5現場照片圈選下放Medium，逐字複製自pro.html -->
     <button class="btn btn-upl" onclick="openPhoto()">📷 Site photo notes</button>
+    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
+    <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
@@ -286,16 +286,16 @@
          故意不用class="group"，避開lib-edit3d-handles.js的EDIT_MODE面板收合邏輯(只收':scope > .group')。
          Medium原本沒有這個select，這裡是新增不是搬移；chooseTubType()/wallmount.js本來就在Medium的
          script清單裡(共用核心)，這裡只補UI入口。 -->
-    <div style="margin-bottom:16px;padding:12px;border:1px solid #2e2a24;border-radius:16px;background:#201d19">
-      <h3 style="font-size:13px;color:#ece7dc;margin-bottom:10px;border-left:3px solid #9a7b43;padding-left:8px">Tub Type</h3>
-      <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="width:100%;background:#1c1a17;color:#ece7dc;border:1px solid #2a2723;border-radius:8px;padding:8px 10px;font-size:13px">
+    <div style="margin-bottom:16px;padding:12px;border:1px solid #e6e1d5;border-radius:16px;background:#fbfaf6">
+      <h3 style="font-size:13px;color:#1b1a16;margin-bottom:10px;border-left:3px solid #9a7b43;padding-left:8px">Tub Type</h3>
+      <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="width:100%;background:#fff;color:#1b1a16;border:1px solid #ddd8cc;border-radius:8px;padding:8px 10px;font-size:13px">
         <option value="freestanding" selected>Freestanding</option>
         <option value="wall">Wall-mounted</option>
       </select>
     </div>
     <button class="preset" data-keep="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
-      <h3>① Tub Shape (Freestanding)</h3>
+      <h3>Tub Shape (Freestanding)</h3>
       <div class="shape-btns">
         <button data-shape="rect" onclick="setShape('rect',this)">Rounded Rect</button>
         <button data-shape="stadium" onclick="setShape('stadium',this)">Rounded Ends</button>
@@ -317,7 +317,7 @@
       </div>
     </div>
     <div class="group">
-      <h3>② Dimensions (mm)</h3>
+      <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
       <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
       <div class="row"><label>Rim height (front)</label><input type="range" id="rH" min="400" max="750" step="10" value="580"><div class="val"><input id="nH" value="580"><span>mm</span></div></div>
@@ -334,7 +334,7 @@
       <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
     </div>
     <div class="group">
-      <h3>③ Asymmetry Parameters</h3>
+      <h3>Asymmetry Parameters</h3>
       <div class="row"><label>Backrest rise (rear)</label><input type="range" id="rDH" min="0" max="250" step="10" value="0"><div class="val"><input id="nDH" value="0"><span>mm</span></div></div>
       <div class="row"><label>Rise curvature</label><input type="range" id="rArc" min="0" max="100" step="5" value="60"><div class="val"><input id="nArc" value="60"><span>%</span></div></div>
       <div class="row"><label>Egg factor</label><input type="range" id="rE" min="0" max="30" step="1" value="0"><div class="val"><input id="nE" value="0"><span>%</span></div></div>
@@ -366,7 +366,7 @@
       <div id="undercutWarn" class="tip" style="display:none;color:#b3541e">⚠ Undercut on acrylic needs a split mould and hand-finished seams — high cost. Consider solid surface, or continue as premium bespoke.</div>
     </div>
     <div class="group">
-      <h3>④ Drain & Floor Slope</h3>
+      <h3>Drain & Floor Slope</h3>
       <div class="drain-btns">
         <button data-drain="center" class="active" onclick="setDrain('center',this)">Center</button>
         <button data-drain="back" onclick="setDrain('back',this)">End · rear</button>
@@ -387,7 +387,7 @@
       <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
     </div>
     <div class="group" id="matGroup" data-keep="1">
-      <h3>⑤ Material & Colour</h3>
+      <h3>Material & Colour</h3>
       <div class="drain-btns mat-btns" style="margin-bottom:10px">
         <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
         <button data-mat="solid" onclick="setMaterial('solid',this)">Solid surface (matte)</button>
@@ -400,20 +400,21 @@
         <div class="sw" style="background:#5d7b6f" data-c="#5d7b6f" title="Morandi Green"></div>
         <input type="color" id="customColor" value="#f5f5f0" style="width:32px;height:28px;border:none;background:none;cursor:pointer" title="Custom colour">
       </div>
-      <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level (translucent blue = water)</label></div>
+      <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level</label></div>
     </div>
     <div class="group" data-keep="1">
-      <h3>⑥ Order Info (exported to CAD / spec)</h3>
+      <h3>Your details</h3>
+      <div class="tip">Leave an email so we can send you the quote (optional).</div>
       <input type="text" id="custName" placeholder="Customer name">
       <input type="email" id="custEmail" placeholder="Email (optional)">
       <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
     </div>
     <div class="group" data-keep="1">
-      <h3>⑦ Live Specifications</h3>
+      <h3>Live Specifications</h3>
       <table id="spec"></table>
     </div>
     <div class="group" data-keep="1">
-      <h3>⑧ Price & Quote</h3>
+      <h3>Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>
         <b id="tierName" style="font-weight:700;font-size:18px;color:#9a7b43"></b>
@@ -421,7 +422,7 @@
       <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
       <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer">
         <input type="checkbox" id="optOneOfOne" style="margin-top:2px;accent-color:#9a7b43">
-        <span>Make it One-of-One (mold retired + certificate)</span>
+        <span>Make it exclusive — mould retired after your tub, with certificate</span>
       </label>
       <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Options</div>
       <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:5px;cursor:pointer">

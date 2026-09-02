@@ -259,6 +259,22 @@ const I18N = {
   'Short edge · opposite': ['短边·对侧', 'ด้านสั้น · ฝั่งตรงข้าม', '短邊·對側'],
   '⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).': ['⚠ 内部长度不足 950mm——只适合坐姿／蹲姿使用（脚到臀约 900mm）。', '⚠ ความยาวภายในต่ำกว่า 950มม. — เหมาะกับการอาบแบบนั่ง/นั่งยองเท่านั้น (ขาถึงสะโพก ≈ 900มม.)', '⚠ 內部長度不足 950mm——只適合坐姿／蹲姿使用（腳到臀約 900mm）。'],
   '⚠ Undercut on acrylic needs a split mould and hand-finished seams — high cost. Consider solid surface, or continue as premium bespoke.': ['⚠ 亚克力做倒扣需左右合模＋人工处理接缝，成本高。建议改用人造石，或按高价定制（Bespoke）继续。', '⚠ Undercut บนอะคริลิกต้องใช้แม่พิมพ์แยกซ้ายขวาและเก็บรอยต่อด้วยมือ — ต้นทุนสูง แนะนำโซลิดเซอร์เฟซ หรือทำต่อแบบ Bespoke พรีเมียม', '⚠ 壓克力做倒扣需左右合模＋人工處理接縫，成本高。建議改用人造石，或按高價客製（Bespoke）繼續。'],
+  // M5(2026-09-02) Medium 新增：面板 8 標題去編號，三語從既有含圈號鍵複製去掉圈號
+  'Tub Shape (Freestanding)': ['浴缸造型（独立式）', 'รูปทรงอ่าง (แบบตั้งพื้น)', '浴缸造型（獨立式）'],
+  'Dimensions (mm)': ['尺寸参数（mm）', 'ขนาด (มม.)', '尺寸參數（mm）'],
+  'Asymmetry Parameters': ['不对称造型参数', 'พารามิเตอร์ความอสมมาตร', '不對稱造型參數'],
+  'Drain & Floor Slope': ['排水孔位置与泄水', 'ตำแหน่งท่อน้ำทิ้งและความลาดเอียง', '排水孔位置與洩水'],
+  'Material & Colour': ['材质与颜色', 'วัสดุและสี', '材質與顏色'],
+  'Your details': ['您的资料', 'ข้อมูลของคุณ', '您的資料'],
+  'Live Specifications': ['实时规格计算', 'สเปกแบบเรียลไทม์', '即時規格計算'],
+  'Price & Quote': ['价格与询价', 'ราคาและใบเสนอราคา', '價格與詢價'],
+  // M5(2026-09-02) Medium 新增：One-of-One／水位文案白話化，逐字複製自 lib-tub-i18n.js
+  'Make it exclusive — mould retired after your tub, with certificate': ['升级为专属版（模具在您的浴缸后退役＋证书）', 'อัปเกรดเป็นรุ่นพิเศษเฉพาะคุณ (ปลดระวางแม่พิมพ์หลังผลิตอ่างของคุณ + ใบรับรอง)', '升級為專屬版（模具在您的浴缸後退役＋證書）'],
+  'Show water level': ['显示水位模拟', 'แสดงระดับน้ำจำลอง', '顯示水位模擬'],
+  // M5(2026-09-02) Medium 新增：機翻待校
+  'Leave an email so we can send you the quote (optional).': ['留下 Email，我们才能把报价寄给您（选填）。', 'ฝากอีเมลไว้ เพื่อให้เราส่งใบเสนอราคาให้คุณ (ไม่บังคับ)', '留下 Email，我們才能把報價寄給您（選填）。'],
+  'The Design Studio — Medium': ['设计工作室 — Medium', 'สตูดิโอออกแบบ — Medium', '設計工作室 — Medium'],
+  'Sculpt it yourself — drag the edges in 3D, pick material & colour, get a firm quote.': ['自己动手雕塑 — 在 3D 中拖曳边缘塑形，挑选材质与颜色，取得正式报价。', 'ปั้นแต่งด้วยตัวคุณเอง — ลากขอบในโหมด 3D เลือกวัสดุและสี แล้วรับใบเสนอราคาที่ชัดเจน', '自己動手雕塑 — 在 3D 中拖曳邊緣塑形，挑選材質與顏色，取得正式報價。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
