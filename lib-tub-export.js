@@ -609,7 +609,15 @@ async function sendQuote(btn){
   // A6(2026-09-02)：Basic 送出成功後按鈕保持鎖定並顯示 Submitted ✓，直到客人改參數
   if(btn.dataset.sent === '1'){ btn.disabled = true; btn.textContent = t('Submitted ✓'); }
   else { btn.disabled = false; btn.textContent = t('Submit design & get a firm quote →'); }
-  if(btn.firstChild) i18nNodes.push([btn.firstChild, 'Submit design & get a firm quote →']);
+  // A6b(2026-09-02)：鎖定中的按鈕以 Submitted ✓ 鍵註冊，切語言不會被蓋回送出文案
+  if(btn.firstChild) i18nNodes.push([btn.firstChild, btn.dataset.sent === '1' ? 'Submitted ✓' : 'Submit design & get a firm quote →']);
+}
+
+// A6b(2026-09-02)：切語言時重建 Basic 的成功 banner（只在鎖定狀態才有內容可重建）
+function refreshQuoteBanner(){
+  const b = document.getElementById('quoteBtn'), bn = document.getElementById('quoteBanner'), em = document.getElementById('custEmail');
+  if(!b || !bn || b.dataset.sent !== '1' || window.PAGE_TAG !== 'design-studio-basic') return;
+  bn.textContent = t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + '. ' + t('We\'ll reply to') + ' ' + ((em && em.value) || '').trim() + ' ' + t('with a firm quote within one business day.');
 }
 
 // ---------- CAD 閘門開關 ----------

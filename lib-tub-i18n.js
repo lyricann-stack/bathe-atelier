@@ -287,5 +287,6 @@ function applyLang(){
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
   if(typeof updateColorNote === 'function') updateColorNote();   // B6b(2026-09-02)：語言切換時重翻色票提示
   if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'; }   // A2(2026-09-02)
+  if(typeof refreshQuoteBanner === 'function') refreshQuoteBanner();   // A6b(2026-09-02)
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項

@@ -162,6 +162,7 @@ function unlockQuoteBtn(){
   const b = document.getElementById('quoteBtn');
   if(!b || b.dataset.sent !== '1') return;
   delete b.dataset.sent; b.disabled = false; b.textContent = t('Submit design & get a firm quote →');
+  if(typeof i18nNodes !== 'undefined' && b.firstChild){ i18nNodes.forEach(pair => { if(pair[0] === b.firstChild) pair[1] = 'Submit design & get a firm quote →'; }); }
   const bn = document.getElementById('quoteBanner'); if(bn){ bn.style.display = 'none'; bn.textContent = ''; }
 }
 ['input','change'].forEach(ev => { const p = document.getElementById('panel'); if(p) p.addEventListener(ev, e => { if(e.target && e.target.id !== 'custEmail' && e.target.id !== 'custName' && e.target.id !== 'custNote' && e.target.id !== 'shipDest') unlockQuoteBtn(); }, true); });
