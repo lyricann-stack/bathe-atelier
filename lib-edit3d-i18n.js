@@ -302,6 +302,22 @@ const I18N = {
   'All four are Made-to-Measure': ['四款皆为量身定制（MTM）', 'ทั้งสี่แบบผลิตตามสั่ง (Made-to-Measure)', '四款皆為量身定製（MTM）'],
   // M12(2026-09-02) Medium 新增：規格表 Full specification 摺疊標題，逐字複製自 lib-tub-i18n.js
   'Full specification': ['完整规格', 'สเปกฉบับเต็ม', '完整規格'],
+  // M13(2026-09-02) Medium 新增：EDIT_MODE 注入文案三語，英文原文逐字複製自 lib-edit3d-handles.js；三語機翻待校
+  '⬆ Upload → 3D': ['⬆ 上传 → 3D', '⬆ อัปโหลด → 3D', '⬆ 上傳 → 3D'],
+  '✎ Edge Editing': ['✎ 边线编辑', '✎ แก้ไขขอบ', '✎ 邊線編輯'],
+  '◐ Rim Profile': ['◐ 缸缘造型', '◐ รูปทรงขอบอ่าง', '◐ 缸緣造型'],
+  '↔ Length & Width': ['↔ 长与宽', '↔ ความยาวและความกว้าง', '↔ 長與寬'],
+  'Flat = square edge · Rounded = soft bullnose curve · Beveled = chamfered edge. Applies around the whole rim.': ['平面＝直角边缘 · 圆弧＝柔和圆边 · 斜角＝倒角边缘。作用于整圈缸缘。', 'แบน = ขอบตั้งฉาก · โค้งมน = ขอบโค้งนุ่ม · เหลี่ยมเฉียง = ขอบตัดมุม ใช้ได้รอบขอบอ่างทั้งวง', '平面＝直角邊緣 · 圓弧＝柔和圓邊 · 斜角＝倒角邊緣。作用於整圈缸緣。'],
+  'Overall length / width (mm). Traced or node-edited outlines scale to fit.': ['整体长／宽（mm）。描边或节点编辑后的轮廓会等比例缩放配合。', 'ความยาว/ความกว้างโดยรวม (มม.) โครงร่างที่ลากเส้นหรือแก้ไขด้วยจุดจะปรับสัดส่วนให้พอดี', '整體長／寬（mm）。描邊或節點編輯後的輪廓會等比例縮放配合。'],
+  'Node X (length)': ['节点 X（长度）', 'จุด X (ความยาว)', '節點 X（長度）'],
+  'Node Y (width)': ['节点 Y（宽度）', 'จุด Y (ความกว้าง)', '節點 Y（寬度）'],
+  'Height Δ (up/down)': ['高度 Δ（上下）', 'ความสูง Δ (ขึ้น/ลง)', '高度 Δ（上下）'],
+  'Influence range': ['影响范围', 'ระยะผลกระทบ', '影響範圍'],
+  '🗑 Delete node (or double-click it)': ['🗑 删除节点（或双击它）', '🗑 ลบจุด (หรือดับเบิลคลิก)', '🗑 刪除節點（或雙擊它）'],
+  '↺ Reset all edits': ['↺ 重设所有编辑', '↺ รีเซ็ตการแก้ไขทั้งหมด', '↺ 重設所有編輯'],
+  'Deleting a node restores that region to its original curve. The outer shell can never cross inside the inner bowl — drags stop at the limit.': ['删除节点会让该区域恢复原本的曲线。外壳永远不会穿进内缸——拖曳到极限就会停住。', 'การลบจุดจะทำให้บริเวณนั้นกลับไปเป็นเส้นโค้งเดิม เปลือกนอกจะไม่มีวันทะลุเข้าไปในอ่างด้านใน — การลากจะหยุดที่ขีดจำกัด', '刪除節點會讓該區域恢復原本的曲線。外殼永遠不會穿進內缸——拖曳到極限就會停住。'],
+  '📐 Angled photo? Fix perspective (4 points)': ['📐 照片是斜角拍的？校正透视（4 个点）', '📐 รูปถ่ายเอียงมุม? แก้ไขมุมมอง (4 จุด)', '📐 照片是斜角拍的？校正透視（4 個點）'],
+  'How upload works': ['上传怎么运作', 'วิธีการอัปโหลดทำงานอย่างไร', '上傳怎麼運作'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
