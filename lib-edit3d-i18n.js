@@ -284,7 +284,7 @@ const I18N = {
   '. ': ['。', ' ', '。'],
   'Submitted ✓': ['已送出 ✓', 'ส่งแล้ว ✓', '已送出 ✓'],
   // M7(2026-09-02) Medium 新增：無 email 時沿用舊句，從既有 '✅ Your design is in! We'll reply…' 鍵拆出（去掉 ✅ 前綴）
-  "We'll reply with a firm quote and next steps within one business day.": ['我们会在 1 个工作日内回覆正式报价与下一步。', 'เราจะตอบกลับพร้อมใบเสนอราคาและขั้นตอนถัดไปภายใน 1 วันทำการ', '我們會在 1 個工作日內回覆正式報價與下一步。'],
+  "We'll reply with a firm quote and next steps within one business day.": ['我们会在 1 个工作日内回复正式报价与下一步。', 'เราจะตอบกลับพร้อมใบเสนอราคาและขั้นตอนถัดไปภายใน 1 วันทำการ', '我們會在 1 個工作日內回覆正式報價與下一步。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
