@@ -589,11 +589,15 @@ async function sendQuote(btn){
     // 六角度 3D 渲染圖（郵件用 1200×900 JPEG，總量約 1MB）；截圖失敗不影響送單
     const renderFields = [];
     try {
-      if(!extGroup) captureRenders({w:1200, h:900, mime:'image/jpeg', q:0.85}).forEach(([name, url], i)=>{
-        const fld = 'render_' + (i+1);
-        fd.append(fld, dataURLtoBlob(url), `${DESIGN_ID}_${name}.jpg`);
-        renderFields.push(fld);
-      });
+      // M3(2026-09-02)：EDIT_MODE（lib-edit3d-handles.js）把 captureRenders 包成 async，同步 .forEach 會對 Promise 拋錯被吃掉→詢價信一直沒附渲染圖；await 對同步回傳的陣列也成立
+      if(!extGroup){
+        const shots = await captureRenders({w:1200, h:900, mime:'image/jpeg', q:0.85});
+        shots.forEach(([name, url], i)=>{
+          const fld = 'render_' + (i+1);
+          fd.append(fld, dataURLtoBlob(url), `${DESIGN_ID}_${name}.jpg`);
+          renderFields.push(fld);
+        });
+      }
     } catch(e){ console.warn('render attach skipped:', e); }
     // 照片分析（Pro）：頁面把標註後的現場照放進 window.EXTRA_QUOTE_ATTACH＝[[檔名, dataURL], …]，隨詢價一併寄出
     try {
