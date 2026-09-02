@@ -20,6 +20,8 @@ function wizBack(){
 
 // ---------- 需求問答狀態 ----------
 const BRIEF = { spL:1800, spW:1000, height:170, posture:'recline', bathers:1, look:'organic' };
+// M8b(2026-09-02)：BRIEF 空間預設以頁面滑桿的 HTML value 為準——medium.html 是 1800×1000、pro.html 是 2400×1600，共用檔不寫死任何一頁的值
+{ const _r = document.getElementById('rSpL'), _w = document.getElementById('rSpW'); if(_r) BRIEF.spL = +_r.value; if(_w) BRIEF.spW = +_w.value; }
 [['postureBtns','pos','posture'], ['bathersBtns','n','bathers'], ['lookBtns','look','look']].forEach(([id, attr, key])=>{
   document.querySelectorAll('#'+id+' button').forEach(b=> b.addEventListener('click', ()=>{
     document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('active'));
