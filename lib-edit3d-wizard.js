@@ -136,5 +136,6 @@ function applyProposal(i){
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain === P.drain));
   document.querySelectorAll('.shape-btns button').forEach(b=>b.classList.toggle('active', b.dataset.shape === P.shape));
   syncUI(); updateRowVis(); buildTub();
+  if(typeof updateColorNote === 'function') updateColorNote();
   closeWizard();
 }

@@ -275,6 +275,8 @@ const I18N = {
   'Leave an email so we can send you the quote (optional).': ['留下 Email，我们才能把报价寄给您（选填）。', 'ฝากอีเมลไว้ เพื่อให้เราส่งใบเสนอราคาให้คุณ (ไม่บังคับ)', '留下 Email，我們才能把報價寄給您（選填）。'],
   'The Design Studio — Medium': ['设计工作室 — Medium', 'สตูดิโอออกแบบ — Medium', '設計工作室 — Medium'],
   'Sculpt it yourself — drag the edges in 3D, pick material & colour, get a firm quote.': ['自己动手雕塑 — 在 3D 中拖曳边缘塑形，挑选材质与颜色，取得正式报价。', 'ปั้นแต่งด้วยตัวคุณเอง — ลากขอบในโหมด 3D เลือกวัสดุและสี แล้วรับใบเสนอราคาที่ชัดเจน', '自己動手雕塑 — 在 3D 中拖曳邊緣塑形，挑選材質與顏色，取得正式報價。'],
+  // M6(2026-09-02) Medium 新增：色票下方即時提示客製色加價，逐字複製自 lib-tub-i18n.js（'Custom colour' 已存在字典不重加）
+  'Classic White — included': ['经典白（已包含）', 'สีขาวคลาสสิก (รวมอยู่แล้ว)', '經典白（已包含）'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -328,5 +330,6 @@ function applyLang(){
   if(typeof padTop !== 'undefined'){ padTop.redraw(); padSide.redraw(); }
   if(typeof updateSpec === 'function' && tubGroup) updateSpec();
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
+  if(typeof updateColorNote === 'function') updateColorNote();
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項

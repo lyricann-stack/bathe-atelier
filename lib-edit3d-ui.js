@@ -63,6 +63,7 @@ function syncUI(){
   ['skirtHRow','skirtWRow','skirtRRow'].forEach(id=>{ _el(id).style.display = (P.skirt && !fac) ? 'flex' : 'none'; });
   _el('skirtTip').style.display = (P.skirt && !fac) ? 'block' : 'none';
   updateRowVis();
+  if(typeof updateColorNote === 'function') updateColorNote();
 }
 
 function setWallMode(m, btn){
@@ -158,14 +159,24 @@ document.querySelectorAll('.sw').forEach(sw=>{
     document.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));
     sw.classList.add('active');
     P.color = sw.dataset.c; buildTub();
+    updateColorNote();
   });
 });
 _el('customColor').addEventListener('input', e=>{
   document.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));
   P.color = e.target.value; buildTub();
+  updateColorNote();
 });
 _el('waterToggle').addEventListener('change', e=>{ P.water = e.target.checked; buildTub(); });
 _el('undercutToggle').addEventListener('change', e=>{ P.undercut = e.target.checked; buildTub(); });
 _el('skirtToggle').addEventListener('change', e=>{ P.skirt = e.target.checked; syncUI(); buildTub(); });
 _el('ovfToggle').addEventListener('change', e=>{ P.ovf = e.target.checked; buildTub(); });
 _el('faucetToggle').addEventListener('change', e=>{ P.faucet = e.target.checked; buildTub(); });
+
+// M6(2026-09-02)：色票下方即時提示客製色加價（金額讀 PRICING，元素不存在直接 return）
+function updateColorNote(){
+  const el = document.getElementById('colorNote');
+  if(!el || typeof PRICING === 'undefined') return;
+  const std = (P.color || '').toLowerCase() === STD_COLOR;
+  el.textContent = std ? t('Classic White — included') : (t('Custom colour') + ' +USD $' + PRICING.color.toLocaleString('en-US'));
+}
