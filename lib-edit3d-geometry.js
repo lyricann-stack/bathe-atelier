@@ -739,7 +739,7 @@ function computeSpec(){
   } else {
     weight = (shellVol / Math.max(P.t, 1)) * 7.2e-6;   // 等效面密度 ~7.2 kg/m²（4.5mm 壓克力＋玻纖補強）
   }
-  const crated = weight + 10 + (P.L/1000)*(P.W/1000)*12;   // 木箱依底板面積估算
+  const crated = weight + 8;   // 2026-09-02校準：實際包裝約比產品重8kg，原本按底板面積估算的木箱重量明顯偏高
   return { inn, fullVol, useVol, weight, crated };
 }
 
