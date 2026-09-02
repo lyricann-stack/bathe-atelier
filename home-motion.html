@@ -159,8 +159,9 @@
   .seclede{font-size:clamp(22px,3vw,36px);font-weight:700;letter-spacing:-.01em;line-height:1.15;max-width:24ch;text-wrap:balance;margin-bottom:8px}
 
   /* explore — links out to the dedicated pages, no content duplicated here */
-  .explore-links{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
-  @media(max-width:800px){.explore-links{grid-template-columns:1fr}}
+  .explore-links{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,24px)}
+  @media(max-width:900px){.explore-links{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.explore-links{grid-template-columns:1fr}}
   .explore-link{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,32px);background:var(--paper);
     display:block;transition:transform .35s ease,box-shadow .35s ease}
   .explore-link:hover{transform:translateY(-4px);box-shadow:0 20px 40px -18px rgba(16,16,16,.16)}
@@ -213,7 +214,7 @@
   <a class="brand" href="#">Bathe Atelier</a>
   <div class="links">
     <a href="#way">The Atelier Way</a>
-    <a href="#collection">Collection</a>
+    <a href="collection.html">Collection</a>
     <a href="materials.html">Materials</a>
     <a href="how-it-works.html">How it works</a>
     <a href="guides.html">Guides</a>
@@ -338,38 +339,16 @@
     </div>
   </div>
 
-  <div class="band" id="collection">
-    <div class="sectitle reveal">The Collection</div>
-    <div class="collection">
-      <a class="piece reveal">
-        <div class="img" style="background-image:url(assets/product/prod-sherman.jpg)"></div>
-        <div class="info"><span class="name">Sherman</span><span class="tag">Wall-set, faceted</span></div>
-      </a>
-      <a class="piece reveal">
-        <div class="img" style="background-image:url(assets/product/prod-taranto.jpg)"></div>
-        <div class="info"><span class="name">Taranto</span><span class="tag">Freestanding, sculpted</span></div>
-      </a>
-      <a class="piece reveal">
-        <div class="img" style="background-image:url(assets/product/prod-vik.jpg)"></div>
-        <div class="info"><span class="name">Vik</span><span class="tag">Freestanding, soft oval</span></div>
-      </a>
-      <a class="piece reveal">
-        <div class="img" style="background-image:url(assets/product/prod-colmar.jpg)"></div>
-        <div class="info"><span class="name">Colmar</span><span class="tag">Freestanding, oval</span></div>
-      </a>
-      <a class="piece reveal">
-        <div class="img" style="background-image:url(assets/product/prod-hickory.jpg)"></div>
-        <div class="info"><span class="name">Hickory</span><span class="tag">Freestanding, stackable</span></div>
-      </a>
-      <a class="piece reveal">
-        <div class="img" style="background-image:url(assets/product/prod-warren.jpg)"></div>
-        <div class="info"><span class="name">Warren</span><span class="tag">Freestanding, slipper</span></div>
-      </a>
-    </div>
-  </div>
-
   <div class="band" id="explore">
     <div class="explore-links">
+      <!-- 2026-09-02，Lyric要求：Collection原本是整段6件產品grid直接活在首頁裡(#collection錨點)，
+           往上捲一樣回到首頁，不是獨立分頁。改法跟ee14196對Materials/How it works/Guides的處理
+           一致：完整內容搬到新的collection.html獨立頁，這裡只留一張連結卡片。 -->
+      <a class="explore-link reveal" href="collection.html">
+        <span class="sectitle" style="margin-bottom:10px">The Collection</span>
+        <h3>Six silhouettes we've shaped for past clients</h3>
+        <span class="go">Browse the collection →</span>
+      </a>
       <a class="explore-link reveal" href="materials.html">
         <span class="sectitle" style="margin-bottom:10px">Materials</span>
         <h3>Acrylic or solid surface — the full comparison</h3>
@@ -398,7 +377,7 @@
         <div class="col">
           <span>Explore</span>
           <a href="#way">The Atelier Way</a>
-          <a href="#collection">Collection</a>
+          <a href="collection.html">Collection</a>
           <a href="materials.html">Materials</a>
           <a href="how-it-works.html">How it works</a>
         </div>
