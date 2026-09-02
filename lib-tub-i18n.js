@@ -212,7 +212,7 @@ const I18N = {
   // B2b(2026-09-02) Basic 新增：被擋訊息不再引用已改名的區塊標題
   'Please enter your email so we can reply with your quote.': ['请填写 Email，我们才能回复您的报价。', 'กรุณากรอกอีเมลของคุณ เพื่อให้เราตอบกลับพร้อมใบเสนอราคา', '請填寫 Email，我們才能回覆您的報價。'],
   // B5(2026-09-02) Basic 新增：One-of-One 與水位開關文案白話化，沿用舊鍵翻譯意思改寫
-  'Make it exclusive — mould retired after your tub, with certificate': ['升级为专属版（模具在你的浴缸后退役＋证书）', 'อัปเกรดเป็นรุ่นพิเศษเฉพาะคุณ (ปลดระวางแม่พิมพ์หลังผลิตอ่างของคุณ + ใบรับรอง)', '升級為專屬版（模具在你的浴缸後退役＋證書）'],
+  'Make it exclusive — mould retired after your tub, with certificate': ['升级为专属版（模具在您的浴缸后退役＋证书）', 'อัปเกรดเป็นรุ่นพิเศษเฉพาะคุณ (ปลดระวางแม่พิมพ์หลังผลิตอ่างของคุณ + ใบรับรอง)', '升級為專屬版（模具在您的浴缸後退役＋證書）'],
   'Show water level': ['显示水位模拟', 'แสดงระดับน้ำจำลอง', '顯示水位模擬'],
   // B6(2026-09-02) Basic 新增：色票下方即時提示客製色加價，'Custom colour' 已存在字典不重加
   'Classic White — included': ['经典白（已包含）', 'สีขาวคลาสสิก (รวมอยู่แล้ว)', '經典白（已包含）'],
@@ -267,5 +267,6 @@ function applyLang(){
   if(typeof padTop !== 'undefined'){ padTop.redraw(); padSide.redraw(); }
   if(typeof updateSpec === 'function' && tubGroup) updateSpec();
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
+  if(typeof updateColorNote === 'function') updateColorNote();   // B6b(2026-09-02)：語言切換時重翻色票提示
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項
