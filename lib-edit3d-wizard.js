@@ -81,6 +81,7 @@ function briefTargets(){
   return { two, innerL, clampL, clampW };
 }
 let PROPS = [];
+let BRIEF_APPLIED = null;   // M9(2026-09-02)：走過精靈選卡後的五題答案快照，帶進詢價信／spec JSON／Concept PDF
 // Phase 5(2026-08-21)：修正wallface-test.html/photo2tub-app.html/medium.html既有的一個真實bug
 // (非本次引入，逐字沿用時原樣繼承)——EDIT_MODE(lib-edit3d-handles.js)把captureRenders monkey-patch
 // 成async function(為了在截圖前後隱藏節點編輯的edge/node群組)，但generateProposals()這裡原本同步
@@ -138,6 +139,7 @@ function renderProposalCards(){
 function applyProposal(i){
   const p = PROPS[i];
   if(!p) return;
+  BRIEF_APPLIED = Object.assign({}, BRIEF, { proposal: p.name });
   Object.assign(P, p.params);
   P.customPts = null; P.customPtsInner = null; P.customProfile = null; P.wallMod = null; P.rimMod = null;
   // 靠牆缸下放Medium(2026-08-22)迴歸實測發現的同一個狀態同步問題(見applyClassic()同段註解)：

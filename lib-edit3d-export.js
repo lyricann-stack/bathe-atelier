@@ -565,6 +565,18 @@ async function sendQuote(btn){
     fd.append('page', window.PAGE_TAG || 'design-studio');
     fd.append('design_id', DESIGN_ID);
     fd.append('request', 'estimate');
+    // M9(2026-09-02)：五題答案帶進詢價信（沒載 wizard 的頁面 typeof 為 undefined → 整段跳過；載了但未走精靈 → 填 not via guided design）
+    if(typeof BRIEF_APPLIED !== 'undefined'){
+      const ba = BRIEF_APPLIED, nv = '(not via guided design)';
+      // M9(2026-09-02)：空間不限（9999）改顯示 no limit
+      const spTxt = v => (v >= 9999 ? 'no limit' : v + ' mm');
+      fd.append('brief_space', ba ? spTxt(ba.spL) + ' x ' + spTxt(ba.spW) : nv);
+      fd.append('brief_bather_height', ba ? ba.height + ' cm' : nv);
+      fd.append('brief_posture', ba ? ba.posture : nv);
+      fd.append('brief_bathers', ba ? String(ba.bathers) : nv);
+      fd.append('brief_look', ba ? ba.look : nv);
+      fd.append('brief_proposal', ba ? ba.proposal : nv);
+    }
     const selD = document.getElementById('shipDest');
     const destName = selD && selD.value ? selD.options[selD.selectedIndex].textContent : '(not selected)';
     const shipR = shipRate();
@@ -600,7 +612,9 @@ async function sendQuote(btn){
         裙擺式底座: P.skirt, 裙擺高度_mm: P.skirtH, 收腰寬度_pct: P.waistK, 裙擺弧R_mm: P.skirtR,
         缸底斜面角度_deg: P.baseSlope || 0,
         手繪俯視輪廓_normalized: P.customPts, 手繪內缸口輪廓_normalized: P.customPtsInner, 手繪側牆剖面_k: P.customProfile },
-      計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) }
+      計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) },
+      // M9(2026-09-02)：五題答案（走過精靈才有值；JSON.stringify 會自動略過 undefined）
+      需求問答: (typeof BRIEF_APPLIED !== 'undefined') ? BRIEF_APPLIED : undefined
     };
     fd.append('attachment', new Blob([JSON.stringify(spec, null, 2)], {type:'application/json'}), 'design-spec.json');
     // 六角度 3D 渲染圖（郵件用 1200×900 JPEG，總量約 1MB）；截圖失敗不影響送單
@@ -825,6 +839,9 @@ async function exportConceptPDF(btn){
     const rows = [
       ['Design ID', DESIGN_ID],
       ['Date', new Date().toISOString().slice(0,10)],
+      // M9(2026-09-02)：走過精靈才有這列
+      // M9(2026-09-02)：空間不限（9999）改顯示 no limit
+      ...((typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED) ? [['Designed for', 'Space ' + (BRIEF_APPLIED.spL >= 9999 ? 'no limit' : BRIEF_APPLIED.spL + ' mm') + ' x ' + (BRIEF_APPLIED.spW >= 9999 ? 'no limit' : BRIEF_APPLIED.spW + ' mm') + ' - bather ' + BRIEF_APPLIED.height + ' cm - ' + BRIEF_APPLIED.posture + ' - ' + BRIEF_APPLIED.bathers + ' person(s)']] : []),
       ['Silhouette', P.shape === 'custom' ? 'Custom sketch' : P.shape],
       ['Overall size', P.L + ' x ' + P.W + ' x ' + P.H + ' mm (rim rear ' + (P.H + P.dH) + ' mm)'],
       ['Material', P.material === 'solid' ? 'Solid surface (matte)' : 'Premium acrylic (gloss)'],
