@@ -56,6 +56,7 @@ function briefTargets(){
   return { two, innerL, clampL, clampW };
 }
 let PROPS = [];
+let BRIEF_APPLIED = null;   // A1(2026-09-02)：客人選定提案當下的五題答案快照（之後改滑桿不影響），供詢價信／PDF 帶入
 function generateProposals(){
   const T = briefTargets();
   const shape = LOOK_SHAPE[BRIEF.look] || 'ellipse';
@@ -104,6 +105,7 @@ function renderProposalCards(){
 function applyProposal(i){
   const p = PROPS[i];
   if(!p) return;
+  BRIEF_APPLIED = Object.assign({}, BRIEF, { proposal: p.name });
   Object.assign(P, p.params);
   P.customPts = null; P.customProfile = null;
   sanitizeBase();
