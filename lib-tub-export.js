@@ -595,13 +595,20 @@ async function sendQuote(btn){
       r = await fetch('https://formsubmit.co/ajax/hello@batheatelier.com', { method:'POST', headers:{'Accept':'application/json'}, body: fd });
     }
     if(!r.ok) throw new Error('HTTP ' + r.status);
-    show('#eef4ee', '#9cc7a6', '#2f5d3a', t('✅ Your design is in! We\'ll reply with a firm quote and next steps within one business day.'));
+    // A6(2026-09-02)：成功訊息帶參考編號與收件信箱；Basic 用新句，其他頁沿用舊句（i18n 拆固定字串＋變數）
+    const okMsg = window.PAGE_TAG === 'design-studio-basic'
+      ? t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + '. ' + t('We\'ll reply to') + ' ' + email + ' ' + t('with a firm quote within one business day.')
+      : t('✅ Your design is in! We\'ll reply with a firm quote and next steps within one business day.');
+    show('#eef4ee', '#9cc7a6', '#2f5d3a', okMsg);
+    // A6(2026-09-02)：同一設計不重複送；客人改任何參數後由 lib-tub-ui.js 解鎖
+    if(window.PAGE_TAG === 'design-studio-basic'){ btn.dataset.sent = '1'; }
   } catch(e){
     console.error(e);
     show('#fdf3ee', '#e0b39a', '#8a4a2b', t('❌ Something went wrong — please try again, or email hello@batheatelier.com directly.'));
   }
-  btn.disabled = false;
-  btn.textContent = t('Submit design & get a firm quote →');
+  // A6(2026-09-02)：Basic 送出成功後按鈕保持鎖定並顯示 Submitted ✓，直到客人改參數
+  if(btn.dataset.sent === '1'){ btn.disabled = true; btn.textContent = t('Submitted ✓'); }
+  else { btn.disabled = false; btn.textContent = t('Submit design & get a firm quote →'); }
   if(btn.firstChild) i18nNodes.push([btn.firstChild, 'Submit design & get a firm quote →']);
 }
 

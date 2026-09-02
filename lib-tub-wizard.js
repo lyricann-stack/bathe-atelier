@@ -112,6 +112,7 @@ function applyProposal(i){
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim === P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain === P.drain));
   document.querySelectorAll('.shape-btns button').forEach(b=>b.classList.toggle('active', b.dataset.shape === P.shape));
+  if(typeof unlockQuoteBtn === 'function') unlockQuoteBtn();
   syncUI(); updateRowVis(); buildTub();
   closeWizard();
 }

@@ -227,6 +227,11 @@ const I18N = {
   'Scan with an iPhone or iPad to view this design in AR.': ['用 iPhone 或 iPad 扫描，以 AR 查看此设计。', 'สแกนด้วย iPhone หรือ iPad เพื่อดูแบบนี้ในโหมด AR', '用 iPhone 或 iPad 掃描，以 AR 檢視此設計。'],
   'Android AR support is on our roadmap — for now, this works on iPhone/iPad.': ['Android 的 AR 支持已在规划中 — 目前仅支持 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนของเรา — ตอนนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援已在規劃中 — 目前僅支援 iPhone/iPad。'],
   'Close': ['关闭', 'ปิด', '關閉'],
+  // A6(2026-09-02) Basic 新增：送出成功訊息拆固定字串＋變數
+  '✅ Your design is in! Reference': ['✅ 您的设计已送出！参考编号', '✅ ส่งแบบของคุณแล้ว! หมายเลขอ้างอิง', '✅ 您的設計已送出！參考編號'],
+  "We'll reply to": ['我们会回复到', 'เราจะตอบกลับไปที่', '我們會回覆到'],
+  'with a firm quote within one business day.': ['一个工作日内附上正式报价。', 'พร้อมใบเสนอราคาที่ชัดเจนภายในหนึ่งวันทำการ', '一個工作日內附上正式報價。'],
+  'Submitted ✓': ['已送出 ✓', 'ส่งแล้ว ✓', '已送出 ✓'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
