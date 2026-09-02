@@ -491,6 +491,13 @@ async function sendQuote(btn){
   // 頁面設 window.PAGE_EMAIL_OPTIONAL=true（medium.html）→ Email 非必填，不擋送出
   if(!window.PAGE_EMAIL_OPTIONAL && (!email || email.indexOf('@') < 1)){
     show('#fdf3ee', '#e0b39a', '#8a4a2b', t('Please enter your email under "Order Info" so our designer can reply with your quote and 3D render.'));
+    // A5(2026-09-02)：被擋時把視線帶回 Email 欄，標紅並捲動聚焦
+    const emailEl = document.getElementById('custEmail');
+    if(emailEl){
+      emailEl.classList.add('field-err');
+      emailEl.scrollIntoView({behavior:'smooth', block:'center'});
+      emailEl.focus();
+    }
     return;
   }
   const s = computeSpec();

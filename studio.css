@@ -164,3 +164,6 @@
    悄悄留著生效，這裡就踩到過一次，已修正，改成整段刪除。
    要復用深色版：git show 05844d3:studio.css 叫出這次改版前的完整檔案，
    或直接看 medium.html 裡同一份規則（用 type text/plain 停用、原樣保留）。 */
+
+/* ===== Basic 收斂修正 v1（2026-09-02）：只作用於 body[data-page="basic"]，pro.html 不受影響 ===== */
+body[data-page="basic"] .field-err { border-color:#b3541e !important; }

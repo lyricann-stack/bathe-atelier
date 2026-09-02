@@ -141,3 +141,6 @@ _el('waterToggle').addEventListener('change', e=>{ P.water = e.target.checked; b
 _el('undercutToggle').addEventListener('change', e=>{ P.undercut = e.target.checked; buildTub(); });
 _el('skirtToggle').addEventListener('change', e=>{ P.skirt = e.target.checked; syncUI(); buildTub(); });
 _el('ovfToggle').addEventListener('change', e=>{ P.ovf = e.target.checked; buildTub(); });
+
+// A5(2026-09-02)：Email 欄一有輸入就清掉送出被擋時標的紅框（元素不存在時 _el 回傳 no-op stub）
+_el('custEmail').addEventListener('input', () => { _el('custEmail').classList.remove('field-err'); });
