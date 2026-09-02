@@ -254,6 +254,10 @@ const I18N = {
   'Redesign': ['重新设计', 'ออกแบบใหม่', '重新設計'],
   // D1(2026-09-02) Basic 新增：手機固定底部 CTA 按鈕文字（'Estimated price' 已存在字典，不重加）
   'Get a firm quote →': ['索取正式报价 →', 'ขอใบเสนอราคา →', '索取正式報價 →'],
+  // W1(2026-09-02) Basic v2 新增：精靈空間題標題／提示／不限文案（舊鍵 'Installation space' 等保留不刪）
+  'Where the tub will sit': ['浴缸要放的位置', 'ตำแหน่งที่จะวางอ่างอาบน้ำ', '浴缸要放的位置'],
+  'Measure the spot for the tub, not the whole room. We keep at least 50mm clearance on each side for installation and cleaning.': ['请量浴缸要放的那块地，不是整间浴室。我们会在四周各保留至少 50mm 的安装与清洁间隙。', 'วัดเฉพาะจุดที่จะวางอ่าง ไม่ใช่ทั้งห้องน้ำ เราเว้นระยะอย่างน้อยข้างละ 50 มม. สำหรับติดตั้งและทำความสะอาด', '請量浴缸要放的那塊地，不是整間浴室。我們會在四周各保留至少 50mm 的安裝與清潔間隙。'],
+  'No space limit — up to our maximum': ['空间不限 — 最大可至', 'ไม่จำกัดพื้นที่ — สูงสุดของเรา', '空間不限 — 最大可至'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -306,7 +310,7 @@ function applyLang(){
   if(typeof updateSpec === 'function' && tubGroup) updateSpec();
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
   if(typeof updateColorNote === 'function') updateColorNote();   // B6b(2026-09-02)：語言切換時重翻色票提示
-  if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'; }   // A2(2026-09-02)
+  if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = (typeof spaceCapText === 'function') ? spaceCapText(r.max, w.max) : (t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'); }   // A2(2026-09-02)／W1(2026-09-02)：改呼叫 spaceCapText 統一兩軸不限文案
   if(typeof refreshQuoteBanner === 'function') refreshQuoteBanner();   // A6b(2026-09-02)
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項

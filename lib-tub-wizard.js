@@ -12,7 +12,7 @@ function wizBack(){
 }
 
 // ---------- 需求問答狀態 ----------
-const BRIEF = { spL:2400, spW:1600, height:170, posture:'recline', bathers:1, look:'organic' };
+const BRIEF = { spL:1800, spW:1000, height:170, posture:'recline', bathers:1, look:'organic' };
 [['postureBtns','pos','posture'], ['bathersBtns','n','bathers'], ['lookBtns','look','look']].forEach(([id, attr, key])=>{
   document.querySelectorAll('#'+id+' button').forEach(b=> b.addEventListener('click', ()=>{
     document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('active'));
@@ -20,7 +20,23 @@ const BRIEF = { spL:2400, spW:1600, height:170, posture:'recline', bathers:1, lo
     BRIEF[key] = attr === 'n' ? +b.dataset[attr] : b.dataset[attr];
   }));
 });
-[['rSpL','nSpL','spL'], ['rSpW','nSpW','spW'], ['rBh','nBh','height']].forEach(([rid, nid, key])=>{
+// W1(2026-09-02)：空間兩支滑桿「拉到頂＝不限」共用 helper（BRIEF[key]=9999）；身高組維持原邏輯，不套用
+function setSpace(r, n, key, v){
+  if(v >= +r.max){ r.value = r.max; n.value = r.max + '+'; BRIEF[key] = 9999; }
+  else { r.value = v; n.value = v; BRIEF[key] = v; }
+}
+[['rSpL','nSpL','spL'], ['rSpW','nSpW','spW']].forEach(([rid, nid, key])=>{
+  const r = document.getElementById(rid), n = document.getElementById(nid);
+  r.addEventListener('input', ()=> setSpace(r, n, key, +r.value));
+  n.addEventListener('change', ()=>{
+    const v = parseInt(String(n.value).replace(/[^\d]/g,''), 10);
+    if(isNaN(v)){ setSpace(r, n, key, +r.min); return; }
+    if(v >= +r.max){ setSpace(r, n, key, v); return; }
+    const clamped = Math.max(+r.min, Math.min(+r.max, v));
+    setSpace(r, n, key, Math.round(clamped/50)*50);
+  });
+});
+[['rBh','nBh','height']].forEach(([rid, nid, key])=>{
   const r = document.getElementById(rid), n = document.getElementById(nid);
   r.addEventListener('input', ()=>{ n.value = r.value; BRIEF[key] = +r.value; });
   n.addEventListener('change', ()=>{ let v = Math.max(+r.min, Math.min(+r.max, +n.value || +r.min)); n.value = v; r.value = v; BRIEF[key] = v; });
@@ -57,6 +73,11 @@ function briefTargets(){
 }
 let PROPS = [];
 let BRIEF_APPLIED = null;   // A1(2026-09-02)：客人選定提案當下的五題答案快照（之後改滑桿不影響），供詢價信／PDF 帶入
+// W1(2026-09-02)：#spaceCap 提示文字抽成函式，applyProposal() 與 applyLang() 共用；兩軸皆到頂（不限）時改顯示絕對上限句
+function spaceCapText(capL, capW){
+  if(BRIEF.spL >= 2300 && BRIEF.spW >= 1300) return t('No space limit — up to our maximum') + ' 2200 × 1200 mm';
+  return t('Sized to your space — up to') + ' ' + capL + ' × ' + capW + ' mm';
+}
 function generateProposals(){
   const T = briefTargets();
   const shape = LOOK_SHAPE[BRIEF.look] || 'ellipse';
@@ -125,7 +146,7 @@ function applyProposal(i){
   if(P.L > capL) P.L = capL;
   if(P.W > capW) P.W = capW;
   const sc = document.getElementById('spaceCap');
-  if(sc){ sc.style.display = 'block'; sc.textContent = t('Sized to your space — up to') + ' ' + capL + ' × ' + capW + ' mm'; }
+  if(sc){ sc.style.display = 'block'; sc.textContent = spaceCapText(capL, capW); }
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim === P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain === P.drain));
   document.querySelectorAll('.shape-btns button').forEach(b=>b.classList.toggle('active', b.dataset.shape === P.shape));
