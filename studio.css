@@ -181,3 +181,7 @@ body[data-page="basic"] #moreAdj[open] summary::before{content:'− ';color:#9a7
 body[data-page="basic"] #moreAdj .row{margin-top:10px}
 body[data-page="basic"] .btn-short{display:none}
 @media (max-width:700px){ body[data-page="basic"] .btn-long{display:none} body[data-page="basic"] .btn-short{display:inline} }
+body[data-page="basic"] #specMore{text-align:left;font-weight:400}
+body[data-page="basic"] #specMore table{border-collapse:collapse}
+body[data-page="basic"] #specMore table td{text-align:left;font-weight:400;color:#4a463d}
+body[data-page="basic"] #specMore table td:last-child{text-align:right;font-weight:600;color:#1b1a16}
