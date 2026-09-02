@@ -3,9 +3,10 @@
 // 其他頁，導致樣式/連結位置對不齊——改成全部頁面讀同一份，只有一個地方要維護)。
 // 使用方式：頁面本身不寫<nav>，只在<body>最前面放
 //   <script src="lib-site-nav.js"></script>
-// 由這支腳本注入CSS(<head>)與<nav>(body最前面)。首頁(home-motion.html)右側是真的
-// 「Open the Design Studio」按鈕(連#studio)；其餘5頁右側是同樣大小但看不到、不能點的
-// 佔位元素，純粹讓flexbox space-between把5個連結排在跟首頁完全相同的位置。
+// 由這支腳本注入CSS(<head>)與<nav>(body最前面)。「Open the Design Studio」在全部6頁
+// 都是同一顆真的可點按鈕、固定右上角(2026-09-02，Lyric要求：不要只有首頁能點，全部頁面
+// 都要一樣)——首頁連#studio(頁內錨點)，其餘5頁連home-motion.html#studio(跨頁錨點)，
+// 目的地都是首頁的Basic/Medium/Pro三入口選擇區。
 (function(){
   var PAGES = [
     {href:'atelier-way.html', label:'The Atelier Way'},
@@ -41,9 +42,7 @@
     return '<a' + (p.href === here ? ' class="on"' : '') + ' href="' + p.href + '">' + p.label + '</a>';
   }).join('');
 
-  var ctaHtml = isHome
-    ? '<a class="cta" href="#studio">Open the Design Studio</a>'
-    : '<span class="cta" style="visibility:hidden;pointer-events:none" aria-hidden="true">Open the Design Studio</span>';
+  var ctaHtml = '<a class="cta" href="' + (isHome ? '#studio' : 'home-motion.html#studio') + '">Open the Design Studio</a>';
 
   var nav = document.createElement('nav');
   nav.id = 'nav';
