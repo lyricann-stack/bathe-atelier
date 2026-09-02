@@ -21,18 +21,18 @@
   ::selection{background:var(--accent);color:var(--ink)}
   a{color:inherit;text-decoration:none}
 
-  nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    height:70px;padding:0 clamp(18px,4vw,56px);background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line)}
-  nav .links{display:flex;gap:clamp(14px,3vw,32px)}
-  nav .links a{font-size:14px;color:#4a463d}
-  nav .links a.on{color:var(--accent-deep);font-weight:600}
-  nav .brand{font-size:15px;font-weight:700;letter-spacing:.28em}
-  nav .brand span{font-style:normal;letter-spacing:.01em;font-weight:700;color:var(--accent-deep);font-size:16px}
-  nav .cta{background:var(--ink);color:var(--paper);padding:11px 20px;border-radius:999px;font-size:13px;font-weight:600}
-  @media(max-width:900px){nav .links{display:none}}
+  nav{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:22px clamp(18px,4vw,56px);transition:background .3s ease,padding .3s ease,border-color .3s ease,box-shadow .3s ease;
+    background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid transparent}
+  nav.solid{border-bottom-color:var(--line);box-shadow:0 1px 0 var(--line);padding-block:15px}
+  nav .links{display:flex;gap:clamp(14px,3vw,40px)}
+  nav .links a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;transition:opacity .2s}
+  nav .links a:hover{opacity:1}
+  nav .links a.on{opacity:1;color:var(--accent-deep)}
+  nav .brand{font-size:16px;font-weight:700;letter-spacing:.01em}
+  @media(max-width:720px){nav .links{display:none}}
 
-  header{max-width:1180px;margin:0 auto;padding:clamp(48px,7vh,84px) clamp(18px,4vw,56px) 10px}
+  header{max-width:1180px;margin:0 auto;padding:clamp(108px,15vh,148px) clamp(18px,4vw,56px) 10px}
   header .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-deep);font-weight:600;margin-bottom:16px}
   header h1{font-size:clamp(32px,5vw,58px);font-weight:700;line-height:1.05;letter-spacing:-.01em;max-width:17ch}
   header p{margin-top:18px;max-width:52ch;font-size:clamp(14px,1.3vw,17px);line-height:1.65;color:var(--muted)}
@@ -70,7 +70,7 @@
 </head>
 <body>
 <nav>
-  <a class="brand" href="home-motion.html">BATHE<span>Atelier</span></a>
+  <a class="brand" href="home-motion.html">Bathe Atelier</a>
   <div class="links">
     <a href="atelier-way.html">The Atelier Way</a>
     <a href="collection.html">Collection</a>
@@ -148,6 +148,9 @@
 
 <script>
 (function(){
+  var navEl=document.querySelector('nav');
+  window.addEventListener('scroll',function(){navEl.classList.toggle('solid', window.scrollY>40);},{passive:true});
+
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:0.16});
