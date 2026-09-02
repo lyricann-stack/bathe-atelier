@@ -62,9 +62,6 @@
       <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
       <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
-      <!-- 2026-08-22：缸底斜面下放Basic(Lyric裁定為基本功能，跟Pro/Medium拿掉"advanced"/"Experimental"措辭一致) -->
-      <div class="row" style="margin-top:12px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
-      <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
       <div id="warn">⚠ Invalid parameters: interior space too small, please adjust</div>
       <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
       <!-- A2(2026-09-02)：選定提案後顯示長寬滑桿已按客人空間收斂上限 -->
@@ -101,6 +98,13 @@
       <h3>Live Specifications</h3>
       <table id="spec"></table>
     </div>
+    <!-- B4(2026-09-02)：Base slope 依上位規格 §3.1 不屬 Basic 三項微調，功能保留但收進摺疊、預設收起 -->
+    <details class="group" id="moreAdj">
+      <summary>More adjustments</summary>
+      <!-- 2026-08-22：缸底斜面下放Basic(Lyric裁定為基本功能，跟Pro/Medium拿掉"advanced"/"Experimental"措辭一致) -->
+      <div class="row" style="margin-top:8px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
+      <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
+    </details>
     <div class="group">
       <h3>Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
