@@ -517,6 +517,19 @@ function exportJSON(noDownload){
   download(JSON.stringify(spec, null, 2), `bathtub_spec_${Date.now()}.json`, 'application/json');
 }
 
+// M7(2026-09-02)：成功訊息組句（有 email 帶信箱；沒有 email 沿用舊句）；refreshQuoteBanner() 切語言時重用
+function quoteOkText(email){
+  return t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + t('. ')
+    + (email ? (t("We'll reply to") + ' ' + email + ' ' + t('with a firm quote within one business day.'))
+             : t("We'll reply with a firm quote and next steps within one business day."));
+}
+// M7(2026-09-02)：切語言時重繪已鎖定的成功 banner，讓文案跟著語言變
+function refreshQuoteBanner(){
+  const b = document.getElementById('quoteBtn'), bn = document.getElementById('quoteBanner');
+  if(!b || !bn || b.dataset.sent !== '1' || window.PAGE_QUOTE_FEEDBACK !== true) return;
+  bn.textContent = quoteOkText(b.dataset.sentEmail || '');
+}
+
 // ===================== 詢價送單（沿用原 Design Studio 的 FormSubmit 通道） =====================
 async function sendQuote(btn){
   const email = (document.getElementById('custEmail').value || '').trim();
@@ -617,14 +630,24 @@ async function sendQuote(btn){
       r = await fetch('https://formsubmit.co/ajax/hello@batheatelier.com', { method:'POST', headers:{'Accept':'application/json'}, body: fd });
     }
     if(!r.ok) throw new Error('HTTP ' + r.status);
-    show('#eef4ee', '#9cc7a6', '#2f5d3a', t('✅ Your design is in! We\'ll reply with a firm quote and next steps within one business day.'));
+    show('#eef4ee', '#9cc7a6', '#2f5d3a', window.PAGE_QUOTE_FEEDBACK === true ? quoteOkText(email) : t('✅ Your design is in! We\'ll reply with a firm quote and next steps within one business day.'));
+    if(window.PAGE_QUOTE_FEEDBACK === true){ btn.dataset.sent = '1'; btn.dataset.sentEmail = email; }
   } catch(e){
     console.error(e);
     show('#fdf3ee', '#e0b39a', '#8a4a2b', t('❌ Something went wrong — please try again, or email hello@batheatelier.com directly.'));
   }
-  btn.disabled = false;
-  btn.textContent = t('Submit design & get a firm quote →');
-  if(btn.firstChild) i18nNodes.push([btn.firstChild, 'Submit design & get a firm quote →']);
+  // M7(2026-09-02)：送出成功後按鈕保持鎖定並顯示 Submitted ✓，直到客人改參數；逐字複製 lib-tub-export.js 的 A6c 版本
+  // M7(2026-09-02)：改既有文字節點而不是整個換掉，節點身份不變，i18nNodes 裡的條目才對得上
+  const setBtnText = s => { if(btn.firstChild && btn.firstChild.nodeType === 3) btn.firstChild.textContent = s; else btn.textContent = s; };
+  if(btn.dataset.sent === '1'){ btn.disabled = true; setBtnText(t('Submitted ✓')); }
+  else { btn.disabled = false; setBtnText(t('Submit design & get a firm quote →')); }
+  // M7(2026-09-02)：先找既有條目再改，找不到才 push，避免每次送出都新增一條
+  {
+    const key = btn.dataset.sent === '1' ? 'Submitted ✓' : 'Submit design & get a firm quote →';
+    const hit = i18nNodes.find(pair => pair[0] === btn.firstChild);
+    if(hit) hit[1] = key;
+    else if(btn.firstChild) i18nNodes.push([btn.firstChild, key]);
+  }
 }
 
 // ---------- CAD 閘門開關 ----------

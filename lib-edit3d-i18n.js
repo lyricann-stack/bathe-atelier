@@ -277,6 +277,14 @@ const I18N = {
   'Sculpt it yourself — drag the edges in 3D, pick material & colour, get a firm quote.': ['自己动手雕塑 — 在 3D 中拖曳边缘塑形，挑选材质与颜色，取得正式报价。', 'ปั้นแต่งด้วยตัวคุณเอง — ลากขอบในโหมด 3D เลือกวัสดุและสี แล้วรับใบเสนอราคาที่ชัดเจน', '自己動手雕塑 — 在 3D 中拖曳邊緣塑形，挑選材質與顏色，取得正式報價。'],
   // M6(2026-09-02) Medium 新增：色票下方即時提示客製色加價，逐字複製自 lib-tub-i18n.js（'Custom colour' 已存在字典不重加）
   'Classic White — included': ['经典白（已包含）', 'สีขาวคลาสสิก (รวมอยู่แล้ว)', '經典白（已包含）'],
+  // M7(2026-09-02) Medium 新增：送出成功訊息帶編號與信箱，逐字複製自 lib-tub-i18n.js
+  '✅ Your design is in! Reference': ['✅ 您的设计已送出！参考编号', '✅ ส่งแบบของคุณแล้ว! หมายเลขอ้างอิง', '✅ 您的設計已送出！參考編號'],
+  "We'll reply to": ['我们会回复到', 'เราจะตอบกลับไปที่', '我們會回覆到'],
+  'with a firm quote within one business day.': ['一个工作日内附上正式报价。', 'พร้อมใบเสนอราคาที่ชัดเจนภายในหนึ่งวันทำการ', '一個工作日內附上正式報價。'],
+  '. ': ['。', ' ', '。'],
+  'Submitted ✓': ['已送出 ✓', 'ส่งแล้ว ✓', '已送出 ✓'],
+  // M7(2026-09-02) Medium 新增：無 email 時沿用舊句，從既有 '✅ Your design is in! We'll reply…' 鍵拆出（去掉 ✅ 前綴）
+  "We'll reply with a firm quote and next steps within one business day.": ['我们会在 1 个工作日内回覆正式报价与下一步。', 'เราจะตอบกลับพร้อมใบเสนอราคาและขั้นตอนถัดไปภายใน 1 วันทำการ', '我們會在 1 個工作日內回覆正式報價與下一步。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -331,5 +339,6 @@ function applyLang(){
   if(typeof updateSpec === 'function' && tubGroup) updateSpec();
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
   if(typeof updateColorNote === 'function') updateColorNote();
+  if(typeof refreshQuoteBanner === 'function') refreshQuoteBanner();
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項
