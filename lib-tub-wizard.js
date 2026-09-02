@@ -138,6 +138,7 @@ function applyProposal(i){
   BRIEF_APPLIED = Object.assign({}, BRIEF, { proposal: p.name });
   Object.assign(P, p.params);
   P.customPts = null; P.customProfile = null;
+  if(typeof syncIntentFromP === 'function') syncIntentFromP();   // S1-2(2026-09-02)：提案帶入後同步 Shape & comfort 滑桿位置
   sanitizeBase();
   // A2(2026-09-02)：長寬滑桿上限跟客人空間連動（絕對上限 2200/1200 仍守住；下限保護避免 max<min）
   const T = briefTargets();

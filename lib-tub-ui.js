@@ -19,6 +19,7 @@ sliderMap.forEach(([rid,nid,key])=>{
   r.addEventListener('input', ()=>{
     n.value=r.value; P[key]=+r.value;
     if(enforceBaseOrder(key)){ r.value=P[key]; n.value=P[key]; }   // 外/內缸底順序硬限制
+    if((key === 'L' || key === 'W') && typeof applyIntent === 'function') applyIntent('size');   // S1-2(2026-09-02)：Basic 拉長寬時底部與 R 依 INTENT 比例跟著動（applyIntent 內會 buildTub，這裡照舊再 build 一次無害）
     buildTub();
   });
   n.addEventListener('change', ()=>{
@@ -26,6 +27,7 @@ sliderMap.forEach(([rid,nid,key])=>{
     P[key]=v;
     enforceBaseOrder(key);
     n.value=P[key]; r.value=P[key];
+    if((key === 'L' || key === 'W') && typeof applyIntent === 'function') applyIntent('size');   // S1-2(2026-09-02)：Basic 拉長寬時底部與 R 依 INTENT 比例跟著動（applyIntent 內會 buildTub，這裡照舊再 build 一次無害）
     buildTub();
   });
 });
