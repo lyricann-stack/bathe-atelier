@@ -247,6 +247,11 @@ const I18N = {
   'Full specification': ['完整规格', 'สเปกฉบับเต็ม', '完整規格'],
   // B4(2026-09-02) Basic 新增：Base slope 收進摺疊的標題
   'More adjustments': ['更多调整', 'การปรับเพิ่มเติม', '更多調整'],
+  // D2(2026-09-02) Basic 新增：手機短字改用 span 包住後，emoji 拆出去，鍵改成無 emoji 版；短字另加 'Redesign'（'PDF'／'AR' 不翻，不加鍵）
+  'Redesign — answer again': ['重新设计 — 再答一次', 'ออกแบบใหม่ — ตอบคำถามอีกครั้ง', '重新設計 — 再答一次'],
+  'Concept PDF (free)': ['概念 PDF（免费）', 'Concept PDF (ฟรี)', '概念 PDF（免費）'],
+  'Preview in your space': ['在您的空间预览', 'พรีวิวในพื้นที่ของคุณ', '在您的空間預覽'],
+  'Redesign': ['重新设计', 'ออกแบบใหม่', '重新設計'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

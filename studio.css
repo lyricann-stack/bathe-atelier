@@ -179,3 +179,5 @@ body[data-page="basic"] #moreAdj summary::-webkit-details-marker{display:none}
 body[data-page="basic"] #moreAdj summary::before{content:'+ ';color:#9a7b43}
 body[data-page="basic"] #moreAdj[open] summary::before{content:'− ';color:#9a7b43}
 body[data-page="basic"] #moreAdj .row{margin-top:10px}
+body[data-page="basic"] .btn-short{display:none}
+@media (max-width:700px){ body[data-page="basic"] .btn-long{display:none} body[data-page="basic"] .btn-short{display:inline} }

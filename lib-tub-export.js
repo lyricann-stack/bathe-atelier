@@ -782,6 +782,8 @@ function loadJsPDF(){
 }
 async function exportConceptPDF(btn){
   const old = btn ? btn.textContent : null;
+  // D2(2026-09-02)：改存 innerHTML，送出結束後原樣還原（含手機短字 span），不用 textContent 打掉結構
+  const oldHTML = btn ? btn.innerHTML : null;
   if(btn){ btn.disabled = true; btn.textContent = t('Generating PDF…'); }
   try {
     const JsPDF = await loadJsPDF();
@@ -837,8 +839,15 @@ async function exportConceptPDF(btn){
   }
   if(btn){
     btn.disabled = false;
-    btn.textContent = t('⬇ Concept PDF (free)');
-    if(btn.firstChild) i18nNodes.push([btn.firstChild, '⬇ Concept PDF (free)']);
+    // D2(2026-09-02)：還原按鈕原始 HTML（含手機短字 span），不再用 textContent 打掉結構
+    if(oldHTML !== null){
+      btn.innerHTML = oldHTML;
+      if(typeof collectI18nNodes === 'function'){
+        /* 重新註冊 span 內文字節點 */
+        btn.querySelectorAll('span').forEach(sp => { const s = sp.textContent.trim(); if(I18N[s] && sp.firstChild) i18nNodes.push([sp.firstChild, s]); });
+      }
+      applyLang();
+    }
   }
 }
 

@@ -47,12 +47,13 @@
     <div class="sub">No tools to learn — we design four tubs for your space and body, you pick one and adjust size &amp; colour.</div>
   </div>
   <div class="btns">
-    <button class="btn btn-upl" onclick="openWizard()">✨ Redesign — answer again</button>
-    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+    <!-- D2(2026-09-02)：手機版三顆按鈕改短字，桌面顯示長字 -->
+    <button class="btn btn-upl" onclick="openWizard()">✨ <span class="btn-long">Redesign — answer again</span><span class="btn-short">Redesign</span></button>
+    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
     <!-- 2026-09-02，Lyric要求：AR預覽下放到Basic版(原本只有Medium/Pro有)。Basic用的是舊版
          lib-tub-*引擎，但tubGroup/DESIGN_ID/THREE.DoubleSide用法跟lib-edit3d-*核心相容，
          lib-edit3d-ar-export.js/lib-edit3d-ar-ui.js可以原樣接上，不用另外改寫 -->
-    <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
+    <button class="btn btn-upl" onclick="openARPreview()">📱 <span class="btn-long">Preview in your space</span><span class="btn-short">AR</span></button>
   </div>
 </div>
 <main>
