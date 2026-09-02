@@ -276,6 +276,8 @@ const I18N = {
   // S2(2026-09-02) Basic v2 新增：外部長寬下方即時顯示內部尺寸與深度
   'Interior': ['内部', 'ภายใน', '內部'],
   'depth': ['深', 'ลึก', '深'],
+  // P1(2026-09-02) Basic v2 新增：Deep soak 卡文案加 wide floor（舊鍵 'Seated deep soak, 540 mm water' 保留）
+  'Seated deep soak, 540 mm water, wide floor': ['坐姿深泡，水深 540 mm，底部宽敞', 'แช่น้ำลึกแบบนั่ง น้ำลึก 540 มม. พื้นกว้าง', '坐姿深泡，水深 540 mm，底部寬敞'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

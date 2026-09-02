@@ -84,27 +84,35 @@ function generateProposals(){
   const wBase = T.two ? 760 : 600;   // 內口寬目標
   const defs = [
     // A3(2026-09-02)：每張提案卡加 why（推薦理由）與 shot（縮圖視角，差異化四張縮圖）
-    { key:'compact', name:'Compact fit',  L:T.clampL(T.innerL.recline), W:T.clampW(wBase - 40), D:450, extra:{shape}, why:'Fits your space, knees relaxed', shot:[Math.PI/4, Math.PI/3.2] },
-    { key:'stretch', name:'Full stretch', L:T.clampL(T.innerL.stretch), W:T.clampW(wBase + 20), D:450, extra:{shape}, why:'Lie flat at', shot:[Math.PI/4, Math.PI/3.2] },
-    { key:'deep',    name:'Deep soak',    L:T.clampL(T.innerL.deep),    W:T.clampW(wBase + 20), D:540, extra:{shape}, why:'Seated deep soak, 540 mm water', shot:[Math.PI/4, Math.PI/2.6] },
+    // P1(2026-09-02)：每張卡加 intent（Shape & comfort 預設）；sculpt 的 dH 改由 intent.backrest 表達，extra 內原本寫死的靠背增高值已移除，避免雙重來源
+    { key:'compact', name:'Compact fit',  L:T.clampL(T.innerL.recline), W:T.clampW(wBase - 40), D:450, extra:{shape}, why:'Fits your space, knees relaxed', shot:[Math.PI/4, Math.PI/3.2], intent:{ footprint:45, profile:55, depth:450, backrest:0, lip:20 } },
+    { key:'stretch', name:'Full stretch', L:T.clampL(T.innerL.stretch), W:T.clampW(wBase + 20), D:450, extra:{shape}, why:'Lie flat at', shot:[Math.PI/4, Math.PI/3.2], intent:{ footprint:50, profile:50, depth:450, backrest:0, lip:20 } },
+    { key:'deep',    name:'Deep soak',    L:T.clampL(T.innerL.deep),    W:T.clampW(wBase + 20), D:540, extra:{shape}, why:'Seated deep soak, 540 mm water, wide floor', shot:[Math.PI/4, Math.PI/2.6], intent:{ footprint:60, profile:40, depth:540, backrest:0, lip:20 } },
     { key:'sculpt',  name:'Sculptural',   L:T.clampL(T.innerL.recline), W:T.clampW(wBase + 20), D:460,
-      extra:{ shape, dH:90, rim:'round', egg: BRIEF.look==='organic' ? 10 : 0 }, why:'Raised backrest, softer rim', shot:[Math.PI*0.75, Math.PI/3.2] }
+      extra:{ shape, rim:'round', egg: BRIEF.look==='organic' ? 10 : 0 }, why:'Raised backrest, softer rim', shot:[Math.PI*0.75, Math.PI/3.2], intent:{ footprint:45, profile:60, depth:460, backrest:90, lip:20 } }
   ];
   const saved = {}; Object.keys(P).forEach(k=>{ saved[k] = P[k]; });
   PROPS = defs.map(d=>{
     const params = darwinScaled(d.L, d.W, d.D, d.extra);
     Object.assign(P, params);
     P.customPts = null; P.customProfile = null;
+    // P1(2026-09-02)：套用該卡的 Shape & comfort 預設，並把結果寫回 params（卡片帶入時直接用，不再重算）
+    if(typeof applyIntent === 'function' && d.intent){
+      Object.assign(INTENT, d.intent); applyIntent('all');
+      ['obL','obW','ibL','ibW','riL','riW','roL','roW','H','dH','lip'].forEach(k => { params[k] = P[k]; });
+    }
     buildTub();
     const spec = computeSpec();
     const price = priceParts().total;
     const img = captureRenders({ w:520, h:390, mime:'image/jpeg', q:0.82, shots:[['thumb', d.shot[0], d.shot[1]]], noWatermark:true })[0][1];
     // A3(2026-09-02)：why/whyHeight 供卡片顯示推薦理由；note 標註 Deep soak 撞下限的情況
     return { name:d.name, params, img, dims:`${d.L} × ${d.W} × ${params.H} mm`, depth:d.D, cap:spec.fullVol.toFixed(0), price,
-      why: d.why, whyHeight: d.key==='stretch', note: (d.key==='deep' && d.L===1200 && (T.innerL.deep + 40) < 1200) ? 'Minimum length applied' : null };
+      why: d.why, whyHeight: d.key==='stretch', note: (d.key==='deep' && d.L===1200 && (T.innerL.deep + 40) < 1200) ? 'Minimum length applied' : null,
+      intent: d.intent ? Object.assign({}, d.intent) : null };
   });
   Object.keys(saved).forEach(k=>{ P[k] = saved[k]; });
   syncUI(); buildTub();
+  if(typeof syncIntentFromP === 'function') syncIntentFromP();   // P1(2026-09-02)：還原 P 後同步滑桿
   renderProposalCards();
   document.getElementById('wizQ').style.display = 'none';
   document.getElementById('wizP').style.display = '';
@@ -138,7 +146,9 @@ function applyProposal(i){
   BRIEF_APPLIED = Object.assign({}, BRIEF, { proposal: p.name });
   Object.assign(P, p.params);
   P.customPts = null; P.customProfile = null;
-  if(typeof syncIntentFromP === 'function') syncIntentFromP();   // S1-2(2026-09-02)：提案帶入後同步 Shape & comfort 滑桿位置
+  // P1(2026-09-02)：卡片自帶 intent 就直接設（比反推精確），沒有才反推
+  if(typeof INTENT !== 'undefined' && p.intent){ Object.assign(INTENT, p.intent); if(typeof intentSyncControls === 'function') intentSyncControls(); }
+  else if(typeof syncIntentFromP === 'function') syncIntentFromP();
   sanitizeBase();
   // A2(2026-09-02)：長寬滑桿上限跟客人空間連動（絕對上限 2200/1200 仍守住；下限保護避免 max<min）
   const T = briefTargets();
