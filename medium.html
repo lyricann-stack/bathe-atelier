@@ -698,6 +698,8 @@ function attachPhoto(){
   window.EXTRA_QUOTE_NOTE = (document.getElementById('photoNote').value || '').replace(/[<>]/g,'');
   document.getElementById('photoStatus').textContent = '✔ Attached — it will be sent with your design inquiry.';
   setTimeout(closePhoto, 700);
+  // M14(2026-09-02)：附上後把視線帶到送出詢價按鈕（M1 後 ⑧ 可見）
+  setTimeout(()=>{ const q = document.getElementById('quoteBtn'); if(q) q.scrollIntoView({behavior:'smooth', block:'center'}); }, 800);
 }
 </script>
 <script>
