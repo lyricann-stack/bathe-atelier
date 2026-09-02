@@ -285,6 +285,9 @@ const I18N = {
   'Submitted ✓': ['已送出 ✓', 'ส่งแล้ว ✓', '已送出 ✓'],
   // M7(2026-09-02) Medium 新增：無 email 時沿用舊句，從既有 '✅ Your design is in! We'll reply…' 鍵拆出（去掉 ✅ 前綴）
   "We'll reply with a firm quote and next steps within one business day.": ['我们会在 1 个工作日内回复正式报价与下一步。', 'เราจะตอบกลับพร้อมใบเสนอราคาและขั้นตอนถัดไปภายใน 1 วันทำการ', '我們會在 1 個工作日內回覆正式報價與下一步。'],
+  // M8(2026-09-02) Medium 新增：精靈空間題調整，逐字複製自 lib-tub-i18n.js（舊鍵 'Installation space' 與舊 tip 鍵保留不刪）
+  'Where the tub will sit': ['浴缸要放的位置', 'ตำแหน่งที่จะวางอ่างอาบน้ำ', '浴缸要放的位置'],
+  'Measure the spot for the tub, not the whole room. We keep at least 50mm clearance on each side for installation and cleaning.': ['请量浴缸要放的那块地，不是整间浴室。我们会在四周各保留至少 50mm 的安装与清洁间隙。', 'วัดเฉพาะจุดที่จะวางอ่าง ไม่ใช่ทั้งห้องน้ำ เราเว้นระยะอย่างน้อยข้างละ 50 มม. สำหรับติดตั้งและทำความสะอาด', '請量浴缸要放的那塊地，不是整間浴室。我們會在四周各保留至少 50mm 的安裝與清潔間隙。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
