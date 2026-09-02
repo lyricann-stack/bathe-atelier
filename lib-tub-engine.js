@@ -480,6 +480,7 @@ function buildTub(){
     const water = new THREE.Mesh(wg,
       new THREE.MeshStandardMaterial({color:0x7ec8e3, transparent:true, opacity:0.55, roughness:0.1, side:THREE.DoubleSide})
     );
+    water.name = 'waterSim';   // AR匯出(lib-edit3d-ar-export.js的buildExportGroup)靠這個名字濾掉水位模擬，跟lib-edit3d-geometry.js一致
     tubGroup.add(water);
   }
 
