@@ -23,9 +23,13 @@
 
 
   header{max-width:1180px;margin:0 auto;padding:clamp(108px,15vh,148px) clamp(18px,4vw,56px) 10px}
+  header .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,56px);align-items:center}
+  @media(max-width:800px){header .grid{grid-template-columns:1fr}}
   header .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-deep);font-weight:600;margin-bottom:16px}
   header h1{font-size:clamp(32px,5vw,58px);font-weight:700;line-height:1.05;letter-spacing:-.01em;max-width:17ch}
   header p{margin-top:18px;max-width:52ch;font-size:clamp(14px,1.3vw,17px);line-height:1.65;color:var(--muted)}
+  .heroshot{position:relative;aspect-ratio:1/.9;border-radius:20px;border:1px solid var(--line);overflow:hidden;
+    background-size:cover;background-position:center;background-color:var(--cream)}
 
   .band{padding:clamp(40px,6vh,64px) clamp(18px,4vw,56px) clamp(70px,11vh,120px);max-width:1180px;margin:0 auto}
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
@@ -62,9 +66,14 @@
 <script src="lib-site-nav.js"></script>
 
 <header>
-  <div class="eyebrow">The Bathe journal</div>
-  <h1>Bathtub design, explained honestly.</h1>
-  <p>Sizing, ergonomics, materials and installation — practical guides from the atelier that shapes bathtubs one at a time. No fluff, real numbers, and we tell you when the catalogue answer is fine.</p>
+  <div class="grid">
+    <div>
+      <div class="eyebrow">The Bathe journal</div>
+      <h1>Bathtub design, explained honestly.</h1>
+      <p>Sizing, ergonomics, materials and installation — practical guides from the atelier that shapes bathtubs one at a time. No fluff, real numbers, and we tell you when the catalogue answer is fine.</p>
+    </div>
+    <div class="heroshot" style="background-image:url(assets/product/prod-findlay-scene.jpg)"></div>
+  </div>
 </header>
 
 <div class="band">
