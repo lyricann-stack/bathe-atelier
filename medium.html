@@ -180,6 +180,16 @@
   .pc-why{font-size:11.5px;color:#4a463d} .pc-note{font-size:10.5px;color:#b3541e}
   #wizModal .rim-label { margin-top:12px; }
   @media (max-width:700px){ #propGrid { grid-template-columns:1fr; } }
+  /* M12(2026-09-02)：規格表常用 8 列＋Full specification 摺疊，複製 studio.css 的 #specMore 規則去掉 body[data-page="basic"] 前綴 */
+  #specMore summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:6px 0;list-style:none}
+  #specMore summary::-webkit-details-marker{display:none}
+  #specMore summary::before{content:'+ ';}
+  #specMore[open] summary::before{content:'− ';}
+  #specMore table{width:100%}
+  #specMore{text-align:left;font-weight:400}
+  #specMore table{border-collapse:collapse}
+  #specMore table td{text-align:left;font-weight:400;color:#4a463d}
+  #specMore table td:last-child{text-align:right;font-weight:600;color:#1b1a16}
 </style>
 <style id="noir-skin" type="text/plain">
   /* 停用（2026-09-02，換成 Must Société 亮色風格對齊 home-motion.html）：type="text/plain" 讓瀏覽器不當 CSS 解析，內容整段保留；要復用深色版把 type 屬性拿掉即可 */
@@ -623,7 +633,7 @@
 
 <script>
   // 三版本設定（必須在 lib 之前）——佇列項9(2026-08-21)Medium切共用核心
-  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_EMAIL_OPTIONAL=true; window.PAGE_QUOTE_FEEDBACK=true;
+  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_EMAIL_OPTIONAL=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true;
 </script>
 <!-- Phase 5(2026-08-20)先讓pro.html換底Edit3D共用核心(lib-edit3d-*.js)，佇列項9(2026-08-21)Medium比照
      切換。順序要求同pro.html：wallmount在geometry之前；handles在orbit/boot之前；不載入Phase 7/8

@@ -746,25 +746,26 @@ function computeSpec(){
 function updateSpec(){
   const s = computeSpec();
   const rows = [
-    [t('Material'), t(P.material==='solid' ? 'Solid surface' : 'Premium acrylic')],
-    [t('Rim shape'), P.shape==='custom' ? t('✏️ Custom sketch') : t({rect:'Rounded Rect',stadium:'Rounded Ends',ellipse:'Oval'}[P.shape])],
-    [t('Overall size (L×W)'), `${P.L} × ${P.W} mm`],
-    [t('Rim height front / rear'), `${P.H} / ${P.H+P.dH} mm`],
-    [t('Rim profile'), t({flat:'Flat', round:'Rounded', bevel:'Beveled'}[P.rim])],
-    [t('Interior size (L×W)'), `${s.inn.L} × ${s.inn.W} mm`],
-    [t('Interior depth (front)'), `${s.inn.D} mm`],
+    // M12(2026-09-02)：每列包成三元組 [英文鍵, t(鍵), 值]，供 PAGE_SPEC_COMPACT 依鍵名挑常用列；值表達式逐字保留
+    ['Material', t('Material'), t(P.material==='solid' ? 'Solid surface' : 'Premium acrylic')],
+    ['Rim shape', t('Rim shape'), P.shape==='custom' ? t('✏️ Custom sketch') : t({rect:'Rounded Rect',stadium:'Rounded Ends',ellipse:'Oval'}[P.shape])],
+    ['Overall size (L×W)', t('Overall size (L×W)'), `${P.L} × ${P.W} mm`],
+    ['Rim height front / rear', t('Rim height front / rear'), `${P.H} / ${P.H+P.dH} mm`],
+    ['Rim profile', t('Rim profile'), t({flat:'Flat', round:'Rounded', bevel:'Beveled'}[P.rim])],
+    ['Interior size (L×W)', t('Interior size (L×W)'), `${s.inn.L} × ${s.inn.W} mm`],
+    ['Interior depth (front)', t('Interior depth (front)'), `${s.inn.D} mm`],
     ...(isFactory() ? [
-      [t('Rim edge width'), `${P.lip} mm`],
-      [t('Outer base (L×W)'), `${P.obL} × ${P.obW} mm`],
-      [t('Inner base (L×W)'), `${P.ibL} × ${P.ibW} mm`],
+      ['Rim edge width', t('Rim edge width'), `${P.lip} mm`],
+      ['Outer base (L×W)', t('Outer base (L×W)'), `${P.obL} × ${P.obW} mm`],
+      ['Inner base (L×W)', t('Inner base (L×W)'), `${P.ibL} × ${P.ibW} mm`],
     ] : [
-      [t('Base footprint (tapered)'), `${Math.round(P.L*baseK())} × ${Math.round(P.W*baseK())} mm${P.customProfile ? t(' (custom profile)') : ''}`],
+      ['Base footprint (tapered)', t('Base footprint (tapered)'), `${Math.round(P.L*baseK())} × ${Math.round(P.W*baseK())} mm${P.customProfile ? t(' (custom profile)') : ''}`],
     ]),
-    [t('Full capacity (est.)'), `${s.fullVol.toFixed(0)} L`],
-    [t('Recommended fill (80%)'), `${s.useVol.toFixed(0)} L`],
-    [t('Product weight (est.)'), `~${s.weight.toFixed(0)} kg`],
-    [t('Crated shipping weight (est.)'), `~${s.crated.toFixed(0)} kg`],
-    [t('Side wall profile'), (function(){
+    ['Full capacity (est.)', t('Full capacity (est.)'), `${s.fullVol.toFixed(0)} L`],
+    ['Recommended fill (80%)', t('Recommended fill (80%)'), `${s.useVol.toFixed(0)} L`],
+    ['Product weight (est.)', t('Product weight (est.)'), `~${s.weight.toFixed(0)} kg`],
+    ['Crated shipping weight (est.)', t('Crated shipping weight (est.)'), `~${s.crated.toFixed(0)} kg`],
+    ['Side wall profile', t('Side wall profile'), (function(){
       if(P.customProfile){
         const fit=fitProfileArcs();
         return (fit && fit.ok) ? `≈ ${fit.label}` : t('Freeform (no clean arc fit)');
@@ -774,13 +775,25 @@ function updateSpec(){
       if(P.wallMode==='s')   return `R${P.wallR} + R${P.wallR2}`;
       return t('Default curve');
     })()],
-    ...(isFactory() ? [[t('Overflow'), P.ovf ? t('Yes (factory std)') : t('None')]] : []),
-    [t('Pedestal skirt'), P.skirt ? `R${Math.round(skirtReff())} · ${P.skirtH}mm` : t('None')],
-    [t('Drain position'), t({center:'Center', back:'End · rear', front:'End · front', side:'Short edge', side2:'Short edge · opposite'}[P.drain])],
-    [t('Floor drain slope'), `${P.slope}°`],
-    [t('Undercut'), P.undercut ? t('Yes (split mould)') : t('None (vertical demould)')],
+    ...(isFactory() ? [['Overflow', t('Overflow'), P.ovf ? t('Yes (factory std)') : t('None')]] : []),
+    ['Pedestal skirt', t('Pedestal skirt'), P.skirt ? `R${Math.round(skirtReff())} · ${P.skirtH}mm` : t('None')],
+    ['Drain position', t('Drain position'), t({center:'Center', back:'End · rear', front:'End · front', side:'Short edge', side2:'Short edge · opposite'}[P.drain])],
+    ['Floor drain slope', t('Floor drain slope'), `${P.slope}°`],
+    ['Undercut', t('Undercut'), P.undercut ? t('Yes (split mould)') : t('None (vertical demould)')],
   ];
-  document.getElementById('spec').innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+  // M12(2026-09-02)：Medium（PAGE_SPEC_COMPACT）只顯示 8 列，其餘收進 <details>；未設 flag 的頁面輸出與改前逐位元相同
+  const specEl = document.getElementById('spec');
+  const rowHtml = r => `<tr><td>${r[1]}</td><td>${r[2]}</td></tr>`;
+  if(window.PAGE_SPEC_COMPACT === true){
+    const KEEP = ['Material','Rim shape','Overall size (L×W)','Interior size (L×W)','Interior depth (front)','Full capacity (est.)','Product weight (est.)','Crated shipping weight (est.)'];
+    const primary = KEEP.map(k => rows.find(r => r[0] === k)).filter(Boolean);
+    const rest = rows.filter(r => !KEEP.includes(r[0]));
+    const wasOpen = !!(specEl.querySelector('details') && specEl.querySelector('details').open);
+    specEl.innerHTML = primary.map(rowHtml).join('')
+      + `<tr><td colspan="2" style="padding:0"><details id="specMore"${wasOpen ? ' open' : ''}><summary>${t('Full specification')}</summary><table>${rest.map(rowHtml).join('')}</table></details></td></tr>`;
+  } else {
+    specEl.innerHTML = rows.map(rowHtml).join('');
+  }
   // 會議規範警示：內長 <950 只能坐姿／蹲姿；壓克力＋倒扣＝左右合模高成本
   const lw = document.getElementById('lenWarn');
   if(lw){ lw.style.display = (s.inn.L < 950) ? 'block' : 'none'; lw.textContent = t('⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).'); }

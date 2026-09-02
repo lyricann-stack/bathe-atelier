@@ -300,6 +300,8 @@ const I18N = {
   'Raised backrest, softer rim': ['加高靠背，缸缘更柔和', 'พนักพิงสูงขึ้น ขอบอ่างนุ่มนวลขึ้น', '加高靠背，缸緣更柔和'],
   'Minimum length applied': ['已套用最短长度', 'ใช้ความยาวขั้นต่ำแล้ว', '已套用最短長度'],
   'All four are Made-to-Measure': ['四款皆为量身定制（MTM）', 'ทั้งสี่แบบผลิตตามสั่ง (Made-to-Measure)', '四款皆為量身定製（MTM）'],
+  // M12(2026-09-02) Medium 新增：規格表 Full specification 摺疊標題，逐字複製自 lib-tub-i18n.js
+  'Full specification': ['完整规格', 'สเปกฉบับเต็ม', '完整規格'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
