@@ -882,6 +882,9 @@ async function exportConceptPDF(btn){
       if(typeof collectI18nNodes === 'function'){
         /* 重新註冊 span 內文字節點 */
         btn.querySelectorAll('span').forEach(sp => { const s = sp.textContent.trim(); if(I18N[s] && sp.firstChild) i18nNodes.push([sp.firstChild, s]); });
+        // M15a-b(2026-09-03)：沒有 span 的頁面（pro／inspire）也把還原後的純文字節點重新註冊，切語言才會跟翻；先找再 push 不累積
+        const s0 = btn.textContent.trim();
+        if(!btn.querySelector('span') && btn.firstChild && I18N[s0] && !i18nNodes.some(p => p[0] === btn.firstChild)) i18nNodes.push([btn.firstChild, s0]);
       }
       applyLang();
     }
