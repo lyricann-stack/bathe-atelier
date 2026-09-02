@@ -161,7 +161,9 @@ function updateColorNote(){
 function unlockQuoteBtn(){
   const b = document.getElementById('quoteBtn');
   if(!b || b.dataset.sent !== '1') return;
-  delete b.dataset.sent; b.disabled = false; b.textContent = t('Submit design & get a firm quote →');
+  delete b.dataset.sent; b.disabled = false;
+  // A6c(2026-09-02)：改既有文字節點而不是整個換掉，節點身份不變，i18nNodes 裡的條目才對得上
+  if(b.firstChild && b.firstChild.nodeType === 3) b.firstChild.textContent = t('Submit design & get a firm quote →'); else b.textContent = t('Submit design & get a firm quote →');
   if(typeof i18nNodes !== 'undefined' && b.firstChild){ i18nNodes.forEach(pair => { if(pair[0] === b.firstChild) pair[1] = 'Submit design & get a firm quote →'; }); }
   const bn = document.getElementById('quoteBanner'); if(bn){ bn.style.display = 'none'; bn.textContent = ''; }
 }

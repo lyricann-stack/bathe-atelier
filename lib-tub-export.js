@@ -597,7 +597,7 @@ async function sendQuote(btn){
     if(!r.ok) throw new Error('HTTP ' + r.status);
     // A6(2026-09-02)：成功訊息帶參考編號與收件信箱；Basic 用新句，其他頁沿用舊句（i18n 拆固定字串＋變數）
     const okMsg = window.PAGE_TAG === 'design-studio-basic'
-      ? t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + '. ' + t('We\'ll reply to') + ' ' + email + ' ' + t('with a firm quote within one business day.')
+      ? t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + t('. ') + t('We\'ll reply to') + ' ' + email + ' ' + t('with a firm quote within one business day.')
       : t('✅ Your design is in! We\'ll reply with a firm quote and next steps within one business day.');
     show('#eef4ee', '#9cc7a6', '#2f5d3a', okMsg);
     // A6(2026-09-02)：同一設計不重複送；客人改任何參數後由 lib-tub-ui.js 解鎖
@@ -607,17 +607,24 @@ async function sendQuote(btn){
     show('#fdf3ee', '#e0b39a', '#8a4a2b', t('❌ Something went wrong — please try again, or email hello@batheatelier.com directly.'));
   }
   // A6(2026-09-02)：Basic 送出成功後按鈕保持鎖定並顯示 Submitted ✓，直到客人改參數
-  if(btn.dataset.sent === '1'){ btn.disabled = true; btn.textContent = t('Submitted ✓'); }
-  else { btn.disabled = false; btn.textContent = t('Submit design & get a firm quote →'); }
-  // A6b(2026-09-02)：鎖定中的按鈕以 Submitted ✓ 鍵註冊，切語言不會被蓋回送出文案
-  if(btn.firstChild) i18nNodes.push([btn.firstChild, btn.dataset.sent === '1' ? 'Submitted ✓' : 'Submit design & get a firm quote →']);
+  // A6c(2026-09-02)：改既有文字節點而不是整個換掉，節點身份不變，i18nNodes 裡的條目才對得上
+  const setBtnText = s => { if(btn.firstChild && btn.firstChild.nodeType === 3) btn.firstChild.textContent = s; else btn.textContent = s; };
+  if(btn.dataset.sent === '1'){ btn.disabled = true; setBtnText(t('Submitted ✓')); }
+  else { btn.disabled = false; setBtnText(t('Submit design & get a firm quote →')); }
+  // A6b/A6c(2026-09-02)：先找既有條目再改，找不到才 push，避免每次送出都新增一條
+  {
+    const key = btn.dataset.sent === '1' ? 'Submitted ✓' : 'Submit design & get a firm quote →';
+    const hit = i18nNodes.find(pair => pair[0] === btn.firstChild);
+    if(hit) hit[1] = key;
+    else if(btn.firstChild) i18nNodes.push([btn.firstChild, key]);
+  }
 }
 
 // A6b(2026-09-02)：切語言時重建 Basic 的成功 banner（只在鎖定狀態才有內容可重建）
 function refreshQuoteBanner(){
   const b = document.getElementById('quoteBtn'), bn = document.getElementById('quoteBanner'), em = document.getElementById('custEmail');
   if(!b || !bn || b.dataset.sent !== '1' || window.PAGE_TAG !== 'design-studio-basic') return;
-  bn.textContent = t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + '. ' + t('We\'ll reply to') + ' ' + ((em && em.value) || '').trim() + ' ' + t('with a firm quote within one business day.');
+  bn.textContent = t('✅ Your design is in! Reference') + ' ' + DESIGN_ID + t('. ') + t('We\'ll reply to') + ' ' + ((em && em.value) || '').trim() + ' ' + t('with a firm quote within one business day.');
 }
 
 // ---------- CAD 閘門開關 ----------
