@@ -273,6 +273,9 @@ const I18N = {
   'How deep you sit in the water. 450 mm is our standard.': ['您坐入水中的深度。450 mm 为标准深度。', 'ความลึกที่คุณจะแช่ตัวอยู่ในน้ำ มาตรฐานของเราคือ 450 มม.', '您坐入水中的深度。450 mm 為標準深度。'],
   'Raises the rear rim for a reclined, cradled feel.': ['加高后端缸缘，带来更靠躺、被环抱的感受。', 'ยกขอบด้านหลังให้สูงขึ้น เพื่อความรู้สึกเอนสบายเหมือนถูกโอบอุ้ม', '加高後端缸緣，帶來更靠躺、被環抱的感受。'],
   'The flat lip around the top. Slim feels modern; wide is easier to lean on.': ['缸口周围的平边。纤薄款更显现代；加宽款则更方便倚靠。', 'ขอบเรียบรอบปากอ่าง แบบบางให้ความรู้สึกทันสมัย แบบกว้างพิงสบายกว่า', '缸口周圍的平邊。纖薄款更顯現代；加寬款則更方便倚靠。'],
+  // S2(2026-09-02) Basic v2 新增：外部長寬下方即時顯示內部尺寸與深度
+  'Interior': ['内部', 'ภายใน', '內部'],
+  'depth': ['深', 'ลึก', '深'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -327,5 +330,6 @@ function applyLang(){
   if(typeof updateColorNote === 'function') updateColorNote();   // B6b(2026-09-02)：語言切換時重翻色票提示
   if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = (typeof spaceCapText === 'function') ? spaceCapText(r.max, w.max) : (t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'); }   // A2(2026-09-02)／W1(2026-09-02)：改呼叫 spaceCapText 統一兩軸不限文案
   if(typeof refreshQuoteBanner === 'function') refreshQuoteBanner();   // A6b(2026-09-02)
+  if(typeof refreshDimsInner === 'function') refreshDimsInner();   // S2(2026-09-02)
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項

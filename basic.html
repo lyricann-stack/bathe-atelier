@@ -63,6 +63,8 @@
       <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
       <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
+      <!-- S2(2026-09-02) Basic v2：外部長寬滑桿下即時顯示內部尺寸與深度 -->
+      <div id="dimsInner" class="tip"></div>
       <div id="warn">⚠ Invalid parameters: interior space too small, please adjust</div>
       <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
       <!-- A2(2026-09-02)：選定提案後顯示長寬滑桿已按客人空間收斂上限 -->

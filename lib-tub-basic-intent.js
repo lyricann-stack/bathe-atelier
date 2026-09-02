@@ -87,5 +87,18 @@ function syncIntentFromP(){
   });
   document.querySelectorAll('.rim-edge-btns button[data-lip]').forEach(b => b.addEventListener('click', () => { INTENT.lip = +b.dataset.lip; applyIntent('lip'); }));
 })();
+// S2(2026-09-02)：外部長寬下方即時顯示內部尺寸；用 MutationObserver 監看 #spec（與 D1 同手法，不改引擎）
+function refreshDimsInner(){
+  const el = document.getElementById('dimsInner');
+  if(!el || typeof innerDims !== 'function') return;
+  const inn = innerDims();
+  el.textContent = t('Interior') + ' ' + inn.L + ' × ' + inn.W + ' mm · ' + t('depth') + ' ' + (P.H - P.b) + ' mm';
+}
+(function(){
+  const spec = document.getElementById('spec');
+  if(!spec) return;
+  new MutationObserver(refreshDimsInner).observe(spec, { childList:true, subtree:true });
+  refreshDimsInner();
+})();
 // 載入時同步一次（本檔在 lib-tub-boot.js 之後載入，P 已建好）
 syncIntentFromP();
