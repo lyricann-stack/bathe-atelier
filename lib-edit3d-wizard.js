@@ -100,11 +100,12 @@ async function generateProposals(){
   const shape = LOOK_SHAPE[BRIEF.look] || 'ellipse';
   const wBase = T.two ? 760 : 600;   // 內口寬目標
   const defs = [
-    { key:'compact', name:'Compact fit',  L:T.clampL(T.innerL.recline), W:T.clampW(wBase - 40), D:450, extra:{shape} },
-    { key:'stretch', name:'Full stretch', L:T.clampL(T.innerL.stretch), W:T.clampW(wBase + 20), D:450, extra:{shape} },
-    { key:'deep',    name:'Deep soak',    L:T.clampL(T.innerL.deep),    W:T.clampW(wBase + 20), D:540, extra:{shape} },
+    // M11(2026-09-02)：每張提案卡加 why（推薦理由）與 shot（縮圖視角，差異化四張縮圖）
+    { key:'compact', name:'Compact fit',  L:T.clampL(T.innerL.recline), W:T.clampW(wBase - 40), D:450, extra:{shape}, why:'Fits your space, knees relaxed', shot:[Math.PI/4, Math.PI/3.2] },
+    { key:'stretch', name:'Full stretch', L:T.clampL(T.innerL.stretch), W:T.clampW(wBase + 20), D:450, extra:{shape}, why:'Lie flat at', shot:[Math.PI/4, Math.PI/3.2] },
+    { key:'deep',    name:'Deep soak',    L:T.clampL(T.innerL.deep),    W:T.clampW(wBase + 20), D:540, extra:{shape}, why:'Seated deep soak, 540 mm water', shot:[Math.PI/4, Math.PI/2.6] },
     { key:'sculpt',  name:'Sculptural',   L:T.clampL(T.innerL.recline), W:T.clampW(wBase + 20), D:460,
-      extra:{ shape, dH:90, rim:'round', egg: BRIEF.look==='organic' ? 10 : 0 } }
+      extra:{ shape, dH:90, rim:'round', egg: BRIEF.look==='organic' ? 10 : 0 }, why:'Raised backrest, softer rim', shot:[Math.PI*0.75, Math.PI/3.2] }
   ];
   const saved = {}; Object.keys(P).forEach(k=>{ saved[k] = P[k]; });
   PROPS = [];
@@ -115,8 +116,10 @@ async function generateProposals(){
     buildTub();
     const spec = computeSpec();
     const price = priceParts().total;
-    const img = (await captureRenders({ w:520, h:390, mime:'image/jpeg', q:0.82, shots:[['thumb', Math.PI/4, Math.PI/3.2]], noWatermark:true }))[0][1];
-    PROPS.push({ name:d.name, params, img, dims:`${d.L} × ${d.W} × ${params.H} mm`, depth:d.D, cap:spec.fullVol.toFixed(0), price });
+    const img = (await captureRenders({ w:520, h:390, mime:'image/jpeg', q:0.82, shots:[['thumb', d.shot[0], d.shot[1]]], noWatermark:true }))[0][1];
+    // M11(2026-09-02)：why/whyHeight 供卡片顯示推薦理由；note 標註 Deep soak 撞下限的情況
+    PROPS.push({ name:d.name, params, img, dims:`${d.L} × ${d.W} × ${params.H} mm`, depth:d.D, cap:spec.fullVol.toFixed(0), price,
+      why: d.why, whyHeight: d.key==='stretch', note: (d.key==='deep' && d.L===1200 && (T.innerL.deep + 40) < 1200) ? 'Minimum length applied' : null });
   }
   Object.keys(saved).forEach(k=>{ P[k] = saved[k]; });
   syncUI(); buildTub();
@@ -127,15 +130,22 @@ async function generateProposals(){
 function renderProposalCards(){
   const g = document.getElementById('propGrid');
   g.innerHTML = '';
+  // M11(2026-09-02)：四款價格一致（皆 MTM）時，改在網格上方寫一句，卡內不重複；不一致時保留卡內各自價格分支
+  const samePrice = PROPS.length > 0 && PROPS.every(p => p.price === PROPS[0].price);
+  const pl = document.getElementById('propPriceLine');
+  if(pl) pl.textContent = samePrice ? (t('All four are Made-to-Measure') + ' — ' + fromStr(PROPS[0].price)) : '';
+  const hidePrice = samePrice && !!pl;   // M11(2026-09-02)：頁面沒有 #propPriceLine（pro）時卡內仍印各卡價格，避免價格消失
   PROPS.forEach((p, i)=>{
     const card = document.createElement('div');
     card.className = 'prop-card';
     card.innerHTML = `<img src="${p.img}" alt="${p.name}">
       <div class="pc-body">
         <b>${t(p.name)}</b>
+        <span class="pc-why">${t(p.why)}${p.whyHeight ? ' ' + BRIEF.height + ' cm' : ''}</span>
         <span>${p.dims}</span>
         <span>${t('Depth')} ${p.depth}mm · ~${p.cap} L</span>
-        <span class="pc-price">${fromStr(p.price)}</span>
+        ${p.note ? `<span class="pc-note">${t(p.note)}</span>` : ''}
+        ${hidePrice ? '' : `<span class="pc-price">${fromStr(p.price)}</span>`}
       </div>`;
     card.addEventListener('click', ()=> applyProposal(i));
     g.appendChild(card);
