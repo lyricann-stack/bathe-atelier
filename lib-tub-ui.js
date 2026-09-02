@@ -53,6 +53,8 @@ function syncUI(){
   ['skirtHRow','skirtWRow','skirtRRow'].forEach(id=>{ _el(id).style.display = (P.skirt && !fac) ? 'flex' : 'none'; });
   _el('skirtTip').style.display = (P.skirt && !fac) ? 'block' : 'none';
   updateRowVis();
+  // B6(2026-09-02)：syncUI 定義在 updateColorNote 之前，故用 typeof 守衛
+  if(typeof updateColorNote === 'function') updateColorNote();
 }
 
 function setWallMode(m, btn){
@@ -131,11 +133,13 @@ document.querySelectorAll('.sw').forEach(sw=>{
     document.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));
     sw.classList.add('active');
     P.color = sw.dataset.c; buildTub();
+    updateColorNote();
   });
 });
 _el('customColor').addEventListener('input', e=>{
   document.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));
   P.color = e.target.value; buildTub();
+  updateColorNote();
 });
 _el('waterToggle').addEventListener('change', e=>{ P.water = e.target.checked; buildTub(); });
 _el('undercutToggle').addEventListener('change', e=>{ P.undercut = e.target.checked; buildTub(); });
@@ -144,3 +148,11 @@ _el('ovfToggle').addEventListener('change', e=>{ P.ovf = e.target.checked; build
 
 // A5(2026-09-02)：Email 欄一有輸入就清掉送出被擋時標的紅框（元素不存在時 _el 回傳 no-op stub）
 _el('custEmail').addEventListener('input', () => { _el('custEmail').classList.remove('field-err'); });
+
+// B6(2026-09-02)：色票下方即時提示客製色加價（金額讀 PRICING，元素不存在直接 return）
+function updateColorNote(){
+  const el = document.getElementById('colorNote');
+  if(!el || typeof PRICING === 'undefined') return;
+  const std = (P.color || '').toLowerCase() === STD_COLOR;
+  el.textContent = std ? t('Classic White — included') : (t('Custom colour') + ' +USD $' + PRICING.color.toLocaleString('en-US'));
+}
