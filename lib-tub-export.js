@@ -536,6 +536,10 @@ async function sendQuote(btn){
       fd.append('brief_look', ba ? ba.look : nv);
       fd.append('brief_proposal', ba ? ba.proposal : nv);
     }
+    // Q1(2026-09-02) Basic v2：Shape & comfort 意圖值一併給業務看（沒載 intent 檔的頁面 typeof 為 undefined → 跳過）
+    if(typeof INTENT !== 'undefined'){
+      fd.append('shape_comfort', 'footprint ' + INTENT.footprint + '/100, wall profile ' + INTENT.profile + '/100 (sharp=straight), water depth ' + INTENT.depth + ' mm, backrest ' + INTENT.backrest + ' mm, rim edge ' + INTENT.lip + ' mm');
+    }
     const selD = document.getElementById('shipDest');
     const destName = selD && selD.value ? selD.options[selD.selectedIndex].textContent : '(not selected)';
     const shipR = shipRate();
@@ -571,7 +575,9 @@ async function sendQuote(btn){
         手繪俯視輪廓_normalized: P.customPts, 手繪側牆剖面_k: P.customProfile },
       計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) },
       // A1(2026-09-02)：五題答案（走過精靈才有值；JSON.stringify 會自動略過 undefined）
-      需求問答: (typeof BRIEF_APPLIED !== 'undefined') ? BRIEF_APPLIED : undefined
+      需求問答: (typeof BRIEF_APPLIED !== 'undefined') ? BRIEF_APPLIED : undefined,
+      // Q1(2026-09-02)：意圖值快照
+      外型與舒適度: (typeof INTENT !== 'undefined') ? Object.assign({}, INTENT) : undefined
     };
     fd.append('attachment', new Blob([JSON.stringify(spec, null, 2)], {type:'application/json'}), 'design-spec.json');
     // 六角度 3D 渲染圖（郵件用 1200×900 JPEG，總量約 1MB）；截圖失敗不影響送單
