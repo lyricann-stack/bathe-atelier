@@ -195,3 +195,7 @@ body[data-page="basic"] #mobileCta{display:none}
   body[data-page="basic"] #panel{padding-bottom:72px}
   body[data-page="basic"] #viewer{height:30vh;min-height:200px}
 }
+
+/* ===== Basic v2（2026-09-02）：Shape & comfort ===== */
+body[data-page="basic"] .rim-edge-btns{margin-bottom:6px}
+body[data-page="basic"] #moreAdj .rim-label{margin-top:10px}

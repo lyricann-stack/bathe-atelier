@@ -101,7 +101,23 @@
     </div>
     <!-- B4(2026-09-02)：Base slope 依上位規格 §3.1 不屬 Basic 三項微調，功能保留但收進摺疊、預設收起 -->
     <details class="group" id="moreAdj">
-      <summary>More adjustments</summary>
+      <summary>Shape & comfort</summary>
+      <!-- S1(2026-09-02) Basic v2：意圖層滑桿，由 lib-tub-basic-intent.js 映射到 P 並守門 -->
+      <div class="row" style="margin-top:8px"><label>Base footprint</label><input type="range" id="rFoot" min="0" max="100" step="1" value="50"><div class="val"><input id="nFoot" value="50"><span>/100</span></div></div>
+      <div class="tip">Smaller base looks lighter; wider base gives more floor to stand and sit on.</div>
+      <div class="row"><label>Wall profile</label><input type="range" id="rProf" min="0" max="100" step="1" value="50"><div class="val"><input id="nProf" value="50"><span>/100</span></div></div>
+      <div class="tip">Soft = rounder walls. Sharp = straighter walls with a clearly defined base.</div>
+      <div class="row"><label>Water depth</label><input type="range" id="rDepth" min="400" max="560" step="10" value="450"><div class="val"><input id="nDepth" value="450"><span>mm</span></div></div>
+      <div class="tip">How deep you sit in the water. 450 mm is our standard.</div>
+      <div class="row"><label>Backrest</label><input type="range" id="rBack" min="0" max="150" step="10" value="0"><div class="val"><input id="nBack" value="0"><span>mm</span></div></div>
+      <div class="tip">Raises the rear rim for a reclined, cradled feel.</div>
+      <div class="rim-label">Rim edge</div>
+      <div class="drain-btns rim-edge-btns">
+        <button type="button" data-lip="15">Slim</button>
+        <button type="button" data-lip="20" class="active">Standard</button>
+        <button type="button" data-lip="30">Wide</button>
+      </div>
+      <div class="tip">The flat lip around the top. Slim feels modern; wide is easier to lean on.</div>
       <!-- 2026-08-22：缸底斜面下放Basic(Lyric裁定為基本功能，跟Pro/Medium拿掉"advanced"/"Experimental"措辭一致) -->
       <div class="row" style="margin-top:8px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
       <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
@@ -243,4 +259,5 @@
 <script src="lib-edit3d-ar-export.js"></script>
 <script src="lib-edit3d-ar-ui.js"></script>
 <script src="lib-tub-basic-mobile.js"></script>
+<script src="lib-tub-basic-intent.js"></script>
 </body>
