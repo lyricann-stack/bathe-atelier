@@ -200,7 +200,13 @@ const I18N = {
   '⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).': ['⚠ 内部长度不足 950mm——只适合坐姿／蹲姿使用（脚到臀约 900mm）。', '⚠ ความยาวภายในต่ำกว่า 950มม. — เหมาะกับการอาบแบบนั่ง/นั่งยองเท่านั้น (ขาถึงสะโพก ≈ 900มม.)', '⚠ 內部長度不足 950mm——只適合坐姿／蹲姿使用（腳到臀約 900mm）。'],
   '⚠ Undercut on acrylic needs a split mould and hand-finished seams — high cost. Consider solid surface, or continue as premium bespoke.': ['⚠ 亚克力做倒扣需左右合模＋人工处理接缝，成本高。建议改用人造石，或按高价定制（Bespoke）继续。', '⚠ Undercut บนอะคริลิกต้องใช้แม่พิมพ์แยกซ้ายขวาและเก็บรอยต่อด้วยมือ — ต้นทุนสูง แนะนำโซลิดเซอร์เฟซ หรือทำต่อแบบ Bespoke พรีเมียม', '⚠ 壓克力做倒扣需左右合模＋人工處理接縫，成本高。建議改用人造石，或按高價客製（Bespoke）繼續。'],
   // A5(2026-09-02) Basic 新增
-  'We reply to this address with your quote.': ['我们会用这个 Email 回覆您的报价。', 'เราจะตอบกลับใบเสนอราคาของคุณไปยังอีเมลนี้', '我們會用這個 Email 回覆您的報價。'],
+  'We reply to this address with your quote.': ['我们会用这个 Email 回复您的报价。', 'เราจะตอบกลับใบเสนอราคาของคุณไปยังอีเมลนี้', '我們會用這個 Email 回覆您的報價。'],
+  // B1(2026-09-02) Basic 新增：面板標題去除步驟編號，三語沿用對應舊鍵翻譯（去掉圈號）
+  'Dimensions (mm)': ['尺寸参数（mm）', 'ขนาด (มม.)', '尺寸參數（mm）'],
+  'Material & Colour': ['材质与颜色', 'วัสดุและสี', '材質與顏色'],
+  'Order Info (exported to CAD / spec)': ['订单信息（输出至 CAD / 规格表）', 'ข้อมูลคำสั่งซื้อ (ส่งออกไป CAD / สเปก)', '訂單資訊（輸出至 CAD / 規格表）'],
+  'Live Specifications': ['实时规格计算', 'สเปกแบบเรียลไทม์', '即時規格計算'],
+  'Price & Quote': ['价格与询价', 'ราคาและใบเสนอราคา', '價格與詢價'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

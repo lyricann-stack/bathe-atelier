@@ -59,7 +59,7 @@
   <div id="panel">
     <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
-      <h3>② Dimensions (mm)</h3>
+      <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
       <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
       <!-- 2026-08-22：缸底斜面下放Basic(Lyric裁定為基本功能，跟Pro/Medium拿掉"advanced"/"Experimental"措辭一致) -->
@@ -70,7 +70,7 @@
       <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
     </div>
     <div class="group">
-      <h3>⑤ Material & Colour</h3>
+      <h3>Material & Colour</h3>
       <div class="drain-btns mat-btns" style="margin-bottom:10px">
         <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
         <button data-mat="solid" onclick="setMaterial('solid',this)">Solid surface (matte)</button>
@@ -86,7 +86,7 @@
       <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level (translucent blue = water)</label></div>
     </div>
     <div class="group">
-      <h3>⑥ Order Info (exported to CAD / spec)</h3>
+      <h3>Order Info (exported to CAD / spec)</h3>
       <input type="text" id="custName" placeholder="Customer name">
       <!-- A5(2026-09-02)：Email 必填前置提示，客人送出前就知道要留信箱 -->
       <div class="tip">We reply to this address with your quote.</div>
@@ -94,11 +94,11 @@
       <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
     </div>
     <div class="group">
-      <h3>⑦ Live Specifications</h3>
+      <h3>Live Specifications</h3>
       <table id="spec"></table>
     </div>
     <div class="group">
-      <h3>⑧ Price & Quote</h3>
+      <h3>Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>
         <b id="tierName" style="font-weight:700;font-size:18px;color:#9a7b43"></b>
