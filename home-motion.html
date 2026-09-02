@@ -122,44 +122,11 @@
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
   .reveal.in{opacity:1;transform:none}
 
-  .quote{border:1px solid var(--line);border-radius:18px;padding:clamp(28px,4.5vw,54px);background:var(--cream)}
-  .quote .eyebrow{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:18px;font-weight:600}
-  .quote p{font-size:clamp(22px,3.4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.01em;
-    color:var(--ink);text-wrap:balance}
-  .quote p em{font-style:normal;color:var(--accent-deep)}
-
-  .split{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(18px,3vw,40px);margin-top:22px}
-  @media(max-width:800px){.split{grid-template-columns:1fr}}
-  .split .shot{border-radius:16px;overflow:hidden;background:var(--cream);aspect-ratio:4/3;
-    background-size:cover;background-position:center}
-  .split .body{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,38px);
-    font-size:clamp(13.5px,1.3vw,16px);line-height:1.8;color:var(--muted);display:flex;align-items:center}
-
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,22px);margin-top:20px}
-  @media(max-width:720px){.stats{grid-template-columns:1fr}}
-  .stat{border:1px solid var(--line);border-radius:16px;padding:clamp(20px,2.6vw,32px)}
-  .stat b{display:block;font-size:clamp(32px,4.6vw,52px);font-weight:800;letter-spacing:-.02em;
-    color:var(--accent-deep);font-variant-numeric:tabular-nums;line-height:1}
-  .stat span{display:block;margin-top:10px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
-  .stat u{display:block;margin-top:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--muted);text-decoration:none}
-
-  .collection{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px);margin-top:22px}
-  @media(max-width:900px){.collection{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:560px){.collection{grid-template-columns:1fr}}
-  .piece{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--paper);
-    transition:transform .35s ease,box-shadow .35s ease;display:block}
-  .piece:hover{transform:translateY(-5px);box-shadow:0 24px 46px -18px rgba(16,16,16,.18)}
-  .piece .img{aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--cream)}
-  .piece .info{padding:16px 18px 20px}
-  .piece .name{display:block;font-size:15px;font-weight:700}
-  .piece .tag{display:block;margin-top:4px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-
   .sectitle{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:22px;font-weight:600}
   .seclede{font-size:clamp(22px,3vw,36px);font-weight:700;letter-spacing:-.01em;line-height:1.15;max-width:24ch;text-wrap:balance;margin-bottom:8px}
 
   /* explore — links out to the dedicated pages, no content duplicated here */
-  .explore-links{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,24px)}
+  .explore-links{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
   @media(max-width:900px){.explore-links{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:560px){.explore-links{grid-template-columns:1fr}}
   .explore-link{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,32px);background:var(--paper);
@@ -213,7 +180,7 @@
 <nav id="nav">
   <a class="brand" href="#">Bathe Atelier</a>
   <div class="links">
-    <a href="#way">The Atelier Way</a>
+    <a href="atelier-way.html">The Atelier Way</a>
     <a href="collection.html">Collection</a>
     <a href="materials.html">Materials</a>
     <a href="how-it-works.html">How it works</a>
@@ -323,27 +290,16 @@
     </div>
   </div>
 
-  <div class="band" id="way">
-    <div class="quote reveal">
-      <div class="eyebrow">The Atelier Way</div>
-      <p>The half you can see is the curve.<br>The half that matters is <em>that no one else has it.</em></p>
-    </div>
-    <div class="split">
-      <div class="shot reveal" style="background-image:url(assets/product/prod-boulder-scene.jpg)"></div>
-      <div class="body reveal">Most bathtubs are a size decision dressed up as a design decision. We start the other way around — the room, the light, the way you actually get into it — and only then work out how the shape has to behave. Every piece is drawn once, pulled once, and the drawing is retired with it.</div>
-    </div>
-    <div class="stats" id="stats">
-      <div class="stat reveal"><b data-to="1" data-suffix=" of 1">0</b><span>Made to one drawing</span><u>true by design</u></div>
-      <div class="stat reveal"><b data-to="5" data-suffix="">0</b><span>Stages from sheet to bath</span><u>sheet · pull · backing · sand · finish</u></div>
-      <div class="stat reveal"><b data-to="0" data-suffix="">0</b><span>Repeats ever made</span><u>the drawing is retired on ship</u></div>
-    </div>
-  </div>
-
   <div class="band" id="explore">
     <div class="explore-links">
-      <!-- 2026-09-02，Lyric要求：Collection原本是整段6件產品grid直接活在首頁裡(#collection錨點)，
-           往上捲一樣回到首頁，不是獨立分頁。改法跟ee14196對Materials/How it works/Guides的處理
-           一致：完整內容搬到新的collection.html獨立頁，這裡只留一張連結卡片。 -->
+      <!-- 2026-09-02，Lyric要求：Collection／The Atelier Way原本整段內容直接活在首頁裡
+           (#collection／#way錨點)，往上捲一樣回到首頁，不是獨立分頁。改法跟ee14196對
+           Materials/How it works/Guides的處理一致：完整內容搬到新的獨立頁，這裡只留連結卡片。 -->
+      <a class="explore-link reveal" href="atelier-way.html">
+        <span class="sectitle" style="margin-bottom:10px">The Atelier Way</span>
+        <h3>Made once, never repeated — how we design and build</h3>
+        <span class="go">Read the atelier way →</span>
+      </a>
       <a class="explore-link reveal" href="collection.html">
         <span class="sectitle" style="margin-bottom:10px">The Collection</span>
         <h3>Six silhouettes we've shaped for past clients</h3>
@@ -376,7 +332,7 @@
       <div class="cols">
         <div class="col">
           <span>Explore</span>
-          <a href="#way">The Atelier Way</a>
+          <a href="atelier-way.html">The Atelier Way</a>
           <a href="collection.html">Collection</a>
           <a href="materials.html">Materials</a>
           <a href="how-it-works.html">How it works</a>
@@ -454,25 +410,6 @@
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:0.16});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
-
-  var counted=new WeakSet();
-  var io2=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting) return;
-      var el=e.target; if(counted.has(el)) return; counted.add(el);
-      var to=parseFloat(el.dataset.to)||0, sfx=el.dataset.suffix||'';
-      if(reduced){ el.textContent=to+sfx; return; }
-      var t0=null, dur=1100;
-      function step(ts){
-        if(t0===null) t0=ts;
-        var k=clamp((ts-t0)/dur,0,1), e2=1-Math.pow(1-k,3);
-        el.textContent=Math.round(to*e2)+sfx;
-        if(k<1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    });
-  },{threshold:0.5});
-  document.querySelectorAll('.stat b').forEach(function(el){ io2.observe(el); });
 })();
 </script>
 

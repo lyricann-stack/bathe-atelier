@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>The Atelier Way — Made Once, Never Repeated | Bathe Atelier</title>
+<meta name="description" content="The half you can see is the curve. The half that matters is that no one else has it — how we design and make every bathtub.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101010; --paper:#ffffff; --cream:#f4f2ed; --line:rgba(16,16,16,.10);
+    --muted:#6b6b6b; --accent:#c69e63; --accent-deep:#9a7b43;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+
+  nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    height:70px;padding:0 clamp(18px,4vw,56px);background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)}
+  nav .links{display:flex;gap:clamp(14px,3vw,32px)}
+  nav .links a{font-size:14px;color:#4a463d}
+  nav .brand{font-size:15px;font-weight:700;letter-spacing:.28em}
+  nav .brand span{font-style:normal;letter-spacing:.01em;font-weight:700;color:var(--accent-deep);font-size:16px}
+  nav .cta{background:var(--ink);color:var(--paper);padding:11px 20px;border-radius:999px;font-size:13px;font-weight:600}
+  @media(max-width:900px){nav .links{display:none}}
+
+  header{max-width:1180px;margin:0 auto;padding:clamp(48px,7vh,84px) clamp(18px,4vw,56px) 10px}
+  header .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-deep);font-weight:600;margin-bottom:16px}
+  header h1{font-size:clamp(32px,5vw,58px);font-weight:700;line-height:1.05;letter-spacing:-.01em;max-width:16ch}
+
+  .band{padding:clamp(20px,4vh,40px) clamp(18px,4vw,56px) clamp(70px,11vh,120px);max-width:1180px;margin:0 auto}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  .quote{border:1px solid var(--line);border-radius:18px;padding:clamp(28px,4.5vw,54px);background:var(--cream)}
+  .quote p{font-size:clamp(22px,3.4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.01em;
+    color:var(--ink);text-wrap:balance}
+  .quote p em{font-style:normal;color:var(--accent-deep)}
+
+  .split{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(18px,3vw,40px);margin-top:22px}
+  @media(max-width:800px){.split{grid-template-columns:1fr}}
+  .split .shot{border-radius:16px;overflow:hidden;background:var(--cream);aspect-ratio:4/3;
+    background-size:cover;background-position:center}
+  .split .body{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,38px);
+    font-size:clamp(13.5px,1.3vw,16px);line-height:1.8;color:var(--muted);display:flex;align-items:center}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,22px);margin-top:20px}
+  @media(max-width:720px){.stats{grid-template-columns:1fr}}
+  .stat{border:1px solid var(--line);border-radius:16px;padding:clamp(20px,2.6vw,32px)}
+  .stat b{display:block;font-size:clamp(32px,4.6vw,52px);font-weight:800;letter-spacing:-.02em;
+    color:var(--accent-deep);font-variant-numeric:tabular-nums;line-height:1}
+  .stat span{display:block;margin-top:10px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+  .stat u{display:block;margin-top:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);text-decoration:none}
+
+  footer{border-top:1px solid var(--line);padding:56px clamp(18px,4vw,56px) 64px}
+  .foot{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:28px 56px;justify-content:space-between;align-items:flex-start}
+  .foot .brandline{max-width:44ch}
+  .foot .brandline b{display:block;font-size:15px;font-weight:700;margin-bottom:10px}
+  .foot .brandline p{font-size:13px;line-height:1.7;color:var(--muted)}
+  .foot .brandline a{color:var(--accent-deep);font-weight:600}
+  .foot .cols{display:flex;gap:clamp(28px,5vw,72px)}
+  .foot .col span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep);font-weight:700;margin-bottom:12px}
+  .foot .col a{display:block;font-size:13px;color:var(--muted);padding:4px 0;transition:color .2s}
+  .foot .col a:hover{color:var(--ink)}
+  .legal{max-width:1180px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html">BATHE<span>Atelier</span></a>
+  <div class="links">
+    <a href="materials.html">Materials</a>
+    <a href="how-it-works.html">How it works</a>
+    <a href="designers.html">For designers</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="guides.html">Guides</a>
+    <a href="customize.html">Design studio</a>
+  </div>
+  <a class="cta" href="customize.html">Design my bathtub</a>
+</nav>
+
+<header>
+  <div class="eyebrow">The Atelier Way</div>
+  <h1>Made once, never repeated.</h1>
+</header>
+
+<div class="band">
+  <div class="quote reveal">
+    <p>The half you can see is the curve.<br>The half that matters is <em>that no one else has it.</em></p>
+  </div>
+  <div class="split">
+    <div class="shot reveal" style="background-image:url(assets/product/prod-boulder-scene.jpg)"></div>
+    <div class="body reveal">Most bathtubs are a size decision dressed up as a design decision. We start the other way around — the room, the light, the way you actually get into it — and only then work out how the shape has to behave. Every piece is drawn once, pulled once, and the drawing is retired with it.</div>
+  </div>
+  <div class="stats" id="stats">
+    <div class="stat reveal"><b data-to="1" data-suffix=" of 1">0</b><span>Made to one drawing</span><u>true by design</u></div>
+    <div class="stat reveal"><b data-to="5" data-suffix="">0</b><span>Stages from sheet to bath</span><u>sheet · pull · backing · sand · finish</u></div>
+    <div class="stat reveal"><b data-to="0" data-suffix="">0</b><span>Repeats ever made</span><u>the drawing is retired on ship</u></div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot">
+    <div class="brandline">
+      <b>Bathe Atelier</b>
+      <p>Bespoke bathtubs in acrylic &amp; solid surface, made one at a time in our own ateliers. Delivered worldwide.<br><a href="mailto:hello@batheatelier.com">hello@batheatelier.com</a></p>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <span>Explore</span>
+        <a href="collection.html">Collection</a>
+        <a href="materials.html">Materials</a>
+        <a href="how-it-works.html">How it works</a>
+        <a href="guides.html">Guides</a>
+      </div>
+      <div class="col">
+        <span>Start</span>
+        <a href="customize.html">Design studio</a>
+        <a href="contact.html">Free sample kit</a>
+        <a href="contact.html">Design consultation</a>
+      </div>
+    </div>
+  </div>
+  <div class="legal">© 2026 Bathe Atelier · Made one at a time</div>
+</footer>
+
+<script>
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.16});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var counted=new WeakSet();
+  var io2=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el=e.target; if(counted.has(el)) return; counted.add(el);
+      var to=parseFloat(el.dataset.to)||0, sfx=el.dataset.suffix||'';
+      if(reduced){ el.textContent=to+sfx; return; }
+      var t0=null, dur=1100;
+      function step(ts){
+        if(t0===null) t0=ts;
+        var k=Math.max(0,Math.min(1,(ts-t0)/dur)), e2=1-Math.pow(1-k,3);
+        el.textContent=Math.round(to*e2)+sfx;
+        if(k<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  },{threshold:0.5});
+  document.querySelectorAll('.stat b').forEach(function(el){ io2.observe(el); });
+})();
+</script>
+</body>
+</html>
