@@ -10,6 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.7.4/umd/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/USDZExporter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="shipping-rates.js"></script>
 <link rel="stylesheet" href="studio.css">
 </head>
@@ -45,6 +49,10 @@
   <div class="btns">
     <button class="btn btn-upl" onclick="openWizard()">✨ Redesign — answer again</button>
     <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+    <!-- 2026-09-02，Lyric要求：AR預覽下放到Basic版(原本只有Medium/Pro有)。Basic用的是舊版
+         lib-tub-*引擎，但tubGroup/DESIGN_ID/THREE.DoubleSide用法跟lib-edit3d-*核心相容，
+         lib-edit3d-ar-export.js/lib-edit3d-ar-ui.js可以原樣接上，不用另外改寫 -->
+    <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
   </div>
 </div>
 <main>
@@ -179,6 +187,25 @@
     </div>
   </div>
 </div>
+
+<!-- 2026-09-02，Lyric要求：AR預覽下放到Basic版，跟medium.html/pro.html逐字同一份modal -->
+<div id="arModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+  <div class="sk-box" style="width:min(420px,92vw);text-align:center">
+    <h2>📱 Preview in your space</h2>
+    <div id="arIOSPanel" style="display:none">
+      <div class="sk-sub">Tap below to view this design in AR, right where you're standing.</div>
+      <button class="ok" onclick="launchARSameDevice()">👁 View in AR</button>
+    </div>
+    <div id="arDesktopPanel" style="display:none">
+      <div class="sk-sub">Scan with an iPhone or iPad to view this design in AR.</div>
+      <img id="arQrImg" style="width:220px;height:220px;margin:10px auto;display:block">
+      <div id="arQrError" class="tip" style="display:none;color:#b3541e"></div>
+      <div class="tip">Android AR support is on our roadmap — for now, this works on iPhone/iPad.</div>
+    </div>
+    <div class="sk-actions"><button class="cancel" onclick="closeARPreview()">Close</button></div>
+  </div>
+</div>
+
 <script>
   // 三版本設定（必須在 lib 之前）
   window.PAGE_ID_PREFIX='BA-B'; window.PAGE_TAG='design-studio-basic'; window.PAGE_AUTO_WIZARD=true; window._noHandles=true;
@@ -194,4 +221,6 @@
 <script src="lib-tub-handles.js"></script>
 <script src="lib-tub-orbit.js"></script>
 <script src="lib-tub-boot.js"></script>
+<script src="lib-edit3d-ar-export.js"></script>
+<script src="lib-edit3d-ar-ui.js"></script>
 </body>
