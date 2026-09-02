@@ -252,6 +252,8 @@ const I18N = {
   'Concept PDF (free)': ['概念 PDF（免费）', 'Concept PDF (ฟรี)', '概念 PDF（免費）'],
   'Preview in your space': ['在您的空间预览', 'พรีวิวในพื้นที่ของคุณ', '在您的空間預覽'],
   'Redesign': ['重新设计', 'ออกแบบใหม่', '重新設計'],
+  // D1(2026-09-02) Basic 新增：手機固定底部 CTA 按鈕文字（'Estimated price' 已存在字典，不重加）
+  'Get a firm quote →': ['索取正式报价 →', 'ขอใบเสนอราคา →', '索取正式報價 →'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

@@ -153,6 +153,11 @@
     <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
   </div>
 </main>
+<!-- D1(2026-09-02)：手機版固定底部 CTA——面板在 375px 只剩約 250px 高卻要捲 1800px，客人找不到送出按鈕；桌面 display:none -->
+<div id="mobileCta">
+  <div class="mc-price"><span class="mc-label">Estimated price</span><b id="mobileCtaPrice"></b></div>
+  <button type="button" class="mc-btn" onclick="mobileCtaGo()">Get a firm quote →</button>
+</div>
 <div id="wizModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
   <div class="sk-box" style="width:min(680px,94vw)">
     <div id="wizQ">
@@ -236,4 +241,5 @@
 <script src="lib-tub-boot.js"></script>
 <script src="lib-edit3d-ar-export.js"></script>
 <script src="lib-edit3d-ar-ui.js"></script>
+<script src="lib-tub-basic-mobile.js"></script>
 </body>
