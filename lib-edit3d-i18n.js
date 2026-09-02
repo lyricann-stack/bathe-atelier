@@ -288,6 +288,11 @@ const I18N = {
   // M8(2026-09-02) Medium 新增：精靈空間題調整，逐字複製自 lib-tub-i18n.js（舊鍵 'Installation space' 與舊 tip 鍵保留不刪）
   'Where the tub will sit': ['浴缸要放的位置', 'ตำแหน่งที่จะวางอ่างอาบน้ำ', '浴缸要放的位置'],
   'Measure the spot for the tub, not the whole room. We keep at least 50mm clearance on each side for installation and cleaning.': ['请量浴缸要放的那块地，不是整间浴室。我们会在四周各保留至少 50mm 的安装与清洁间隙。', 'วัดเฉพาะจุดที่จะวางอ่าง ไม่ใช่ทั้งห้องน้ำ เราเว้นระยะอย่างน้อยข้างละ 50 มม. สำหรับติดตั้งและทำความสะอาด', '請量浴缸要放的那塊地，不是整間浴室。我們會在四周各保留至少 50mm 的安裝與清潔間隙。'],
+  // M10(2026-09-02) Medium 新增：長寬下方即時顯示內部尺寸／空間上限提示，逐字複製自 lib-tub-i18n.js（先 grep 確認 'Interior'／'depth' 不存在才加）
+  'Interior': ['内部', 'ภายใน', '內部'],
+  'depth': ['深', 'ลึก', '深'],
+  'Sized to your space — up to': ['依您的空间调整 — 最大可至', 'ปรับตามพื้นที่ของคุณ — สูงสุด', '依您的空間調整 — 最大可至'],
+  'No space limit — up to our maximum': ['空间不限 — 最大可至', 'ไม่จำกัดพื้นที่ — สูงสุดของเรา', '空間不限 — 最大可至'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -343,5 +348,7 @@ function applyLang(){
   try { if(PROPS.length) renderProposalCards(); } catch(e){}   // 語言切換時重繪提案卡
   if(typeof updateColorNote === 'function') updateColorNote();
   if(typeof refreshQuoteBanner === 'function') refreshQuoteBanner();
+  if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = (typeof spaceCapText === 'function') ? spaceCapText(r.max, w.max) : (t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'); }   // M10(2026-09-02)：改呼叫 spaceCapText 統一兩軸不限文案
+  if(typeof refreshDimsInner === 'function') refreshDimsInner();   // M10(2026-09-02)
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項

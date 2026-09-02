@@ -194,3 +194,17 @@ function unlockQuoteBtn(){
 document.querySelectorAll('.sw, .mat-btns button').forEach(el => el.addEventListener('click', unlockQuoteBtn));
 // M7(2026-09-02)：節點編輯／滑桿等任何幾何重建都會呼叫 buildTub，包一層順便解鎖詢價按鈕
 if(typeof buildTub === 'function'){ const _btUnlock = buildTub; buildTub = function(){ _btUnlock.apply(this, arguments); if(typeof unlockQuoteBtn === 'function') unlockQuoteBtn(); }; }
+
+// M10(2026-09-02)：長寬下方即時顯示內部尺寸；用 MutationObserver 監看 #spec（與既有手法一致，不改引擎）
+function refreshDimsInner(){
+  const el = document.getElementById('dimsInner');
+  if(!el || typeof innerDims !== 'function') return;
+  const inn = innerDims();
+  el.textContent = t('Interior') + ' ' + inn.L + ' × ' + inn.W + ' mm · ' + t('depth') + ' ' + (P.H - P.b) + ' mm';
+}
+(function(){
+  const spec = document.getElementById('spec');
+  if(!spec) return;
+  new MutationObserver(refreshDimsInner).observe(spec, { childList:true, subtree:true });
+  refreshDimsInner();
+})();

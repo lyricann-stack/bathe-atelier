@@ -103,7 +103,10 @@ if(EDIT_MODE){ (function(){
     const h = document.createElement('h3'); h.textContent = '↔ Length & Width';
     const tip = document.createElement('div'); tip.className = 'tip';
     tip.textContent = 'Overall length / width (mm). Traced or node-edited outlines scale to fit.';
-    g.appendChild(h); g.appendChild(rowL); g.appendChild(rowW); g.appendChild(tip);
+    g.appendChild(h); g.appendChild(rowL); g.appendChild(rowW);
+    // M10(2026-09-02)：medium.html 的內部尺寸／空間上限兩個提示跟著長寬列一起搬進本群組；其他頁沒有這兩個元素＝no-op
+    ['dimsInner','spaceCap'].forEach(id => { const el = document.getElementById(id); if(el) g.appendChild(el); });
+    g.appendChild(tip);
     panel.insertBefore(g, document.getElementById('rimProfileGroup') || null);
   })();
 

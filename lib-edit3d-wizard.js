@@ -78,10 +78,15 @@ function briefTargets(){
   const innerL = { recline: hmm*0.82, stretch: hmm*0.93, deep: hmm*0.62 };
   const clampL = v => Math.max(1200, Math.min(maxL, Math.round((v + 40 + (two?150:0))/10)*10));
   const clampW = v => Math.max(600, Math.min(maxW, Math.round((v + 40)/10)*10));
-  return { two, innerL, clampL, clampW };
+  return { two, innerL, clampL, clampW, maxL, maxW };
 }
 let PROPS = [];
 let BRIEF_APPLIED = null;   // M9(2026-09-02)：走過精靈選卡後的五題答案快照，帶進詢價信／spec JSON／Concept PDF
+// M10(2026-09-02)：#spaceCap 提示文字抽成函式，applyProposal() 與 applyLang() 共用；兩軸皆到頂（不限）時改顯示絕對上限句
+function spaceCapText(capL, capW){
+  if(BRIEF.spL >= 2300 && BRIEF.spW >= 1300) return t('No space limit — up to our maximum') + ' 2200 × 1200 mm';
+  return t('Sized to your space — up to') + ' ' + capL + ' × ' + capW + ' mm';
+}
 // Phase 5(2026-08-21)：修正wallface-test.html/photo2tub-app.html/medium.html既有的一個真實bug
 // (非本次引入，逐字沿用時原樣繼承)——EDIT_MODE(lib-edit3d-handles.js)把captureRenders monkey-patch
 // 成async function(為了在截圖前後隱藏節點編輯的edge/node群組)，但generateProposals()這裡原本同步
@@ -152,6 +157,14 @@ function applyProposal(i){
     if(tt) tt.value = 'freestanding';
   }
   sanitizeBase();
+  // M10(2026-09-02)：長寬滑桿上限跟客人空間連動（絕對上限 2200/1200 仍守住；下限保護避免 max<min）
+  const T = briefTargets();
+  const capL = Math.max(1200, T.maxL), capW = Math.max(600, T.maxW);
+  [['rL','nL',capL],['rW','nW',capW]].forEach(([rid,nid,cap])=>{ const r=document.getElementById(rid), n=document.getElementById(nid); if(r) r.max = cap; if(n) n.max = cap; });
+  if(P.L > capL) P.L = capL;
+  if(P.W > capW) P.W = capW;
+  const sc = document.getElementById('spaceCap');
+  if(sc){ sc.style.display = 'block'; sc.textContent = spaceCapText(capL, capW); }
   document.querySelectorAll('.rim-btns button').forEach(b=>b.classList.toggle('active', b.dataset.rim === P.rim));
   document.querySelectorAll('.drain-btns button[data-drain]').forEach(b=>b.classList.toggle('active', b.dataset.drain === P.drain));
   document.querySelectorAll('.shape-btns button').forEach(b=>b.classList.toggle('active', b.dataset.shape === P.shape));
