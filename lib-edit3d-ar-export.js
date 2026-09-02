@@ -40,11 +40,13 @@ function makeBackfaceClone(mesh){
 
 // 匯出用的場景複本：結構性clone(幾何/材質仍共用參照，純讀取安全)，縮放0.001把mm轉成m
 // (glTF/USDZ/AR生態系統的慣例單位，1.6m的缸在AR裡才會真的量出1.6m)——不改動原始tubGroup，
-// 編輯器繼續正常運作。濾掉'waterSim'：水位模擬是編輯器預覽輔助，不是產品本身的一部分。
+// 編輯器繼續正常運作。
+// 2026-09-02 Lyric決定：水位模擬('waterSim')改成保留、一起匯出，不再濾掉——之前(*本行以上的
+// 舊註解*)認為水只是編輯器預覽輔助、不該進AR，但實際測試後Lyric覺得AR裡看到水面效果更好，
+// 明確要求保留。water本身material.side本來就是THREE.DoubleSide，下面雙面材質補背面的迴圈
+// 會自動把它也一併處理，不用額外寫特例。
 function buildExportGroup(){
   const g = tubGroup.clone(true);
-  const water = g.getObjectByName('waterSim');
-  if(water) water.parent.remove(water);
   // 雙面材質補背面：先蒐集清單再逐一加入，避免邊遍歷邊修改children陣列
   const doubleSided = [];
   g.traverse(obj => { if(obj.isMesh && obj.material && obj.material.side === THREE.DoubleSide) doubleSided.push(obj); });
