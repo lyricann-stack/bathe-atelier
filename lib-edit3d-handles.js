@@ -431,7 +431,7 @@ if(EDIT_MODE){ (function(){
 
   // ---- 面板 ----
   const $ = id=>document.getElementById(id);
-  const TIP0 = 'Editable edges: <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b>. Not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
+  const TIP0 = 'Editable edges: <b style="color:#7a5f2f">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#8f5424">inner bowl</b> (copper), <b style="color:#4f6f8a">base</b> (blue), <b style="color:#4c6e48">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b>. Not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
   function showNodePanel(){
     $('nodePanel').style.display = selNode ? 'block' : 'none';
     if(selNode){

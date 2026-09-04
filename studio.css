@@ -36,7 +36,7 @@
   .row .val { order:2; display:flex; align-items:center; gap:3px; flex-shrink:0; }
   .row input[type=range] { order:3; flex-basis:100%; width:100%; accent-color:#e67e22; margin:0; }
   .row .val input { width:52px; font-size:12px; padding:2px 4px; border:1px solid #ccc; border-radius:4px; text-align:right; }
-  .row .val span { font-size:11px; color:#888; }
+  .row .val span { font-size:12px; color:#66614f; }
   .shape-btns, .drain-btns { display:flex; gap:6px; flex-wrap:wrap; }
   .shape-btns button, .drain-btns button { flex:1; min-width:60px; padding:7px 4px; font-size:12px; border:1px solid #ccc; background:#fafafa; border-radius:6px; cursor:pointer; }
   .shape-btns button.active, .drain-btns button.active { background:#1a2b3c; color:#fff; border-color:#1a2b3c; }
@@ -46,12 +46,12 @@
   .sw { width:26px; height:26px; border-radius:50%; border:2px solid #ddd; cursor:pointer; }
   .sw.active { border-color:#e67e22; box-shadow:0 0 0 2px rgba(230,126,34,.3); }
   .chk { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#444; margin-bottom:6px; }
-  .tip { font-size:11px; color:#888; line-height:1.5; margin-top:4px; }
+  .tip { font-size:12px; color:#66614f; line-height:1.5; margin-top:4px; }
   input[type=text] { width:100%; padding:6px 8px; font-size:12.5px; border:1px solid #ccc; border-radius:5px; margin-bottom:8px; }
   #spec { font-size:12.5px; width:100%; border-collapse:collapse; }
   #spec td { padding:4px 2px; border-bottom:1px dashed #e8e8e8; color:#333; }
   #spec td:last-child { text-align:right; font-weight:600; color:#1a2b3c; }
-  .flow { font-size:11.5px; color:#666; line-height:1.7; background:#f7f9fb; border-radius:6px; padding:10px; }
+  .flow { font-size:12px; color:#666; line-height:1.7; background:#f7f9fb; border-radius:6px; padding:10px; }
   .flow b { color:#e67e22; }
   #hint { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(26,43,60,.75); color:#fff; font-size:11.5px; padding:6px 14px; border-radius:20px; pointer-events:none; }
   #warn { color:#c0392b; font-size:12px; margin-top:4px; display:none; }
@@ -60,10 +60,10 @@
   #sketchModal.open { display:flex; }
   .sk-box { background:#fff; border-radius:12px; padding:18px 20px; width:min(760px, 94vw); max-height:92vh; overflow-y:auto; }
   .sk-box h2 { font-size:16px; color:#1a2b3c; margin-bottom:4px; }
-  .sk-box .sk-sub { font-size:12px; color:#777; margin-bottom:12px; }
+  .sk-box .sk-sub { font-size:12px; color:#66614f; margin-bottom:12px; }
   .sk-flex { display:flex; gap:18px; flex-wrap:wrap; }
   .sk-col h4 { font-size:13px; color:#e67e22; margin-bottom:6px; }
-  .sk-col .desc { font-size:11.5px; color:#666; line-height:1.5; margin-bottom:6px; max-width:340px; }
+  .sk-col .desc { font-size:12px; color:#666; line-height:1.5; margin-bottom:6px; max-width:340px; }
   canvas.pad { border:2px solid #dde3ea; border-radius:8px; background:#fff; cursor:crosshair; touch-action:none; display:block; }
   .sk-tools { display:flex; gap:8px; margin-top:8px; align-items:center; flex-wrap:wrap; }
   .sk-tools button, .sk-tools label.upl { padding:6px 12px; font-size:12px; border:1px solid #ccc; background:#fafafa; border-radius:6px; cursor:pointer; }
@@ -79,7 +79,7 @@
     .studio-strip { padding:10px 16px 8px; }
     .studio-strip .sub { display:none; }
     .studio-strip h1 { font-size:18px; }
-    .studio-strip .eyebrow { font-size:9.5px; margin-bottom:2px; }
+    .studio-strip .eyebrow { font-size:12px; margin-bottom:2px; }
     .studio-strip .btns { width:100%; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:2px; }
     .btn { padding:7px 12px; font-size:12px; white-space:nowrap; flex:none; }
     main { flex-direction:column-reverse; }                     /* 視圖在上、面板在下 */
@@ -107,7 +107,7 @@
   .lang-sw button { border:1px solid #ddd8cc; color:#66614f; background:transparent; border-radius:999px; }
   .lang-sw button.active { background:#1b1a16; border-color:#1b1a16; color:#fff; }
   .btn { border-radius:999px; font-weight:600; }
-  .btn-dxf { background:#9a7b43; color:#fff; }
+  .btn-dxf { background:#8a6c39; color:#fff; }
   .btn-json { background:#1b1a16; color:#fff; }
   .btn-upl { background:transparent; color:#1b1a16; border:1px solid #b9ab8b; }
   #panel { background:#faf8f2; border-right:1px solid #ddd8cc; }
@@ -116,33 +116,33 @@
   .row label { color:#4a463d; }
   .row input[type=range] { accent-color:#9a7b43; }
   .row .val input { border:1px solid #ddd8cc; background:#fff; color:#1b1a16; }
-  .row .val span { color:#8a8478; }
+  .row .val span { color:#66614f; }
   .shape-btns button, .drain-btns button { background:#fff; border:1px solid #ddd8cc; color:#4a463d; border-radius:10px; }
   .shape-btns button.active, .drain-btns button.active { background:#1b1a16; border-color:#1b1a16; color:#fff; }
   .rim-label { color:#4a463d; }
-  .preset { border:1px dashed #c9b489; color:#9a7b43; background:#fdfaf3; border-radius:10px; }
+  .preset { border:1px dashed #c9b489; color:#7a5f2f; background:#fdfaf3; border-radius:10px; }
   .preset:hover { background:#f7f0e0; }
-  .tip, .desc { color:#8a8478; }
+  .tip, .desc { color:#66614f; }
   #spec td { color:#4a463d; border-bottom:1px dashed #e6e1d5; }
   #spec td:last-child { color:#1b1a16; }
   .flow { background:#f4f1ea; color:#66614f; border-radius:10px; }
-  .flow b { color:#9a7b43; }
+  .flow b { color:#7a5f2f; }
   #hint { background:rgba(27,26,22,.78); }
   #extBanner { background:rgba(154,123,67,.92); }
   input[type=text] { border:1px solid #ddd8cc; background:#fff; border-radius:8px; }
   .sw.active { border-color:#9a7b43; box-shadow:0 0 0 2px rgba(154,123,67,.28); }
   .sk-box { border-radius:18px; background:#fbfaf6; }
   .sk-box h2 { font-weight:700; color:#1b1a16; }
-  .sk-col h4 { color:#9a7b43; }
+  .sk-col h4 { color:#7a5f2f; }
   canvas.pad { border:2px solid #ddd8cc; }
   .sk-tools button, .sk-tools label.upl { border:1px solid #ddd8cc; background:#fff; color:#4a463d; border-radius:999px; }
-  .sk-tools label.upl { color:#9a7b43; border-color:#c9b489; }
+  .sk-tools label.upl { color:#7a5f2f; border-color:#c9b489; }
   .sk-actions .ok { background:#1b1a16; border-radius:999px; }
   .sk-actions .cancel { background:#eee7db; border-radius:999px; color:#4a463d; }
   #warn, #skErr { color:#a04b2e; }
   /* 標題帶（與站上頁面開頭一致的語氣） */
   .studio-strip { flex:none; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px 20px; padding:16px clamp(20px,5vw,56px) 14px; background:#f4f1ea; border-bottom:1px solid #e6e1d5; }
-  .studio-strip .eyebrow { font-size:11px; letter-spacing:.32em; text-transform:uppercase; color:#9a7b43; font-weight:600; margin-bottom:5px; }
+  .studio-strip .eyebrow { font-size:12px; letter-spacing:.32em; text-transform:uppercase; color:#7a5f2f; font-weight:600; margin-bottom:5px; }
   .studio-strip h1 { font-weight:700; font-size:clamp(22px,2.4vw,30px); color:#1b1a16; line-height:1.13; letter-spacing:-.01em; }
   .studio-strip .sub { color:#66614f; font-size:12.5px; margin-top:4px; }
   .studio-strip .btns { display:flex; gap:8px; flex-wrap:wrap; }
@@ -154,8 +154,8 @@
   .prop-card img { width:100%; display:block; aspect-ratio:4/3; object-fit:cover; }
   .pc-body { padding:8px 10px 10px; display:flex; flex-direction:column; gap:2px; }
   .pc-body b { font-size:13px; color:#1b1a16; }
-  .pc-body span { font-size:11px; color:#8a8478; }
-  .pc-body .pc-price { color:#9a7b43; font-weight:600; font-size:12px; margin-top:2px; }
+  .pc-body span { font-size:12px; color:#66614f; }
+  .pc-body .pc-price { color:#7a5f2f; font-weight:600; font-size:12px; margin-top:2px; }
   #wizModal .rim-label { margin-top:12px; }
   @media (max-width:700px){ #propGrid { grid-template-columns:1fr; } }
 /* ===== noir-skin 已於 2026-09-02 移除（換成 Must Société 亮色風格對齊 home-motion.html）=====
@@ -167,17 +167,17 @@
 
 /* ===== Basic 收斂修正 v1（2026-09-02）：只作用於 body[data-page="basic"]，pro.html 不受影響 ===== */
 body[data-page="basic"] .field-err { border-color:#b3541e !important; }
-body[data-page="basic"] .pc-why{font-size:11.5px;color:#4a463d}
-body[data-page="basic"] .pc-note{font-size:10.5px;color:#b3541e}
-body[data-page="basic"] #specMore summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:6px 0;list-style:none}
+body[data-page="basic"] .pc-why{font-size:12px;color:#4a463d}
+body[data-page="basic"] .pc-note{font-size:12px;color:#b3541e}
+body[data-page="basic"] #specMore summary{cursor:pointer;font-size:12px;color:#7a5f2f;padding:6px 0;list-style:none}
 body[data-page="basic"] #specMore summary::-webkit-details-marker{display:none}
 body[data-page="basic"] #specMore summary::before{content:'+ ';}
 body[data-page="basic"] #specMore[open] summary::before{content:'− ';}
 body[data-page="basic"] #specMore table{width:100%}
 body[data-page="basic"] #moreAdj summary{cursor:pointer;font-size:13px;color:#1b1a16;font-weight:600;list-style:none;border-left:3px solid #9a7b43;padding-left:8px}
 body[data-page="basic"] #moreAdj summary::-webkit-details-marker{display:none}
-body[data-page="basic"] #moreAdj summary::before{content:'+ ';color:#9a7b43}
-body[data-page="basic"] #moreAdj[open] summary::before{content:'− ';color:#9a7b43}
+body[data-page="basic"] #moreAdj summary::before{content:'+ ';color:#7a5f2f}
+body[data-page="basic"] #moreAdj[open] summary::before{content:'− ';color:#7a5f2f}
 body[data-page="basic"] #moreAdj .row{margin-top:10px}
 body[data-page="basic"] .btn-short{display:none}
 @media (max-width:700px){ body[data-page="basic"] .btn-long{display:none} body[data-page="basic"] .btn-short{display:inline} }
@@ -189,7 +189,7 @@ body[data-page="basic"] #mobileCta{display:none}
 @media (max-width:700px){
   body[data-page="basic"] #mobileCta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(250,248,242,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #ddd8cc}
   body[data-page="basic"] #mobileCta .mc-price{display:flex;flex-direction:column;line-height:1.15}
-  body[data-page="basic"] #mobileCta .mc-label{font-size:10.5px;color:#8a8478}
+  body[data-page="basic"] #mobileCta .mc-label{font-size:12px;color:#66614f}
   body[data-page="basic"] #mobileCta #mobileCtaPrice{font-size:15px;font-weight:700;color:#9a7b43}
   body[data-page="basic"] #mobileCta .mc-btn{background:#1b1a16;color:#f4f1ea;border:none;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
   body[data-page="basic"] #panel{padding-bottom:72px}

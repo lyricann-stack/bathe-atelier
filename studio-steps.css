@@ -7,7 +7,7 @@
 body.ss-on #panel{display:flex;flex-direction:column}
 #ssBar{position:sticky;top:0;z-index:5;background:#faf8f2;margin:-14px -14px 12px;padding:10px 14px;border:0;border-bottom:1px solid #ddd8cc;border-radius:0}
 .ss-top{display:flex;justify-content:space-between;align-items:center}
-.ss-label{font-size:12px;color:#8a8478;letter-spacing:.04em}
+.ss-label{font-size:12px;color:#66614f;letter-spacing:.04em}
 .ss-dots{display:flex;gap:6px}
 .ss-dot{width:8px;height:8px;border-radius:50%;background:#ddd8cc;cursor:pointer}
 .ss-dot.done{background:#9a7b43;opacity:.45}
@@ -28,7 +28,7 @@ body.ss-summary #panel{width:min(560px,50%)}
    不是 [data-substeps] 的直系子元素，subGo() 對它們加 ss-hide 需要這條才會真的隱藏 */
 .ss-subnav > .ss-hide{display:none !important}
 .ss-sub{display:flex;justify-content:space-between;align-items:center;margin:2px 0 10px}
-.ss-sub-label{font-size:12px;color:#8a8478}
+.ss-sub-label{font-size:12px;color:#66614f}
 .ss-sub-dots{display:flex;gap:5px}
 .ss-subnav{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
 .ss-subnav .ss-btn{padding:8px 14px;font-size:12.5px}
@@ -37,7 +37,7 @@ body.ss-summary #panel{width:min(560px,50%)}
 .yd-q .tip{margin-top:6px}
 .ss-opts{display:flex;flex-wrap:wrap;gap:6px}
 .ss-opts button{font:inherit;font-size:12.5px;padding:8px 12px;border-radius:999px;border:1px solid #ddd8cc;background:#fff;color:#4a463d;cursor:pointer}
-.ss-opts button.active{background:#9a7b43;border-color:#9a7b43;color:#fff}
+.ss-opts button.active{background:#8a6c39;border-color:#8a6c39;color:#fff}
 /* S9a(2026-09-04)：Guided design 內嵌為 Step 0 */
 body.ss-on #panel > #wizModal{display:block !important;position:static !important;inset:auto !important;background:none !important;z-index:auto !important;padding:0}
 body.ss-on #panel > #wizModal.ss-hide{display:none !important}
@@ -46,7 +46,7 @@ body.ss-on #panel > #wizModal h2{display:none}
 body.ss-on #panel > #wizModal button[onclick="closeWizard()"]{display:none}
 body.ss-on #panel > button.preset{display:none}
 .wz-q{margin-bottom:14px}
-.wz-n{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#9a7b43;color:#fff;font-size:11px;font-weight:600;align-items:center;justify-content:center;margin-right:6px;vertical-align:middle}
+.wz-n{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#8a6c39;color:#fff;font-size:12px;font-weight:600;align-items:center;justify-content:center;margin-right:6px;vertical-align:middle}
 body.ss-on #panel > #wizModal .rim-label{margin-top:0}
 /* S10(2026-09-04)：手機——3D 至少 40vh、選項按鈕換行、步驟列對齊 12px 內距 */
 @media (max-width:700px){

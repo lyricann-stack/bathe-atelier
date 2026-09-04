@@ -538,7 +538,10 @@ export const DICT = {
     /* L1/L2-b(2026-09-05) footer Legal 連結新增 */
     "Legal":"法律",
     "Privacy policy":"隐私政策",
-    "Terms and conditions":"条款与条件"
+    "Terms and conditions":"条款与条件",
+    /* L3(2026-09-05) 順手補 L1/L2-b 短版鍵（guide 文章頁版型用） */
+    "Privacy":"隐私",
+    "Terms":"条款"
   },
 
   th: {
@@ -1066,6 +1069,9 @@ export const DICT = {
     /* L1/L2-b(2026-09-05) footer Legal 連結新增 */
     "Legal":"กฎหมาย",
     "Privacy policy":"นโยบายความเป็นส่วนตัว",
-    "Terms and conditions":"ข้อกำหนดและเงื่อนไข"
+    "Terms and conditions":"ข้อกำหนดและเงื่อนไข",
+    /* L3(2026-09-05) 順手補 L1/L2-b 短版鍵（guide 文章頁版型用） */
+    "Privacy":"ความเป็นส่วนตัว",
+    "Terms":"ข้อกำหนด"
   }
 };
