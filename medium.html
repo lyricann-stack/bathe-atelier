@@ -318,6 +318,63 @@
 </div>
 <main>
   <div id="panel">
+    <!-- 精靈（引導設計）視窗：問答 → 四款提案 → 選一款回頁面微調 -->
+    <div id="wizModal" data-step="0" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
+      <div class="sk-box" style="width:min(680px,94vw)">
+        <div id="wizQ">
+          <h2>✨ Guided design</h2>
+          <div class="sk-sub">Answer 5 quick questions. We size four tubs to your space and body; pick one and adjust it, or skip and set everything yourself.</div>
+          <div class="wz-q">
+            <div class="rim-label" style="margin-top:0"><span class="wz-n">1</span>Where the tub will sit</div>
+            <div class="row"><label>Space length</label><input type="range" id="rSpL" min="1300" max="2400" step="50" value="1800"><div class="val"><input id="nSpL" value="1800"><span>mm</span></div></div>
+            <div class="row"><label>Space width</label><input type="range" id="rSpW" min="700" max="1400" step="50" value="1000"><div class="val"><input id="nSpW" value="1000"><span>mm</span></div></div>
+            <div class="tip">Measure the spot for the tub, not the whole room. We keep at least 50mm clearance on each side for installation and cleaning.</div>
+          </div>
+          <div class="wz-q">
+            <div class="rim-label"><span class="wz-n">2</span>Main bather's height</div>
+            <div class="row"><label>Height</label><input type="range" id="rBh" min="140" max="200" step="1" value="170"><div class="val"><input id="nBh" value="170"><span>cm</span></div></div>
+          </div>
+          <div class="wz-q">
+            <div class="rim-label"><span class="wz-n">3</span>How do you like to soak?</div>
+            <div class="drain-btns" id="postureBtns">
+              <button data-pos="recline" class="active">Recline, knees relaxed</button>
+              <button data-pos="stretch">Lie flat, legs straight</button>
+              <button data-pos="deep">Deep soak, seated</button>
+            </div>
+          </div>
+          <div class="wz-q">
+            <div class="rim-label"><span class="wz-n">4</span>Bathing for</div>
+            <div class="drain-btns" id="bathersBtns">
+              <button data-n="1" class="active">One person</button>
+              <button data-n="2">Two people</button>
+            </div>
+          </div>
+          <div class="wz-q">
+            <div class="rim-label"><span class="wz-n">5</span>Which look speaks to you?</div>
+            <div class="drain-btns" id="lookBtns">
+              <button data-look="organic" class="active">Soft organic</button>
+              <button data-look="rounded">Rounded ends</button>
+              <button data-look="linear">Clean lines</button>
+            </div>
+          </div>
+          <div class="sk-actions">
+            <button class="cancel" onclick="closeWizard()">Cancel</button>
+            <button class="ok" onclick="generateProposals()">✨ Design my four tubs →</button>
+          </div>
+        </div>
+        <div id="wizP" style="display:none">
+          <h2>Your four proposals</h2>
+          <div class="sk-sub">Built around your space and body — pick one, then fine-tune it.</div>
+          <div class="tip" id="propPriceLine" style="margin:-4px 0 10px"></div>
+          <div id="propGrid"></div>
+          <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one — everything stays adjustable.</div>
+          <div class="sk-actions">
+            <button class="cancel" onclick="wizBack()">← Change answers</button>
+            <button class="cancel" onclick="closeWizard()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 靠牆缸下放Medium(2026-08-22，Lyric裁定)：入口設計跟pro.html同一套——直接是#panel的子元素、
          故意不用class="group"，避開lib-edit3d-handles.js的EDIT_MODE面板收合邏輯(只收':scope > .group')。
          Medium原本沒有這個select，這裡是新增不是搬移；chooseTubType()/wallmount.js本來就在Medium的
@@ -567,54 +624,6 @@
   </div>
 </div>
 
-<!-- 精靈（引導設計）視窗：問答 → 四款提案 → 選一款回頁面微調 -->
-<div id="wizModal" style="display:none;position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:100;align-items:center;justify-content:center">
-  <div class="sk-box" style="width:min(680px,94vw)">
-    <div id="wizQ">
-      <h2>✨ Guided design</h2>
-      <div class="sk-sub">Answer a few questions — we design four tubs around you, then you fine-tune the one you like.</div>
-      <div class="rim-label" style="margin-top:0">Where the tub will sit</div>
-      <div class="row"><label>Space length</label><input type="range" id="rSpL" min="1300" max="2400" step="50" value="1800"><div class="val"><input id="nSpL" value="1800"><span>mm</span></div></div>
-      <div class="row"><label>Space width</label><input type="range" id="rSpW" min="700" max="1400" step="50" value="1000"><div class="val"><input id="nSpW" value="1000"><span>mm</span></div></div>
-      <div class="tip">Measure the spot for the tub, not the whole room. We keep at least 50mm clearance on each side for installation and cleaning.</div>
-      <div class="rim-label">Main bather's height</div>
-      <div class="row"><label>Height</label><input type="range" id="rBh" min="140" max="200" step="1" value="170"><div class="val"><input id="nBh" value="170"><span>cm</span></div></div>
-      <div class="rim-label">How do you like to soak?</div>
-      <div class="drain-btns" id="postureBtns">
-        <button data-pos="recline" class="active">Recline, knees relaxed</button>
-        <button data-pos="stretch">Lie flat, legs straight</button>
-        <button data-pos="deep">Deep soak, seated</button>
-      </div>
-      <div class="rim-label">Bathing for</div>
-      <div class="drain-btns" id="bathersBtns">
-        <button data-n="1" class="active">One person</button>
-        <button data-n="2">Two people</button>
-      </div>
-      <div class="rim-label">Which look speaks to you?</div>
-      <div class="drain-btns" id="lookBtns">
-        <button data-look="organic" class="active">Soft organic</button>
-        <button data-look="rounded">Rounded ends</button>
-        <button data-look="linear">Clean lines</button>
-      </div>
-      <div class="sk-actions">
-        <button class="cancel" onclick="closeWizard()">Cancel</button>
-        <button class="ok" onclick="generateProposals()">✨ Design my four tubs →</button>
-      </div>
-    </div>
-    <div id="wizP" style="display:none">
-      <h2>Your four proposals</h2>
-      <div class="sk-sub">Built around your space and body — pick one, then fine-tune it.</div>
-      <div class="tip" id="propPriceLine" style="margin:-4px 0 10px"></div>
-      <div id="propGrid"></div>
-      <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one — everything stays adjustable.</div>
-      <div class="sk-actions">
-        <button class="cancel" onclick="wizBack()">← Change answers</button>
-        <button class="cancel" onclick="closeWizard()">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- 08裁定1a(2026-08-22)：T5現場照片圈選下放Medium，逐字複製自pro.html(照片分析簡易版:
      上傳現場照→手動圈出位置→隨詢價寄出，2026-08-17會議T5；不做AI自動辨識)。
      sendQuote()(共用lib-edit3d-export.js)本來就會讀window.EXTRA_QUOTE_ATTACH/EXTRA_QUOTE_NOTE
@@ -685,7 +694,7 @@
 
 <script>
   // 三版本設定（必須在 lib 之前）——佇列項9(2026-08-21)Medium切共用核心
-  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true; window.PAGE_STEP_INJECTED={editIntro:1, edgeEditGroup:2, dimGroup:2, rimProfileGroup:2}; window.PAGE_STEP_TITLES={1:'Start',2:'Shape',3:'Material & Colour',4:'Summary'}; window.PAGE_EDGE_COLLAPSED=true;
+  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true; window.PAGE_STEP_INJECTED={editIntro:1, edgeEditGroup:2, dimGroup:2, rimProfileGroup:2}; window.PAGE_STEP_TITLES={0:'We design four tubs around you',1:'Start',2:'Shape',3:'Material & Colour',4:'Summary'}; window.PAGE_EDGE_COLLAPSED=true;
 </script>
 <!-- Phase 5(2026-08-20)先讓pro.html換底Edit3D共用核心(lib-edit3d-*.js)，佇列項9(2026-08-21)Medium比照
      切換。順序要求同pro.html：wallmount在geometry之前；handles在orbit/boot之前；不載入Phase 7/8
@@ -771,6 +780,10 @@ function attachPhoto(){
 // S8c(2026-09-04) 補：Your details 已拆五題子步，email 欄位可能被子步藏住（display:none 時
 // 原生 focus() 會失敗），改呼叫 revealSub 直接切到 email 那一題（內部含 reveal 切主步驟）
 (function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps){ const em = document.getElementById('custEmail'); if(em && StudioSteps.revealSub) StudioSteps.revealSub(em); else StudioSteps.reveal(document.getElementById('quoteBtn')); } _go.apply(this, arguments); }; })();
+</script>
+<script>
+// S9c(2026-09-05)：精靈改為 Step 0——開精靈＝到 Step 0，關精靈／選卡帶入＝到 Step 1
+(function(){ if(!window.StudioSteps || StudioSteps.steps().indexOf(0) === -1) return; const _open = openWizard, _close = closeWizard; window.openWizard = function(){ _open(); StudioSteps.go(0); }; window.closeWizard = function(){ _close(); if(StudioSteps.current() === 0) StudioSteps.go(1); }; })();
 </script>
 </body>
 </html>
