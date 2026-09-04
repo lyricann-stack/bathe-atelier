@@ -78,6 +78,20 @@
   #specMore table{border-collapse:collapse}
   #specMore table td{text-align:left;font-weight:400;color:#4a463d}
   #specMore table td:last-child{text-align:right;font-weight:600;color:#1b1a16}
+  /* M15a(2026-09-02)：手機工具列短字，放在 .studio-strip .btns 的 flex-wrap:wrap 之後才蓋得掉 */
+  .btn-short{display:none}
+  @media (max-width:700px){ .btn-long{display:none} .btn-short{display:inline} .studio-strip .btns{flex-wrap:nowrap;overflow-x:auto} }
+  /* M15b(2026-09-03)：手機固定底部 CTA，複製 studio.css D1 區塊去掉 body[data-page="basic"] 前綴 */
+  #mobileCta{display:none}
+  @media (max-width:700px){
+    #mobileCta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(250,248,242,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #ddd8cc}
+    #mobileCta .mc-price{display:flex;flex-direction:column;line-height:1.15}
+    #mobileCta .mc-label{font-size:10.5px;color:#8a8478}
+    #mobileCta #mobileCtaPrice{font-size:15px;font-weight:700;color:#9a7b43}
+    #mobileCta .mc-btn{background:#1b1a16;color:#f4f1ea;border:none;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+    #panel{padding-bottom:72px}
+    #viewer{height:30vh;min-height:200px}
+  }
 </style>
 </head>
 <body>
@@ -129,15 +143,15 @@
   <div class="btns">
     <!-- Phase 5(2026-08-20)：照片轉3D，跟下面既有的T5「Site photo notes」是兩個不同功能——
          這裡是AI自動重建3D模型，Site photo notes是人工標註空間位置附在詢價信裡，UI故意分開放避免混淆 -->
-    <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 Generate 3D from photos</button>
+    <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 <span class="btn-long">Generate 3D from photos</span><span class="btn-short">Photos</span></button>
     <input type="file" id="photo2tubFiles" accept="image/png,image/jpeg,image/jpg,image/webp" multiple style="display:none">
-    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
-    <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ <span class="btn-long">Upload CAD File</span><span class="btn-short">Upload</span></button>
+    <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
-    <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
+    <button class="btn btn-upl" onclick="openARPreview()">📱 <span class="btn-long">Preview in your space</span><span class="btn-short">AR</span></button>
     <!-- Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)——跟上面T5「Site photo notes」是兩個不同功能
          (T5=標註空間位置附詢價信；這裡=把設計缸疊進場景照輸出展示圖)，入口分開避免混淆 -->
-    <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 Place in a photo</button>
+    <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 <span class="btn-long">Place in a photo</span><span class="btn-short">Photo</span></button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
@@ -325,6 +339,11 @@
     <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
   </div>
 </main>
+<!-- S4-0d(2026-09-04)：手機版固定底部 CTA——面板在 375px 可視高不到 200px 卻要捲 2400px 以上，客人找不到送出按鈕；桌面 display:none -->
+<div id="mobileCta">
+  <div class="mc-price"><span class="mc-label">Estimated price</span><b id="mobileCtaPrice"></b></div>
+  <button type="button" class="mc-btn" onclick="mobileCtaGo()">Get a firm quote →</button>
+</div>
 <div id="sketchModal">
   <div class="sk-box">
     <h2>✏️ Sketch Your Bathtub Shape</h2>
@@ -486,4 +505,5 @@
 <script src="lib-edit3d-photo2tub.js"></script>
 <script src="lib-edit3d-ar-ui.js"></script>
 <script src="lib-edit3d-photocompose.js"></script>
+<script src="lib-tub-basic-mobile.js"></script>
 </body>
