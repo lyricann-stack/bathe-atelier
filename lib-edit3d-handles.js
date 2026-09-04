@@ -58,7 +58,7 @@ if(EDIT_MODE){ (function(){
   panel.insertAdjacentHTML('afterbegin', `
   <div class="group" id="editIntro">
     <h3>⬆ Upload → 3D</h3>
-    <div class="tip">Upload with the button above: <b>spec JSON / DXF / STL</b> render instantly. <b>Images (PNG/JPG) & PDF drawings</b> are auto-traced — a clean top-view outline becomes the tub shape (depth & walls use defaults; confirm real dimensions). Angled photos: use <b>📐 Fix perspective</b> after upload. Complex photos are better handled by the concierge.</div>
+    <div class="tip">Upload with the button above: <b>spec JSON / DXF / STL</b> render instantly. <b>Images (PNG/JPG) & PDF drawings</b> are auto-traced: a clean top-view outline becomes the tub shape (depth & walls use defaults; confirm real dimensions). Angled photos: use <b>📐 Fix perspective</b> after upload. Complex photos are better handled by the concierge.</div>
     <button id="perspIntroBtn" style="display:none;margin-top:6px">📐 Angled photo? Fix perspective (4 points)</button>
   </div>
   <div class="group" id="edgeEditGroup">
@@ -431,7 +431,7 @@ if(EDIT_MODE){ (function(){
 
   // ---- 面板 ----
   const $ = id=>document.getElementById(id);
-  const TIP0 = 'Editable edges: <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b> — not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
+  const TIP0 = 'Editable edges: <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b>. Not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
   function showNodePanel(){
     $('nodePanel').style.display = selNode ? 'block' : 'none';
     if(selNode){
