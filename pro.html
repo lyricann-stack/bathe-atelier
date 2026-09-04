@@ -101,6 +101,8 @@
   .rim-label-moved{display:none}
   /* S5(2026-09-04)：Edge Editing 說明收合 */
   #edgeEditDetails summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:4px 0;list-style:none} #edgeEditDetails summary::-webkit-details-marker{display:none} #edgeEditDetails summary::before{content:'+ '} #edgeEditDetails[open] summary::before{content:'− '}
+  /* S7(2026-09-04)：該步無按鈕時整條工具列收起 */
+  body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
 </style>
 </head>
 <body>
@@ -152,15 +154,15 @@
   <div class="btns">
     <!-- Phase 5(2026-08-20)：照片轉3D，跟下面既有的T5「Site photo notes」是兩個不同功能——
          這裡是AI自動重建3D模型，Site photo notes是人工標註空間位置附在詢價信裡，UI故意分開放避免混淆 -->
-    <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 <span class="btn-long">Generate 3D from photos</span><span class="btn-short">Photos</span></button>
+    <button class="btn btn-upl" id="photo2tubBtn" data-step-show="1" onclick="document.getElementById('photo2tubFiles').click()">📷 <span class="btn-long">Generate 3D from photos</span><span class="btn-short">Photos</span></button>
     <input type="file" id="photo2tubFiles" accept="image/png,image/jpeg,image/jpg,image/webp" multiple style="display:none">
-    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ <span class="btn-long">Upload CAD File</span><span class="btn-short">Upload</span></button>
-    <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
-    <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
-    <button class="btn btn-upl" onclick="openARPreview()">📱 <span class="btn-long">Preview in your space</span><span class="btn-short">AR</span></button>
+    <button class="btn btn-upl" data-step-show="1" onclick="document.getElementById('cadFile').click()">⬆ <span class="btn-long">Upload CAD File</span><span class="btn-short">Upload</span></button>
+    <button class="btn btn-dxf" data-keep="1" data-step-show="4" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
+    <button class="btn btn-upl" data-step-show="4" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
+    <button class="btn btn-upl" data-step-show="4" onclick="openARPreview()">📱 <span class="btn-long">Preview in your space</span><span class="btn-short">AR</span></button>
     <!-- Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)——跟上面T5「Site photo notes」是兩個不同功能
          (T5=標註空間位置附詢價信；這裡=把設計缸疊進場景照輸出展示圖)，入口分開避免混淆 -->
-    <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 <span class="btn-long">Place in a photo</span><span class="btn-short">Photo</span></button>
+    <button class="btn btn-upl" data-step-show="4" onclick="openPhotoCompose()">🛋 <span class="btn-long">Place in a photo</span><span class="btn-short">Photo</span></button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>

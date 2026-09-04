@@ -212,6 +212,8 @@
   @media (max-width:700px){ body.ss-on #ssBar{margin:-12px -12px 12px} }
   /* S5(2026-09-04)：Edge Editing 說明收合 */
   #edgeEditDetails summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:4px 0;list-style:none} #edgeEditDetails summary::-webkit-details-marker{display:none} #edgeEditDetails summary::before{content:'+ '} #edgeEditDetails[open] summary::before{content:'− '}
+  /* S7(2026-09-04)：該步無按鈕時整條工具列收起 */
+  body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
 </style>
 <style id="noir-skin" type="text/plain">
   /* 停用（2026-09-02，換成 Must Société 亮色風格對齊 home-motion.html）：type="text/plain" 讓瀏覽器不當 CSS 解析，內容整段保留；要復用深色版把 type 屬性拿掉即可 */
@@ -303,14 +305,14 @@
     <div class="sub">Sculpt it yourself — drag the edges in 3D, pick material & colour, get a firm quote.</div>
   </div>
   <div class="btns">
-    <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
+    <button class="btn btn-dxf" data-keep="1" data-step-show="4" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
     <!-- 2026-08-22：Medium展示型功能下放，比照pro.html -->
-    <button class="btn btn-upl" onclick="openARPreview()">📱 <span class="btn-long">Preview in your space</span><span class="btn-short">AR</span></button>
-    <button class="btn btn-upl" onclick="openPhotoCompose()">🛋 <span class="btn-long">Place in a photo</span><span class="btn-short">Photo</span></button>
+    <button class="btn btn-upl" data-step-show="4" onclick="openARPreview()">📱 <span class="btn-long">Preview in your space</span><span class="btn-short">AR</span></button>
+    <button class="btn btn-upl" data-step-show="4" onclick="openPhotoCompose()">🛋 <span class="btn-long">Place in a photo</span><span class="btn-short">Photo</span></button>
     <!-- 08裁定1a(2026-08-22)：T5現場照片圈選下放Medium，逐字複製自pro.html -->
-    <button class="btn btn-upl" onclick="openPhoto()">📷 <span class="btn-long">Site photo notes</span><span class="btn-short">Notes</span></button>
-    <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ <span class="btn-long">Upload CAD File</span><span class="btn-short">Upload</span></button>
-    <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
+    <button class="btn btn-upl" data-step-show="4" onclick="openPhoto()">📷 <span class="btn-long">Site photo notes</span><span class="btn-short">Notes</span></button>
+    <button class="btn btn-upl" data-step-show="1" onclick="document.getElementById('cadFile').click()">⬆ <span class="btn-long">Upload CAD File</span><span class="btn-short">Upload</span></button>
+    <button class="btn btn-upl" data-step-show="4" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <input type="file" id="cadFile" accept=".dxf,.stl,.json" style="display:none">
   </div>
 </div>
