@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#1b1a16"/>
+  <!-- bathtub silhouette: rim ellipse + body, caramel on ink -->
+  <path d="M12 30 h40 a3 3 0 0 1 3 3 v3 c0 8.5-8 14-20 14h-6c-12 0-20-5.5-20-14v-3a3 3 0 0 1 3-3z" fill="#c69e63"/>
+  <ellipse cx="32" cy="30" rx="20" ry="4.2" fill="#1b1a16"/>
+  <ellipse cx="32" cy="30" rx="17.5" ry="2.8" fill="#f4f1ea"/>
+  <rect x="17" y="19" width="2.6" height="11" rx="1.3" fill="#c69e63"/>
+  <circle cx="18.3" cy="18" r="2.4" fill="#c69e63"/>
+</svg>
