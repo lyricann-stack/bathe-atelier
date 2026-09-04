@@ -31,7 +31,7 @@
   #p2tBanner .p2t-title { font-weight:700; color:#1b1a16; }
   #p2tBanner .p2t-sub { color:#66614f; margin-top:2px; }
   #p2tDetails { margin-top:8px; max-width:1280px; margin-left:auto; margin-right:auto; }
-  #p2tDetails summary { cursor:pointer; color:#9a7b43; font-size:12px; }
+  #p2tDetails summary { cursor:pointer; color:#7a5f2f; font-size:12px; }
   #p2tDetails ul { margin:6px 0 0 18px; padding:0; color:#66614f; font-size:12px; line-height:1.6; }
   #p2tDetails li.p2t-warn-item { color:#a0611e; }
   /* 單照片救援包招1(2026-08-23)：追問卡片樣式 */
@@ -62,7 +62,7 @@
   /* 2026-09-02，Lyric回報：頁首說明太多、擠壓下方3D模型可視空間——三條上傳提示改成
      預設收合，按「ⓘ Upload notes」才彈出浮層，不佔版面高度(用position:absolute浮動，
      不會把main/#viewer往下推)。 */
-  .notes-toggle { font:inherit; font-size:12px; color:#9a7b43; background:none; border:1px solid #ddd8cc; border-radius:999px; padding:4px 12px; cursor:pointer; margin-top:4px; }
+  .notes-toggle { font:inherit; font-size:12px; color:#7a5f2f; background:none; border:1px solid #ddd8cc; border-radius:999px; padding:4px 12px; cursor:pointer; margin-top:4px; }
   .notes-toggle:hover { border-color:#9a7b43; }
   .notes-wrap { position:relative; display:inline-block; }
   .notes-popover { display:none; position:absolute; top:calc(100% + 8px); left:0; z-index:150; width:min(420px,80vw); background:#fdfaf3; border:1px solid #ddd8cc; border-radius:12px; padding:14px 16px; box-shadow:0 20px 50px -15px rgba(16,16,16,.3); }
@@ -385,7 +385,7 @@
     <div class="group" data-keep="1" data-step="4" data-step-order="3">
       <h3>Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
-        <span style="font-size:12.5px;color:#8a8478">Tier</span>
+        <span style="font-size:12.5px;color:#66614f">Tier</span>
         <b id="tierName" style="font-weight:700;font-size:18px;color:#9a7b43"></b>
       </div>
       <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
@@ -393,7 +393,7 @@
         <input type="checkbox" id="optOneOfOne" style="margin-top:2px;accent-color:#9a7b43">
         <span>Make it exclusive: mould retired after your tub, with certificate</span>
       </label>
-      <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Options</div>
+      <div style="font-size:12.5px;color:#66614f;margin-bottom:5px">Options</div>
       <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:5px;cursor:pointer">
         <input type="checkbox" id="optBackrest" style="accent-color:#9a7b43">
         <span>Heated backrest</span>
@@ -406,15 +406,15 @@
       </label>
       <div id="priceRows" style="font-size:13px;border-top:1px solid #ddd8cc;padding-top:7px"></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 10px;border-bottom:2px solid #1b1a16;margin-bottom:10px">
-        <span style="font-size:12.5px;color:#8a8478">Estimated price</span>
+        <span style="font-size:12.5px;color:#66614f">Estimated price</span>
         <b id="fromTotal" style="font-weight:700;font-size:20px;color:#9a7b43"></b>
       </div>
       <div style="margin:2px 0 12px">
-        <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Ship to</div>
+        <div style="font-size:12.5px;color:#66614f;margin-bottom:5px">Ship to</div>
         <select id="shipDest" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid #ddd8cc;border-radius:8px;background:#fff;color:#1b1a16"></select>
         <div id="shipEst" style="display:none;margin-top:9px;font-size:13.5px">
-          <div style="display:flex;justify-content:space-between"><span style="color:#8a8478">Est. shipping</span><b id="shipVal"></b></div>
-          <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="color:#8a8478">Est. total</span><b id="totVal" style="color:#9a7b43"></b></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#66614f">Est. shipping</span><b id="shipVal"></b></div>
+          <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="color:#66614f">Est. total</span><b id="totVal" style="color:#9a7b43"></b></div>
           <div class="tip" style="margin-top:6px">Door-to-door estimate, confirmed on your firm quote.</div>
         </div>
       </div>
