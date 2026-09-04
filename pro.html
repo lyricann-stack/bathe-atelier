@@ -120,7 +120,7 @@
     <button class="btn btn-upl" id="photo2tubBtn" onclick="document.getElementById('photo2tubFiles').click()">📷 Generate 3D from photos</button>
     <input type="file" id="photo2tubFiles" accept="image/png,image/jpeg,image/jpg,image/webp" multiple style="display:none">
     <button class="btn btn-upl" onclick="document.getElementById('cadFile').click()">⬆ Upload CAD File</button>
-    <button class="btn btn-dxf" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
+    <button class="btn btn-dxf" data-keep="1" onclick="exportConceptPDF(this)">⬇ Concept PDF (free)</button>
     <button class="btn btn-json" id="cadPackBtn" onclick="requestCadPack(this)">⬇ CAD pack (DXF + spec + renders)</button>
     <button class="btn btn-upl" onclick="openARPreview()">📱 Preview in your space</button>
     <!-- Phase 8 M8-2a(2026-08-21)：照片合成(貼紙式)——跟上面T5「Site photo notes」是兩個不同功能
@@ -142,7 +142,7 @@
         <option value="wall">Wall-mounted</option>
       </select>
     </div>
-    <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <button class="preset" data-keep="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
       <h3>① Tub Shape (Freestanding)</h3>
       <div class="shape-btns">
@@ -249,7 +249,7 @@
       </div>
       <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level (translucent blue = water)</label></div>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1">
       <h3>⑥ Order Info (exported to CAD / spec)</h3>
       <input type="text" id="custName" placeholder="Customer name">
       <input type="email" id="custEmail" placeholder="Email *">
@@ -259,7 +259,7 @@
       <h3>⑦ Live Specifications</h3>
       <table id="spec"></table>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1">
       <h3>⑧ Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>
