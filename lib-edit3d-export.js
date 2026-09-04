@@ -593,8 +593,11 @@ async function sendQuote(btn){
     fd.append('est_total', shipR != null ? 'from USD $' + (pp.total + shipR).toLocaleString('en-US') : '-');
     fd.append('estimate_range', 'from USD $' + pp.total.toLocaleString('en-US') + ' + shipping (tier pricing per 2026-07 structure; $399 design fee credited)');
     // M4(2026-09-02)：Medium 詢價主旨帶頁面與編號，業務一眼分流；其他頁沿用舊主旨
+    // S4-0f(2026-09-04)：Pro 主旨比照 Medium 帶頁面與編號；inspire 等其他頁沿用舊句
     const subj = window.PAGE_TAG === 'design-studio-medium'
       ? 'Bathe Atelier — Design Studio enquiry (Medium) [' + DESIGN_ID + ']'
+      : window.PAGE_TAG === 'design-studio-pro'
+      ? 'Bathe Atelier — Design Studio enquiry (Pro) [' + DESIGN_ID + ']'
       : 'Bathe Atelier — Design Studio (designer quote)';
     fd.append('_subject', subj);
     fd.append('_template', 'table');
