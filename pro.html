@@ -67,6 +67,18 @@
   .notes-popover .sub { margin-top:0; }
   .notes-popover .sub + .sub { margin-top:8px; }
 </style>
+<style id="pro-align">
+/* S4-0(2026-09-04)：Pro 對齊 Medium——規則逐字複製自 medium.html #atelier-skin，去掉頁面前綴 */
+  #specMore summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:6px 0;list-style:none}
+  #specMore summary::-webkit-details-marker{display:none}
+  #specMore summary::before{content:'+ ';}
+  #specMore[open] summary::before{content:'− ';}
+  #specMore table{width:100%}
+  #specMore{text-align:left;font-weight:400}
+  #specMore table{border-collapse:collapse}
+  #specMore table td{text-align:left;font-weight:400;color:#4a463d}
+  #specMore table td:last-child{text-align:right;font-weight:600;color:#1b1a16}
+</style>
 </head>
 <body>
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
@@ -438,7 +450,7 @@
 </div>
 <script>
   // 三版本設定（必須在 lib 之前）
-  window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true;
+  window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true;
 
   // 2026-09-02：頁首「Upload notes」浮層開關，點toggle開/關，點外面自動關閉
   function toggleUploadNotes(e){
