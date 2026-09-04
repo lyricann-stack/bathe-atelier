@@ -404,6 +404,11 @@ const I18N = {
   'The manufacturing CAD pack (dimensioned DXF three-views plus the full spec file) is emailed together with your firm quote after you submit your design below.': ['可制造的 CAD 包（含尺寸标注的 DXF 三视图＋完整规格文件）会在你于下方送出设计后，随正式报价一并通过 Email 发送。', 'ชุดไฟล์ CAD สำหรับการผลิต (DXF สามมุมมองพร้อมขนาด + ไฟล์สเปกฉบับเต็ม) จะถูกส่งทางอีเมลพร้อมใบเสนอราคา หลังจากคุณส่งแบบด้านล่าง', '可製造的 CAD 包（含尺寸標註的 DXF 三視圖＋完整規格檔）會在你於下方送出設計後，隨正式報價一併以 Email 寄出。'],
   'AR preview currently supports iPhone/iPad. Android support is on our roadmap.': ['AR 预览目前支持 iPhone/iPad——Android 支持规划中。', 'ตัวอย่าง AR รองรับ iPhone/iPad ในขณะนี้ — การรองรับ Android อยู่ในแผนงาน', 'AR 預覽目前支援 iPhone/iPad——Android 支援規劃中。'],
   'This design is too complex to share as a QR code. Try a simpler shape, or browse this page directly on your iPhone.': ['此设计过于复杂，无法生成 QR code 分享——请尝试简化造型，或直接用你的 iPhone 开启本页。', 'ดีไซน์นี้ซับซ้อนเกินกว่าจะแชร์เป็น QR code — ลองทำรูปทรงให้เรียบง่ายขึ้น หรือเปิดหน้านี้โดยตรงบน iPhone ของคุณ', '此設計過於複雜，無法生成 QR code 分享——請嘗試簡化造型，或直接用你的 iPhone 開啟本頁。'],
+  // L1/L2-c(2026-09-05) 工作室送出同意句
+  'By submitting, you agree to our': ['提交即表示您同意我们的', 'การส่งข้อมูลถือว่าคุณยอมรับ', '提交即表示您同意我們的'],
+  'Terms': ['条款', 'ข้อกำหนด', '條款'],
+  'and': ['与', 'และ', '與'],
+  'Privacy policy': ['隐私政策', 'นโยบายความเป็นส่วนตัว', '隱私政策'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
