@@ -53,6 +53,8 @@ if(EDIT_MODE){ (function(){
     // M1(2026-09-02)：data-keep="1" 的 Concept PDF 按鈕不藏（medium.html）
     if(!(b.dataset && b.dataset.keep === '1') && b.textContent.includes('Concept PDF')) b.style.display = 'none';
   });
+  // S5(2026-09-04)：頁面設 PAGE_EDGE_COLLAPSED 時把說明收進 <details>，選到邊線才展開；inspire 未設＝原樣
+  const _edgeTipHtml = (window.PAGE_EDGE_COLLAPSED === true) ? '<details id="edgeEditDetails"><summary>How edge editing works</summary><div class="tip" id="edgeTip"></div></details>' : '<div class="tip" id="edgeTip"></div>';
   panel.insertAdjacentHTML('afterbegin', `
   <div class="group" id="editIntro">
     <h3>⬆ Upload → 3D</h3>
@@ -61,7 +63,7 @@ if(EDIT_MODE){ (function(){
   </div>
   <div class="group" id="edgeEditGroup">
     <h3>✎ Edge Editing</h3>
-    <div class="tip" id="edgeTip"></div>
+    ${_edgeTipHtml}
     <div id="rimGapWarn" class="tip" style="display:none;color:#b3541e">⚠ Inner bowl rim is outside / too close to the outer rim (min edge = wall thickness). Pull it back in.</div>
     <div id="obliqueWarn" class="tip" style="display:none;color:#b3541e">⚠ <b>This looks like an angled / perspective photo</b> — the traced shape is the 3D silhouette, not the true rim outline. For an accurate shape, upload a straight <b>top-down</b> image, use <b>📐 Fix perspective</b> below, or send the photo to the concierge flow.<br><button id="perspFixBtn" style="margin-top:6px">📐 Fix perspective (click 4 rim points)</button></div>
     <div id="nodePanel" style="display:none">
@@ -464,6 +466,9 @@ if(EDIT_MODE){ (function(){
       ? (selNode ? 'Drag the node on the model, or fine-tune below. <b>Double-click a node deletes it</b> and restores the curve. Outer shell stops at the inner-bowl limit automatically.'
                  : ('<b>'+EDGE_DEF[edgeType(selectedEdge)].label+'</b> selected — click anywhere on it to <b>add a node</b>. Click another edge to switch.'))
       : TIP0;
+    // S5(2026-09-04)
+    const _ed = $('edgeEditDetails'); if(_ed) _ed.open = !!selectedEdge;
+    if(selectedEdge && window.PAGE_EDGE_COLLAPSED === true && window.StudioSteps && typeof StudioSteps.reveal === 'function') StudioSteps.reveal($('edgeEditGroup'));
     syncNodePanel();
   }
   function rRawAt(nd){

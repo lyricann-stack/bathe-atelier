@@ -210,6 +210,8 @@
   /* S3(2026-09-04)：步驟模式下 #ssBar 對齊面板內距 */
   body.ss-on #ssBar{margin:-14px -14px 12px}
   @media (max-width:700px){ body.ss-on #ssBar{margin:-12px -12px 12px} }
+  /* S5(2026-09-04)：Edge Editing 說明收合 */
+  #edgeEditDetails summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:4px 0;list-style:none} #edgeEditDetails summary::-webkit-details-marker{display:none} #edgeEditDetails summary::before{content:'+ '} #edgeEditDetails[open] summary::before{content:'− '}
 </style>
 <style id="noir-skin" type="text/plain">
   /* 停用（2026-09-02，換成 Must Société 亮色風格對齊 home-motion.html）：type="text/plain" 讓瀏覽器不當 CSS 解析，內容整段保留；要復用深色版把 type 屬性拿掉即可 */
@@ -658,7 +660,7 @@
 
 <script>
   // 三版本設定（必須在 lib 之前）——佇列項9(2026-08-21)Medium切共用核心
-  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_EMAIL_OPTIONAL=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true; window.PAGE_STEP_INJECTED={editIntro:1, edgeEditGroup:2, dimGroup:2, rimProfileGroup:2}; window.PAGE_STEP_TITLES={1:'Start',2:'Shape',3:'Material & Colour',4:'Summary'};
+  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_EMAIL_OPTIONAL=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true; window.PAGE_STEP_INJECTED={editIntro:1, edgeEditGroup:2, dimGroup:2, rimProfileGroup:2}; window.PAGE_STEP_TITLES={1:'Start',2:'Shape',3:'Material & Colour',4:'Summary'}; window.PAGE_EDGE_COLLAPSED=true;
 </script>
 <!-- Phase 5(2026-08-20)先讓pro.html換底Edit3D共用核心(lib-edit3d-*.js)，佇列項9(2026-08-21)Medium比照
      切換。順序要求同pro.html：wallmount在geometry之前；handles在orbit/boot之前；不載入Phase 7/8
