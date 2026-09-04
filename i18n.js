@@ -533,7 +533,12 @@ export const DICT = {
     "💳 From USD $2,490: the studio shows your live tier price, and your exact total is quoted by destination before you commit.":"💳 USD $2,490 起——设计工作室即时显示你的层级价格，下单前先依目的地报出确切总价。",
     "Made-to-Measure, resized from our mold library, starts at USD $2,490 in acrylic and USD $4,990 in solid surface. Bespoke shapes with a new mold start at $3,990 / $6,990, and One-of-One pieces at $5,490 / $9,990. Options and shipping are shown live in the design studio, and the USD $399 design fee is credited to any tier.":"量身定制（Made-to-Measure，由模具库改尺寸）亚克力 USD $2,490 起、人造石 USD $4,990 起；全定制开模（Bespoke）$3,990／$6,990 起；独一件（One-of-One）$5,490／$9,990 起。加值选项与运费在设计工作室即时显示，USD $399 设计费可折抵任一层级。",
     "Includes the photoreal render, the signed spec sheet and 2–3 refinement rounds, and it's fully credited to your order. Don't proceed? The files are yours to keep.":"包含拟真渲染图、签署的规格书与 2–3 轮修改——且可全额折抵订单。不继续？文件归你所有。",
-    "Crated, insured freight worldwide from our China & Thailand factories, quoted up front. Acrylic is a comfortable two-person lift on standard floors. Any licensed plumber can complete the install. Solid surface pieces are heavier (90–150 kg). We confirm access and floor loading with you before dispatch.":"从中国与泰国工厂以木箱包装、投保方式全球运送，费用在报价时先说清楚。亚克力在标准楼板上两人即可搬抬——任何持牌水电工都能完成安装。人造石浴缸较重（90–150 kg）——出货前我们会与你确认搬运通道与楼板承重。"
+    "Crated, insured freight worldwide from our China & Thailand factories, quoted up front. Acrylic is a comfortable two-person lift on standard floors. Any licensed plumber can complete the install. Solid surface pieces are heavier (90–150 kg). We confirm access and floor loading with you before dispatch.":"从中国与泰国工厂以木箱包装、投保方式全球运送，费用在报价时先说清楚。亚克力在标准楼板上两人即可搬抬——任何持牌水电工都能完成安装。人造石浴缸较重（90–150 kg）——出货前我们会与你确认搬运通道与楼板承重。",
+
+    /* L1/L2-b(2026-09-05) footer Legal 連結新增 */
+    "Legal":"法律",
+    "Privacy policy":"隐私政策",
+    "Terms and conditions":"条款与条件"
   },
 
   th: {
@@ -1056,6 +1061,11 @@ export const DICT = {
     "💳 From USD $2,490: the studio shows your live tier price, and your exact total is quoted by destination before you commit.":"💳 เริ่มต้น USD $2,490 — สตูดิโอแสดงราคาระดับของคุณแบบสด และยอดรวมที่แน่นอนเสนอราคาตามปลายทางก่อนคุณตัดสินใจ",
     "Made-to-Measure, resized from our mold library, starts at USD $2,490 in acrylic and USD $4,990 in solid surface. Bespoke shapes with a new mold start at $3,990 / $6,990, and One-of-One pieces at $5,490 / $9,990. Options and shipping are shown live in the design studio, and the USD $399 design fee is credited to any tier.":"สั่งทำตามขนาด (ปรับจากคลังแม่พิมพ์) เริ่มต้น USD $2,490 สำหรับอะคริลิก และ USD $4,990 สำหรับโซลิดเซอร์เฟซ รูปทรงเฉพาะพร้อมแม่พิมพ์ใหม่เริ่ม $3,990 / $6,990 และงาน One-of-One เริ่ม $5,490 / $9,990 ออปชันและค่าส่งแสดงสดในสตูดิโอออกแบบ ค่าออกแบบ USD $399 หักคืนได้ทุกระดับ",
     "Includes the photoreal render, the signed spec sheet and 2–3 refinement rounds, and it's fully credited to your order. Don't proceed? The files are yours to keep.":"รวมภาพเรนเดอร์เสมือนจริง สเปกชีตที่ลงนาม และการแก้ไข 2–3 รอบ — หักคืนเข้าออร์เดอร์เต็มจำนวน ไม่ไปต่อ? ไฟล์เป็นของคุณ",
-    "Crated, insured freight worldwide from our China & Thailand factories, quoted up front. Acrylic is a comfortable two-person lift on standard floors. Any licensed plumber can complete the install. Solid surface pieces are heavier (90–150 kg). We confirm access and floor loading with you before dispatch.":"ขนส่งลังไม้พร้อมประกันทั่วโลกจากโรงงานในจีนและไทย แจ้งราคาล่วงหน้า อะคริลิกสองคนยกได้บนพื้นมาตรฐาน — ช่างประปามีใบอนุญาตติดตั้งได้ อ่างโซลิดเซอร์เฟซหนักกว่า (90–150 กก.) — เราจะยืนยันเส้นทางขนย้ายและการรับน้ำหนักพื้นกับคุณก่อนจัดส่ง"
+    "Crated, insured freight worldwide from our China & Thailand factories, quoted up front. Acrylic is a comfortable two-person lift on standard floors. Any licensed plumber can complete the install. Solid surface pieces are heavier (90–150 kg). We confirm access and floor loading with you before dispatch.":"ขนส่งลังไม้พร้อมประกันทั่วโลกจากโรงงานในจีนและไทย แจ้งราคาล่วงหน้า อะคริลิกสองคนยกได้บนพื้นมาตรฐาน — ช่างประปามีใบอนุญาตติดตั้งได้ อ่างโซลิดเซอร์เฟซหนักกว่า (90–150 กก.) — เราจะยืนยันเส้นทางขนย้ายและการรับน้ำหนักพื้นกับคุณก่อนจัดส่ง",
+
+    /* L1/L2-b(2026-09-05) footer Legal 連結新增 */
+    "Legal":"กฎหมาย",
+    "Privacy policy":"นโยบายความเป็นส่วนตัว",
+    "Terms and conditions":"ข้อกำหนดและเงื่อนไข"
   }
 };
