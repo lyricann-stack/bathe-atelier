@@ -185,6 +185,7 @@
     if(!document.getElementById('ssBar')){
       document.body.classList.add('ss-on');
       buildIndicator();
+      applyA11y();   // L4-b(2026-09-05)：#ssBar 這時才存在，補跑一次讓 role=navigation 生效
     }
     if(steps.indexOf(cur) === -1) cur = steps[0];
     applyOrder();
@@ -204,6 +205,7 @@
     document.body.classList.add('ss-on');
     applyOrder();
     buildIndicator();
+    applyA11y();   // L4-b(2026-09-05)：#ssBar 這時才存在，補跑一次讓 role=navigation 生效
     cur = initialStep();
     applyDisplay();
     render();
