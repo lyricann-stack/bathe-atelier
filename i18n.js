@@ -511,7 +511,29 @@ export const DICT = {
     "Backrest angle, soaking depth, legroom formula, shoulder room and rim width: the numbers that decide whether a tub cradles you.":"靠背角度、泡水深度、腿部空间公式、肩部空间与缸缘宽度——决定浴缸是否贴合你的那些数字。",
     "Space, plumbing, cleaning, cost and style: an honest comparison, and how to decide for your bathroom.":"空间、水电、清洁、成本与风格——诚实的比较，以及如何为你的浴室做决定。",
     "We make both, so this guide has no side to sell: look & feel, weight, warmth, repairs and price, compared honestly.":"两种我们都做，所以这份指南不偏向任何一方——外观质感、重量、保温、修复与价格，诚实比较。",
-    "Everything in these guides is a slider in our design studio: size, curves, edge, material. Try it on your own bathroom.":"这些指南里的每一项，在我们的设计工作室里都是一根滑杆——尺寸、曲线、边缘、材质。用你自己的浴室试试看。"
+    "Everything in these guides is a slider in our design studio: size, curves, edge, material. Try it on your own bathroom.":"这些指南里的每一项，在我们的设计工作室里都是一根滑杆——尺寸、曲线、边缘、材质。用你自己的浴室试试看。",
+
+    /* C2g(2026-09-04) materials.html 新增 */
+    "Custom made starts with the shape: yours, from a sketch, photo or CAD file. Then we build it in the material that suits your project: featherlight premium acrylic, or dense, seamless solid surface. We craft both in-house, one piece at a time.":"定制从造型开始——你的造型，来自草图、照片或 CAD 文件。然后我们用最适合你项目的材质制造：轻盈的高级亚克力，或厚实无缝的人造石。两种材质都在自有工厂打造，一次只做一件。",
+    "Warm, light and luminous: gloss or matte, in any colour":"温润、轻盈、透亮——亮面或哑光，任何颜色",
+    "Dense, stone-like and seamless: a soft matte, monolithic feel":"厚实、石感、无缝——柔和哑光的一体质感",
+    ": two-person install, suits upper floors and standard joists":"——两人即可安装，适合楼上与标准楼板",
+    ": grounded, substantial presence; we advise on floor loading":"——沉稳厚重的存在感；我们会提供楼板承重建议",
+    "High thermal mass: holds heat beautifully on a long soak":"高热容——长时间泡浴保温出色",
+    "Thermoformed over a mould: near-limitless curves":"模具热成型——曲线近乎无限",
+    "CNC-shaped and hand-finished: crisp, sculptural profiles":"CNC 塑形＋手工修整——利落的雕塑感轮廓",
+    "Sands and polishes back to new: repairs are invisible":"打磨抛光即可如新——修复几乎无痕",
+
+    /* C2g(2026-09-04) how-it-works.html 新增 */
+    "Here's exactly what happens, and what it costs, from first sketch to a finished tub installed in your bathroom.":"从第一张草图到浴缸装进你家浴室，每一步会发生什么、要花多少钱，这里说得清清楚楚。",
+    "Use the design studio, upload a sketch, photo, floor plan or CAD file, or request the free sample kit first.":"使用设计工作室，上传草图、照片、平面图或 CAD 文件——或先索取免费样品包。",
+    "Tweak curves, edges and dimensions over 2–3 quick rounds until it's exactly right. Then we lock the files.":"用 2–3 个快速回合微调曲线、边缘与尺寸，直到完全到位——然后锁定文件。",
+    "Material swatches in acrylic & solid surface plus a life-size paper floor template, so you can lay out the tub in the actual room, shipped to your door.":"亚克力与人造石两种材质的色卡，加上实尺纸本地面范本，让你在真实空间里摆位——直送到府。",
+    "A designer delivers a photoreal 3D render plus a signed spec sheet within 48 hours, and the fee comes straight off your final price.":"设计师会在 48 小时内交付拟真 3D 渲染图与签署的规格书——费用直接从最终价格中扣除。",
+    "💳 From USD $2,490: the studio shows your live tier price, and your exact total is quoted by destination before you commit.":"💳 USD $2,490 起——设计工作室即时显示你的层级价格，下单前先依目的地报出确切总价。",
+    "Made-to-Measure, resized from our mold library, starts at USD $2,490 in acrylic and USD $4,990 in solid surface. Bespoke shapes with a new mold start at $3,990 / $6,990, and One-of-One pieces at $5,490 / $9,990. Options and shipping are shown live in the design studio, and the USD $399 design fee is credited to any tier.":"量身定制（Made-to-Measure，由模具库改尺寸）亚克力 USD $2,490 起、人造石 USD $4,990 起；全定制开模（Bespoke）$3,990／$6,990 起；独一件（One-of-One）$5,490／$9,990 起。加值选项与运费在设计工作室即时显示，USD $399 设计费可折抵任一层级。",
+    "Includes the photoreal render, the signed spec sheet and 2–3 refinement rounds, and it's fully credited to your order. Don't proceed? The files are yours to keep.":"包含拟真渲染图、签署的规格书与 2–3 轮修改——且可全额折抵订单。不继续？文件归你所有。",
+    "Crated, insured freight worldwide from our China & Thailand factories, quoted up front. Acrylic is a comfortable two-person lift on standard floors. Any licensed plumber can complete the install. Solid surface pieces are heavier (90–150 kg). We confirm access and floor loading with you before dispatch.":"从中国与泰国工厂以木箱包装、投保方式全球运送，费用在报价时先说清楚。亚克力在标准楼板上两人即可搬抬——任何持牌水电工都能完成安装。人造石浴缸较重（90–150 kg）——出货前我们会与你确认搬运通道与楼板承重。"
   },
 
   th: {
@@ -1012,6 +1034,28 @@ export const DICT = {
     "Backrest angle, soaking depth, legroom formula, shoulder room and rim width: the numbers that decide whether a tub cradles you.":"มุมพนักพิง ความลึกการแช่ สูตรพื้นที่ขา พื้นที่ไหล่ และความกว้างขอบ — ตัวเลขที่ตัดสินว่าอ่างจะโอบรับคุณหรือไม่",
     "Space, plumbing, cleaning, cost and style: an honest comparison, and how to decide for your bathroom.":"พื้นที่ ระบบประปา การทำความสะอาด ค่าใช้จ่าย และสไตล์ — เปรียบเทียบอย่างตรงไปตรงมา พร้อมวิธีตัดสินใจ",
     "We make both, so this guide has no side to sell: look & feel, weight, warmth, repairs and price, compared honestly.":"เราทำทั้งสองแบบ คู่มือนี้จึงไม่เข้าข้างใคร — รูปลักษณ์ น้ำหนัก ความอบอุ่น การซ่อม และราคา เทียบกันตรงๆ",
-    "Everything in these guides is a slider in our design studio: size, curves, edge, material. Try it on your own bathroom.":"ทุกอย่างในคู่มือเหล่านี้คือสไลเดอร์ในสตูดิโอออกแบบของเรา — ขนาด เส้นโค้ง ขอบ วัสดุ ลองกับห้องน้ำของคุณเอง"
+    "Everything in these guides is a slider in our design studio: size, curves, edge, material. Try it on your own bathroom.":"ทุกอย่างในคู่มือเหล่านี้คือสไลเดอร์ในสตูดิโอออกแบบของเรา — ขนาด เส้นโค้ง ขอบ วัสดุ ลองกับห้องน้ำของคุณเอง",
+
+    /* C2g(2026-09-04) materials.html 新增 */
+    "Custom made starts with the shape: yours, from a sketch, photo or CAD file. Then we build it in the material that suits your project: featherlight premium acrylic, or dense, seamless solid surface. We craft both in-house, one piece at a time.":"งานสั่งทำเริ่มจากรูปทรง — ของคุณ จากภาพร่าง รูปถ่าย หรือไฟล์ CAD จากนั้นเราสร้างด้วยวัสดุที่เหมาะกับโปรเจกต์ของคุณ: อะคริลิกพรีเมียมน้ำหนักเบา หรือโซลิดเซอร์เฟซแน่นไร้รอยต่อ เราผลิตเองทั้งสองแบบ ทีละชิ้น",
+    "Warm, light and luminous: gloss or matte, in any colour":"อบอุ่น เบา และสว่าง — เงาหรือด้าน ทุกสี",
+    "Dense, stone-like and seamless: a soft matte, monolithic feel":"แน่น เหมือนหิน ไร้รอยต่อ — ผิวด้านนุ่ม สัมผัสเป็นชิ้นเดียว",
+    ": two-person install, suits upper floors and standard joists":"— สองคนติดตั้งได้ เหมาะกับชั้นบนและพื้นมาตรฐาน",
+    ": grounded, substantial presence; we advise on floor loading":"— หนักแน่นมีตัวตน เราให้คำแนะนำเรื่องการรับน้ำหนักพื้น",
+    "High thermal mass: holds heat beautifully on a long soak":"มวลความร้อนสูง — เก็บความร้อนได้ดีเยี่ยมเมื่อแช่นาน",
+    "Thermoformed over a mould: near-limitless curves":"ขึ้นรูปด้วยความร้อนบนแม่พิมพ์ — เส้นโค้งแทบไร้ขีดจำกัด",
+    "CNC-shaped and hand-finished: crisp, sculptural profiles":"ขึ้นรูป CNC เก็บงานด้วยมือ — โปรไฟล์คมชัดเชิงประติมากรรม",
+    "Sands and polishes back to new: repairs are invisible":"ขัดและโปลิชกลับเหมือนใหม่ — รอยซ่อมแทบมองไม่เห็น",
+
+    /* C2g(2026-09-04) how-it-works.html 新增 */
+    "Here's exactly what happens, and what it costs, from first sketch to a finished tub installed in your bathroom.":"นี่คือสิ่งที่จะเกิดขึ้น — และค่าใช้จ่าย — ตั้งแต่ภาพร่างแรกจนถึงอ่างเสร็จติดตั้งในห้องน้ำของคุณ",
+    "Use the design studio, upload a sketch, photo, floor plan or CAD file, or request the free sample kit first.":"ใช้สตูดิโอออกแบบ อัปโหลดภาพร่าง รูปถ่าย แปลนพื้น หรือไฟล์ CAD — หรือขอชุดตัวอย่างฟรีก่อน",
+    "Tweak curves, edges and dimensions over 2–3 quick rounds until it's exactly right. Then we lock the files.":"ปรับเส้นโค้ง ขอบ และขนาด 2–3 รอบจนลงตัว — แล้วเราจะล็อกไฟล์",
+    "Material swatches in acrylic & solid surface plus a life-size paper floor template, so you can lay out the tub in the actual room, shipped to your door.":"ตัวอย่างวัสดุทั้งอะคริลิกและโซลิดเซอร์เฟซ พร้อมแม่แบบกระดาษขนาดเท่าจริง ให้คุณลองวางอ่างในห้องจริง — ส่งถึงบ้าน",
+    "A designer delivers a photoreal 3D render plus a signed spec sheet within 48 hours, and the fee comes straight off your final price.":"นักออกแบบส่งภาพเรนเดอร์ 3D เสมือนจริงพร้อมเอกสารสเปกที่ลงนามภายใน 48 ชั่วโมง — และค่าธรรมเนียมหักออกจากราคาสุดท้ายทันที",
+    "💳 From USD $2,490: the studio shows your live tier price, and your exact total is quoted by destination before you commit.":"💳 เริ่มต้น USD $2,490 — สตูดิโอแสดงราคาระดับของคุณแบบสด และยอดรวมที่แน่นอนเสนอราคาตามปลายทางก่อนคุณตัดสินใจ",
+    "Made-to-Measure, resized from our mold library, starts at USD $2,490 in acrylic and USD $4,990 in solid surface. Bespoke shapes with a new mold start at $3,990 / $6,990, and One-of-One pieces at $5,490 / $9,990. Options and shipping are shown live in the design studio, and the USD $399 design fee is credited to any tier.":"สั่งทำตามขนาด (ปรับจากคลังแม่พิมพ์) เริ่มต้น USD $2,490 สำหรับอะคริลิก และ USD $4,990 สำหรับโซลิดเซอร์เฟซ รูปทรงเฉพาะพร้อมแม่พิมพ์ใหม่เริ่ม $3,990 / $6,990 และงาน One-of-One เริ่ม $5,490 / $9,990 ออปชันและค่าส่งแสดงสดในสตูดิโอออกแบบ ค่าออกแบบ USD $399 หักคืนได้ทุกระดับ",
+    "Includes the photoreal render, the signed spec sheet and 2–3 refinement rounds, and it's fully credited to your order. Don't proceed? The files are yours to keep.":"รวมภาพเรนเดอร์เสมือนจริง สเปกชีตที่ลงนาม และการแก้ไข 2–3 รอบ — หักคืนเข้าออร์เดอร์เต็มจำนวน ไม่ไปต่อ? ไฟล์เป็นของคุณ",
+    "Crated, insured freight worldwide from our China & Thailand factories, quoted up front. Acrylic is a comfortable two-person lift on standard floors. Any licensed plumber can complete the install. Solid surface pieces are heavier (90–150 kg). We confirm access and floor loading with you before dispatch.":"ขนส่งลังไม้พร้อมประกันทั่วโลกจากโรงงานในจีนและไทย แจ้งราคาล่วงหน้า อะคริลิกสองคนยกได้บนพื้นมาตรฐาน — ช่างประปามีใบอนุญาตติดตั้งได้ อ่างโซลิดเซอร์เฟซหนักกว่า (90–150 กก.) — เราจะยืนยันเส้นทางขนย้ายและการรับน้ำหนักพื้นกับคุณก่อนจัดส่ง"
   }
 };
