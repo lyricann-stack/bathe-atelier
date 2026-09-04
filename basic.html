@@ -17,6 +17,11 @@
 <script src="shipping-rates.js"></script>
 <link rel="stylesheet" href="studio.css">
 <link rel="stylesheet" href="studio-steps.css">
+<style id="basic-steps">
+/* S2(2026-09-04)：Basic 步驟化——Shape & comfort 在 Step 3 為主內容，不再折疊 */
+body.ss-on #moreAdj > summary{display:none}
+body.ss-on #moreAdj .row:first-of-type{margin-top:0}
+</style>
 </head>
 <body data-page="basic">
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
@@ -59,8 +64,8 @@
 </div>
 <main>
   <div id="panel">
-    <button class="preset" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
-    <div class="group">
+    <button class="preset" data-step="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <div class="group" data-step="1">
       <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
       <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
@@ -72,7 +77,7 @@
       <div id="spaceCap" class="tip" style="display:none"></div>
       <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
     </div>
-    <div class="group">
+    <div class="group" data-step="2">
       <h3>Material & Colour</h3>
       <div class="drain-btns mat-btns" style="margin-bottom:10px">
         <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
@@ -90,7 +95,7 @@
       <div id="colorNote" class="tip"></div>
       <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level</label></div>
     </div>
-    <div class="group">
+    <div class="group" data-step="4" data-step-order="2">
       <h3>Your details</h3>
       <input type="text" id="custName" placeholder="Customer name">
       <!-- A5(2026-09-02)：Email 必填前置提示，客人送出前就知道要留信箱 -->
@@ -98,12 +103,12 @@
       <input type="email" id="custEmail" placeholder="Email *">
       <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
     </div>
-    <div class="group">
+    <div class="group" data-step="4" data-step-order="1">
       <h3>Live Specifications</h3>
       <table id="spec"></table>
     </div>
     <!-- B4(2026-09-02)：Base slope 依上位規格 §3.1 不屬 Basic 三項微調，功能保留但收進摺疊、預設收起 -->
-    <details class="group" id="moreAdj">
+    <details class="group" id="moreAdj" data-step="3" open>
       <summary>Shape & comfort</summary>
       <!-- S1(2026-09-02) Basic v2：意圖層滑桿，由 lib-tub-basic-intent.js 映射到 P 並守門 -->
       <div class="row" style="margin-top:8px"><label>Base footprint</label><input type="range" id="rFoot" min="0" max="100" step="1" value="50"><div class="val"><input id="nFoot" value="50"><span>/100</span></div></div>
@@ -125,7 +130,7 @@
       <div class="row" style="margin-top:8px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
       <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
     </details>
-    <div class="group">
+    <div class="group" data-step="4" data-step-order="3">
       <h3>Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>
@@ -246,7 +251,7 @@
 
 <script>
   // 三版本設定（必須在 lib 之前）
-  window.PAGE_ID_PREFIX='BA-B'; window.PAGE_TAG='design-studio-basic'; window.PAGE_AUTO_WIZARD=true; window._noHandles=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true;
+  window.PAGE_ID_PREFIX='BA-B'; window.PAGE_TAG='design-studio-basic'; window.PAGE_AUTO_WIZARD=true; window._noHandles=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true; window.PAGE_STEP_TITLES={1:'Dimensions (mm)',2:'Material & Colour',3:'Shape & comfort',4:'Summary'};
 </script>
 <script src="lib-tub-state.js"></script>
 <script src="lib-tub-i18n.js"></script>
@@ -264,4 +269,8 @@
 <script src="lib-tub-basic-mobile.js"></script>
 <script src="lib-tub-basic-intent.js"></script>
 <script src="lib-studio-steps.js"></script>
+<script>
+// S2(2026-09-04)：手機底部 CTA 先切到 Step 4 再捲到送出鈕（送出鈕只在 Step 4 可見）
+(function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps) StudioSteps.reveal(document.getElementById('quoteBtn')); _go.apply(this, arguments); }; })();
+</script>
 </body>
