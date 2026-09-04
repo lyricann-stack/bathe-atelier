@@ -38,3 +38,13 @@ body.ss-summary #panel{width:min(560px,50%)}
 .ss-opts{display:flex;flex-wrap:wrap;gap:6px}
 .ss-opts button{font:inherit;font-size:12.5px;padding:8px 12px;border-radius:999px;border:1px solid #ddd8cc;background:#fff;color:#4a463d;cursor:pointer}
 .ss-opts button.active{background:#9a7b43;border-color:#9a7b43;color:#fff}
+/* S9a(2026-09-04)：Guided design 內嵌為 Step 0 */
+body.ss-on #panel > #wizModal{display:block !important;position:static;inset:auto;background:none;z-index:auto;padding:0}
+body.ss-on #panel > #wizModal.ss-hide{display:none !important}
+body.ss-on #panel > #wizModal .sk-box{width:auto;max-width:none;max-height:none;padding:0;background:transparent;border-radius:0;box-shadow:none;overflow:visible}
+body.ss-on #panel > #wizModal h2{display:none}
+body.ss-on #panel > #wizModal button[onclick="closeWizard()"]{display:none}
+body.ss-on #panel > button.preset{display:none}
+.wz-q{margin-bottom:14px}
+.wz-n{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#9a7b43;color:#fff;font-size:11px;font-weight:600;align-items:center;justify-content:center;margin-right:6px;vertical-align:middle}
+body.ss-on #panel > #wizModal .rim-label{margin-top:0}
