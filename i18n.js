@@ -503,7 +503,15 @@ export const DICT = {
     "Our own factories in China & Thailand. Production photos with every order, and a team on email whenever you need us.":"自有中国与泰国工厂。每张订单都附生产照片，需要时随时能用邮件找到我们团队。",
     "A 10-year structural warranty on acrylic and 15-year on solid surface, backed by our factory-direct after-sales team.":"亚克力 10 年结构保修，人造石 15 年，由工厂直属售后团队支持。",
     "The $399 design fee is fully credited to your order, and payment milestones are confirmed on your quote before production begins.":"$399 设计费可全额折抵订单；付款节点在生产开始前于报价单上确认。",
-    "Payment milestones are confirmed on your quote before production begins.":"付款节点在生产开始前于报价单上确认。"
+    "Payment milestones are confirmed on your quote before production begins.":"付款节点在生产开始前于报价单上确认。",
+
+    /* C2f(2026-09-04) guides.html 新增 */
+    "Bathtub guides: sizing, comfort and buying":"浴缸指南：尺寸、舒适与定制选购。",
+    "Sizing, ergonomics, materials and installation: practical guides from the atelier that shapes bathtubs one at a time. No fluff, real numbers, and we tell you when the catalogue answer is fine.":"尺寸、人体工学、材质与安装——来自一间一次只做一件浴缸的工作室的实用指南。不灌水、给真实数字，而且当型录款就够用时，我们会直说。",
+    "Backrest angle, soaking depth, legroom formula, shoulder room and rim width: the numbers that decide whether a tub cradles you.":"靠背角度、泡水深度、腿部空间公式、肩部空间与缸缘宽度——决定浴缸是否贴合你的那些数字。",
+    "Space, plumbing, cleaning, cost and style: an honest comparison, and how to decide for your bathroom.":"空间、水电、清洁、成本与风格——诚实的比较，以及如何为你的浴室做决定。",
+    "We make both, so this guide has no side to sell: look & feel, weight, warmth, repairs and price, compared honestly.":"两种我们都做，所以这份指南不偏向任何一方——外观质感、重量、保温、修复与价格，诚实比较。",
+    "Everything in these guides is a slider in our design studio: size, curves, edge, material. Try it on your own bathroom.":"这些指南里的每一项，在我们的设计工作室里都是一根滑杆——尺寸、曲线、边缘、材质。用你自己的浴室试试看。"
   },
 
   th: {
@@ -996,6 +1004,14 @@ export const DICT = {
     "Our own factories in China & Thailand. Production photos with every order, and a team on email whenever you need us.":"โรงงานของเราเองในจีนและไทย ทุกออร์เดอร์มีรูปการผลิต และทีมงานพร้อมตอบอีเมลเมื่อคุณต้องการ",
     "A 10-year structural warranty on acrylic and 15-year on solid surface, backed by our factory-direct after-sales team.":"รับประกันโครงสร้าง 10 ปีสำหรับอะคริลิก และ 15 ปีสำหรับโซลิดเซอร์เฟซ ดูแลโดยทีมหลังการขายตรงจากโรงงาน",
     "The $399 design fee is fully credited to your order, and payment milestones are confirmed on your quote before production begins.":"ค่าออกแบบ $399 หักคืนเข้าออร์เดอร์เต็มจำนวน และกำหนดการชำระเงินยืนยันในใบเสนอราคาก่อนเริ่มผลิต",
-    "Payment milestones are confirmed on your quote before production begins.":"กำหนดการชำระเงินยืนยันในใบเสนอราคาก่อนเริ่มผลิต"
+    "Payment milestones are confirmed on your quote before production begins.":"กำหนดการชำระเงินยืนยันในใบเสนอราคาก่อนเริ่มผลิต",
+
+    /* C2f(2026-09-04) guides.html 新增 */
+    "Bathtub guides: sizing, comfort and buying":"คู่มืออ่างอาบน้ำ: ขนาด ความสบาย และการสั่งทำ",
+    "Sizing, ergonomics, materials and installation: practical guides from the atelier that shapes bathtubs one at a time. No fluff, real numbers, and we tell you when the catalogue answer is fine.":"ขนาด สรีรศาสตร์ วัสดุ และการติดตั้ง — คู่มือใช้งานจริงจากอเตอลิเยร์ที่ทำอ่างทีละใบ ไม่มีน้ำ มีแต่ตัวเลขจริง และเมื่อคำตอบจากแคตตาล็อกก็เพียงพอ เราจะบอกตรงๆ",
+    "Backrest angle, soaking depth, legroom formula, shoulder room and rim width: the numbers that decide whether a tub cradles you.":"มุมพนักพิง ความลึกการแช่ สูตรพื้นที่ขา พื้นที่ไหล่ และความกว้างขอบ — ตัวเลขที่ตัดสินว่าอ่างจะโอบรับคุณหรือไม่",
+    "Space, plumbing, cleaning, cost and style: an honest comparison, and how to decide for your bathroom.":"พื้นที่ ระบบประปา การทำความสะอาด ค่าใช้จ่าย และสไตล์ — เปรียบเทียบอย่างตรงไปตรงมา พร้อมวิธีตัดสินใจ",
+    "We make both, so this guide has no side to sell: look & feel, weight, warmth, repairs and price, compared honestly.":"เราทำทั้งสองแบบ คู่มือนี้จึงไม่เข้าข้างใคร — รูปลักษณ์ น้ำหนัก ความอบอุ่น การซ่อม และราคา เทียบกันตรงๆ",
+    "Everything in these guides is a slider in our design studio: size, curves, edge, material. Try it on your own bathroom.":"ทุกอย่างในคู่มือเหล่านี้คือสไลเดอร์ในสตูดิโอออกแบบของเรา — ขนาด เส้นโค้ง ขอบ วัสดุ ลองกับห้องน้ำของคุณเอง"
   }
 };
