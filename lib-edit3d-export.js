@@ -541,8 +541,9 @@ async function sendQuote(btn){
     banner.textContent = msg;
   };
   // 頁面設 window.PAGE_EMAIL_OPTIONAL=true（medium.html）→ Email 非必填，不擋送出
+  // S4-0c(2026-09-04)：⑥ 已改名 Your details（不再是 Order Info），被擋句改用 Basic B2b 版本；舊鍵保留不刪
   if(!window.PAGE_EMAIL_OPTIONAL && (!email || email.indexOf('@') < 1)){
-    show('#fdf3ee', '#e0b39a', '#8a4a2b', t('Please enter your email under "Order Info" so our designer can reply with your quote and 3D render.'));
+    show('#fdf3ee', '#e0b39a', '#8a4a2b', t('Please enter your email so we can reply with your quote.'));
     return;
   }
   const s = computeSpec();

@@ -331,6 +331,9 @@ const I18N = {
   'Upload': ['上传', 'อัปโหลด', '上傳'],
   // M15b(2026-09-03) Medium 新增：手機固定底部 CTA 按鈕文字（'Estimated price' 已存在字典，不重加）
   'Get a firm quote →': ['索取正式报价 →', 'ขอใบเสนอราคา →', '索取正式報價 →'],
+  // S4-0c(2026-09-04) Pro 新增：Your details 提示句與 email 被擋新句，逐字複製自 lib-tub-i18n.js
+  'We reply to this address with your quote.': ['我们会用这个 Email 回复您的报价。', 'เราจะตอบกลับใบเสนอราคาของคุณไปยังอีเมลนี้', '我們會用這個 Email 回覆您的報價。'],
+  'Please enter your email so we can reply with your quote.': ['请填写 Email，我们才能回复您的报价。', 'กรุณากรอกอีเมลของคุณ เพื่อให้เราตอบกลับพร้อมใบเสนอราคา', '請填寫 Email，我們才能回覆您的報價。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
