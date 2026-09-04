@@ -22,3 +22,19 @@ body.ss-summary #panel{width:min(560px,50%)}
 @media (max-width:700px){
   body.ss-summary #panel{width:100%}
 }
+/* S8a(2026-09-04)：群組內子步 */
+[data-substeps] > .ss-hide{display:none !important}
+/* S8a 補：同 S1 的 #ssNav 缺口——.ss-sub-back／.ss-sub-next 是 .ss-subnav 的子元素，
+   不是 [data-substeps] 的直系子元素，subGo() 對它們加 ss-hide 需要這條才會真的隱藏 */
+.ss-subnav > .ss-hide{display:none !important}
+.ss-sub{display:flex;justify-content:space-between;align-items:center;margin:2px 0 10px}
+.ss-sub-label{font-size:12px;color:#8a8478}
+.ss-sub-dots{display:flex;gap:5px}
+.ss-subnav{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
+.ss-subnav .ss-btn{padding:8px 14px;font-size:12.5px}
+.yd-q .yd-label{font-size:13px;font-weight:600;color:#1b1a16;margin-bottom:8px}
+.yd-q input{width:100%}
+.yd-q .tip{margin-top:6px}
+.ss-opts{display:flex;flex-wrap:wrap;gap:6px}
+.ss-opts button{font:inherit;font-size:12.5px;padding:8px 12px;border-radius:999px;border:1px solid #ddd8cc;background:#fff;color:#4a463d;cursor:pointer}
+.ss-opts button.active{background:#9a7b43;border-color:#9a7b43;color:#fff}

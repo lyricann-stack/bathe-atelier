@@ -72,6 +72,10 @@
 
   // 指示器與導覽列文字節點每次 render() 重寫（不註冊進 i18nNodes）；語言切換由 applyLang() 尾端呼叫本函式。
   function render(){
+    // S8a(2026-09-04)：重繪每個已初始化子步容器的文字（語言切換）；單步模式也要跑
+    Array.prototype.forEach.call(panel.querySelectorAll(':scope > [data-substeps]'), function(container){
+      if(container.dataset.subInit === '1') subGo(container, Number(container.dataset.subCur));
+    });
     if(!multiStep) return;
     const posSteps = steps.filter(function(s){ return s >= 1; });
     const label = panel.querySelector('#ssBar .ss-label');
@@ -169,6 +173,8 @@
     applyInjected();
     scanSteps();
     multiStep = steps.length > 1;
+    // S8a(2026-09-04)：單步模式也要初始化子步（Basic 若哪天拿掉主步驟仍可用）
+    Array.prototype.forEach.call(panel.querySelectorAll(':scope > [data-substeps]'), initSubsteps);
     if(!multiStep) return;
     if(!document.getElementById('ssBar')){
       document.body.classList.add('ss-on');
@@ -184,6 +190,8 @@
     applyInjected();
     scanSteps();
     multiStep = steps.length > 1;
+    // S8a(2026-09-04)：單步模式也要初始化子步（Basic 若哪天拿掉主步驟仍可用）
+    Array.prototype.forEach.call(panel.querySelectorAll(':scope > [data-substeps]'), initSubsteps);
     // steps.length <= 1 → 單步模式：不插入任何 DOM、不加任何 class，只暴露 API。
     if(!multiStep) return;
     document.body.classList.add('ss-on');
@@ -195,6 +203,115 @@
     window.addEventListener('hashchange', onHashChange);
   }
 
+  // S8a(2026-09-04)：群組內子步（一題一屏）
+  function getSubVals(container){
+    const vals = [];
+    Array.prototype.forEach.call(container.querySelectorAll(':scope > [data-substep]'), function(el){
+      const n = Number(el.getAttribute('data-substep'));
+      if(!Number.isNaN(n) && vals.indexOf(n) === -1) vals.push(n);
+    });
+    vals.sort(function(a,b){ return a - b; });
+    return vals;
+  }
+
+  // 只切 ss-hide，不捲動、不碰 P、不觸發任何 input 事件。
+  function subGo(container, n){
+    const subs = getSubVals(container);
+    if(subs.indexOf(n) === -1) return;
+    Array.prototype.forEach.call(container.querySelectorAll(':scope > [data-substep]'), function(el){
+      if(Number(el.getAttribute('data-substep')) === n) el.classList.remove('ss-hide');
+      else el.classList.add('ss-hide');
+    });
+    const i = subs.indexOf(n) + 1;
+    const label = container.querySelector(':scope > .ss-sub .ss-sub-label');
+    if(label) label.textContent = t('Question') + ' ' + i + ' ' + t('of') + ' ' + subs.length;
+    const dotsWrap = container.querySelector(':scope > .ss-sub .ss-sub-dots');
+    if(dotsWrap){
+      dotsWrap.innerHTML = '';
+      subs.forEach(function(s){
+        const dot = document.createElement('span');
+        dot.className = 'ss-dot' + (s === n ? ' on' : '') + (s < n ? ' done' : '');
+        dot.setAttribute('data-go', String(s));
+        dot.addEventListener('click', function(){ subGo(container, s); });
+        dotsWrap.appendChild(dot);
+      });
+    }
+    const backBtn = container.querySelector(':scope > .ss-subnav .ss-sub-back');
+    if(backBtn){
+      if(n === subs[0]) backBtn.classList.add('ss-hide'); else backBtn.classList.remove('ss-hide');
+      backBtn.textContent = '← ' + t('Back');
+    }
+    const nextBtn = container.querySelector(':scope > .ss-subnav .ss-sub-next');
+    if(nextBtn){
+      if(n === subs[subs.length - 1]) nextBtn.classList.add('ss-hide'); else nextBtn.classList.remove('ss-hide');
+      nextBtn.textContent = t('Next') + ' →';
+    }
+    container.dataset.subCur = String(n);
+  }
+
+  function subNext(container){
+    const subs = getSubVals(container);
+    const i = subs.indexOf(Number(container.dataset.subCur));
+    if(i === -1 || i >= subs.length - 1) return;
+    subGo(container, subs[i + 1]);
+  }
+
+  function subBack(container){
+    const subs = getSubVals(container);
+    const i = subs.indexOf(Number(container.dataset.subCur));
+    if(i <= 0) return;
+    subGo(container, subs[i - 1]);
+  }
+
+  function initSubsteps(container){
+    if(container.dataset.subInit === '1') return;
+    const subs = getSubVals(container);
+    if(subs.length <= 1) return;
+    container.dataset.subInit = '1';
+    const h3 = container.querySelector(':scope > h3');
+    const subHtml = '<div class="ss-sub"><span class="ss-sub-label"></span><span class="ss-sub-dots"></span></div>';
+    if(h3) h3.insertAdjacentHTML('afterend', subHtml);
+    else container.insertAdjacentHTML('afterbegin', subHtml);
+    container.insertAdjacentHTML('beforeend', '<div class="ss-subnav"><button type="button" class="ss-btn ss-back ss-sub-back"></button><button type="button" class="ss-btn ss-next ss-sub-next"></button></div>');
+    const backBtn = container.querySelector(':scope > .ss-subnav .ss-sub-back');
+    const nextBtn = container.querySelector(':scope > .ss-subnav .ss-sub-next');
+    if(backBtn) backBtn.addEventListener('click', function(){ subBack(container); });
+    if(nextBtn) nextBtn.addEventListener('click', function(){ subNext(container); });
+    subGo(container, subs[0]);
+  }
+
+  // 找 el 最近的 [data-substep] 祖先與其 [data-substeps] 容器 → subGo(容器, n)；再呼叫既有 reveal(容器) 切主步驟。
+  function revealSub(el){
+    if(!el) return false;
+    let sub = el;
+    while(sub && !sub.hasAttribute('data-substep')) sub = sub.parentElement;
+    if(!sub) return false;
+    const container = sub.closest('[data-substeps]');
+    if(!container) return false;
+    const n = Number(sub.getAttribute('data-substep'));
+    if(Number.isNaN(n)) return false;
+    subGo(container, n);
+    return reveal(container);
+  }
+
+  // 選項按鈕：點擊→同組 active＋設 #<data-target>.value；不 dispatch 事件（避免觸發 unlockQuoteBtn）。
+  document.addEventListener('click', function(e){
+    const b = e.target.closest('.ss-opts > button[data-val]');
+    if(!b) return;
+    const wrap = b.parentElement;
+    const tgt = document.getElementById(wrap.dataset.target);
+    if(!tgt) return;
+    Array.prototype.forEach.call(wrap.querySelectorAll('button'), function(x){ x.classList.toggle('active', x === b); });
+    tgt.value = b.dataset.val;
+  });
+
+  // 送出前自動露出 email：capture，在 sendQuote 之前跑；既有 email 守門與紅框/focus 照舊生效。
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('#quoteBtn')) return;
+    const em = document.getElementById('custEmail');
+    if(em && (!em.value.trim() || em.value.indexOf('@') < 1)) revealSub(em);
+  }, true);
+
   setup();
 
   window.StudioSteps = {
@@ -205,6 +322,8 @@
     back: back,
     reveal: reveal,
     refresh: refresh,
-    render: render
+    render: render,
+    revealSub: revealSub,
+    subGo: subGo
   };
 })();
