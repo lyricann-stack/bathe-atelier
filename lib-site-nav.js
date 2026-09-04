@@ -33,7 +33,9 @@
     + '@media(max-width:480px){nav{padding-inline:16px}nav .brand{font-size:14px}nav .cta{font-size:9.5px;letter-spacing:.06em;padding:8px 12px}}'
     + 'nav.site-nav-studio{position:relative;inset:auto;flex:none;height:70px;padding:0 clamp(20px,5vw,56px);background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc;box-shadow:none}'
     + 'nav.site-nav-studio .right{display:flex;align-items:center;gap:14px}'
-    + 'nav .site-lang{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid #ddd8cc;border-radius:999px;padding:7px 14px;font-size:12.5px;font-family:inherit;color:#4a463d;cursor:pointer}';
+    + 'nav .site-lang{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid #ddd8cc;border-radius:999px;padding:7px 14px;font-size:12.5px;font-family:inherit;color:#4a463d;cursor:pointer}'
+    + 'nav .menu-toggle{display:none;background:none;border:1px solid rgba(16,16,16,.18);border-radius:8px;padding:5px 10px;font-size:16px;line-height:1;cursor:pointer;color:inherit;margin-left:auto;margin-right:12px}'
+    + '@media(max-width:720px){nav .menu-toggle{display:inline-block} nav.menu-open .links{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:#fff;border-bottom:1px solid rgba(16,16,16,.10);padding:8px 18px 12px;z-index:60} nav.menu-open .links a{padding:12px 0;font-size:12px;border-bottom:1px solid rgba(16,16,16,.06)} nav.site-nav-studio .menu-toggle{margin-left:0;margin-right:0} nav.site-nav-studio .right{gap:8px}}';
   var styleEl = document.createElement('style');
   styleEl.textContent = css;
   document.head.appendChild(styleEl);
@@ -56,10 +58,11 @@
     host.removeAttribute('style');
     host.className = 'site-nav-studio';
     if(!host.id) host.id = 'nav';
-    host.innerHTML = '<a class="brand" href="home-motion.html">Bathe Atelier</a>' + '<div class="links">' + linksHtml + '</div>' + '<div class="right">' + langHtml + ctaHtml + '</div>';
+    host.innerHTML = '<a class="brand" href="home-motion.html">Bathe Atelier</a>' + '<button type="button" class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>' + '<div class="links">' + linksHtml + '</div>' + '<div class="right">' + langHtml + ctaHtml + '</div>';
   } else {
     nav.id = 'nav';
     nav.innerHTML = '<a class="brand" href="home-motion.html">Bathe Atelier</a>'
+      + '<button type="button" class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>'
       + '<div class="links">' + linksHtml + '</div>'
       + ctaHtml;
     document.body.insertBefore(nav, document.body.firstChild);
@@ -68,4 +71,25 @@
   if(!host) window.addEventListener('scroll', function(){
     nav.classList.toggle('solid', window.scrollY > 40);
   }, {passive:true});
+
+  // N2(2026-09-05)：手機漢堡選單（兩種模式共用）
+  var tg = nav.querySelector('.menu-toggle');
+  if(tg){
+    tg.addEventListener('click', function(){
+      var open = nav.classList.toggle('menu-open');
+      tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.querySelectorAll('.links a').forEach(function(a){
+      a.addEventListener('click', function(){
+        nav.classList.remove('menu-open');
+        tg.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', function(e){
+      if(!nav.contains(e.target)){
+        nav.classList.remove('menu-open');
+        tg.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 })();
