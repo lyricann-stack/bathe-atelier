@@ -95,6 +95,10 @@
   }
   /* M13(2026-09-02)：Upload → 3D 說明卡本文收進摺疊 */
   #editIntro details summary{cursor:pointer;font-size:12px;color:#9a7b43;padding:4px 0;list-style:none} #editIntro details summary::-webkit-details-marker{display:none} #editIntro details summary::before{content:'+ '} #editIntro details[open] summary::before{content:'− '}
+  /* S4-1(2026-09-04)：步驟模式 #ssBar 對齊面板內距；孤兒 Rim profile 標籤 */
+  body.ss-on #ssBar{margin:-14px -14px 12px}
+  @media (max-width:700px){ body.ss-on #ssBar{margin:-12px -12px 12px} }
+  .rim-label-moved{display:none}
 </style>
 </head>
 <body>
@@ -164,15 +168,15 @@
     <!-- Phase 8佇列(2026-08-22)：缸型切換提升為一級控制——直接是#panel的子元素、故意不用class="group"，
          避開lib-edit3d-handles.js的EDIT_MODE面板收合邏輯(只收':scope > .group')，讓純手動設計靠牆缸的人
          不用先找到照片上傳區。select本身id/onchange原樣搬過來，photo2tub上傳流程讀值的路徑不受影響。 -->
-    <div style="margin-bottom:16px;padding:12px;border:1px solid #e6e1d5;border-radius:16px;background:#fbfaf6">
+    <div data-step="1" style="margin-bottom:16px;padding:12px;border:1px solid #e6e1d5;border-radius:16px;background:#fbfaf6">
       <h3 style="font-size:13px;color:#1b1a16;margin-bottom:10px;border-left:3px solid #9a7b43;padding-left:8px">Tub Type</h3>
       <select id="photo2tubType" onchange="if(typeof chooseTubType==='function') chooseTubType(this.value)" style="width:100%;background:#fff;color:#1b1a16;border:1px solid #ddd8cc;border-radius:8px;padding:8px 10px;font-size:13px">
         <option value="freestanding" selected>Freestanding</option>
         <option value="wall">Wall-mounted</option>
       </select>
     </div>
-    <button class="preset" data-keep="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
-    <div class="group">
+    <button class="preset" data-keep="1" data-step="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <div class="group" data-keep="1" data-step="1">
       <h3>Tub Shape (Freestanding)</h3>
       <div class="shape-btns">
         <button data-shape="rect" onclick="setShape('rect',this)">Rounded Rect</button>
@@ -180,7 +184,7 @@
         <button data-shape="ellipse" class="active" onclick="setShape('ellipse',this)">Oval</button>
         <button data-shape="custom" onclick="openSketch()">✏️ Sketch</button>
       </div>
-      <div class="rim-label">Rim profile</div>
+      <div class="rim-label rim-label-moved">Rim profile</div>
       <div class="drain-btns rim-btns">
         <button data-rim="flat" onclick="setRim('flat',this)">Flat</button>
         <button data-rim="round" class="active" onclick="setRim('round',this)">Rounded</button>
@@ -194,7 +198,7 @@
         <button onclick="applyClassic('darwin',this)">Darwin</button>
       </div>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1" data-step="2" data-step-order="3">
       <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
       <div class="row"><label>Overall width</label><input type="range" id="rW" min="600" max="1200" step="10" value="800"><div class="val"><input id="nW" value="800"><span>mm</span></div></div>
@@ -213,7 +217,7 @@
       <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
       <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1" data-step="2" data-step-order="4">
       <h3>Asymmetry Parameters</h3>
       <div class="row"><label>Backrest rise (rear)</label><input type="range" id="rDH" min="0" max="250" step="10" value="0"><div class="val"><input id="nDH" value="0"><span>mm</span></div></div>
       <div class="row"><label>Rise curvature</label><input type="range" id="rArc" min="0" max="100" step="5" value="60"><div class="val"><input id="nArc" value="60"><span>%</span></div></div>
@@ -245,7 +249,7 @@
       <div class="tip">Vertical demoulding cannot have undercuts. Unchecked = walls auto-limited to never bulge beyond the rim (standard acrylic)</div>
       <div id="undercutWarn" class="tip" style="display:none;color:#b3541e">⚠ Undercut on acrylic needs a split mould and hand-finished seams — high cost. Consider solid surface, or continue as premium bespoke.</div>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1" data-step="2" data-step-order="5">
       <h3>Drain & Floor Slope</h3>
       <div class="drain-btns">
         <button data-drain="center" class="active" onclick="setDrain('center',this)">Center</button>
@@ -264,7 +268,7 @@
       <div class="row" style="margin-top:12px"><label>Base slope</label><input type="range" id="rBaseSlope" min="0" max="3" step="0.1" value="0"><div class="val"><input id="nBaseSlope" value="0"><span>°</span></div></div>
       <div class="tip">Tilts the whole tub base into a wedge shape (0° = standard flat base). For a tub that needs to sit on an angled surface or a deliberate sloped-base look.</div>
     </div>
-    <div class="group" id="matGroup" data-keep="1">
+    <div class="group" id="matGroup" data-keep="1" data-step="3">
       <h3>Material & Colour</h3>
       <div class="drain-btns mat-btns" style="margin-bottom:10px">
         <button data-mat="acrylic" class="active" onclick="setMaterial('acrylic',this)">Acrylic (gloss)</button>
@@ -281,18 +285,18 @@
       <div id="colorNote" class="tip"></div>
       <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level</label></div>
     </div>
-    <div class="group" data-keep="1">
+    <div class="group" data-keep="1" data-step="4" data-step-order="2">
       <h3>Your details</h3>
       <div class="tip">We reply to this address with your quote.</div>
       <input type="text" id="custName" placeholder="Customer name">
       <input type="email" id="custEmail" placeholder="Email *">
       <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
     </div>
-    <div class="group" data-keep="1">
+    <div class="group" data-keep="1" data-step="4" data-step-order="1">
       <h3>Live Specifications</h3>
       <table id="spec"></table>
     </div>
-    <div class="group" data-keep="1">
+    <div class="group" data-keep="1" data-step="4" data-step-order="3">
       <h3>Price & Quote</h3>
       <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
         <span style="font-size:12.5px;color:#8a8478">Tier</span>
@@ -332,7 +336,7 @@
       <button id="quoteBtn" onclick="sendQuote(this)" style="width:100%;background:#1b1a16;color:#f4f1ea;border:none;padding:14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer">Submit design & get a firm quote →</button>
       <div id="quoteBanner" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5"></div>
     </div>
-    <div class="group">
+    <div class="group" data-keep="1" data-step="4" data-step-order="4">
       <h3>Production Flow</h3>
       <div class="flow" id="flowBox">
         <b>Customer</b>: adjust shape &amp; parameters here with live 3D preview<br><b>↓ One-click export</b><br><b>Designer</b>: DXF 3-view drawing (editable in AutoCAD) + JSON spec sheet<br><b>↓ Designer review / fine-tune</b><br><b>Factory</b>: acrylic = mould + thermoforming; solid surface = CNC shaping + hand finishing
@@ -477,7 +481,7 @@
 </div>
 <script>
   // 三版本設定（必須在 lib 之前）
-  window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true;
+  window.PAGE_ID_PREFIX='BA-P'; window.PAGE_TAG='design-studio-pro'; window.PAGE_CAD_GATE=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true; window.PAGE_STEP_INJECTED={editIntro:1, edgeEditGroup:2, dimGroup:2, rimProfileGroup:2}; window.PAGE_STEP_TITLES={1:'Start',2:'Shape',3:'Material & Colour',4:'Summary'};
 
   // 2026-09-02：頁首「Upload notes」浮層開關，點toggle開/關，點外面自動關閉
   function toggleUploadNotes(e){
@@ -524,5 +528,9 @@
   g.insertBefore(d, tip); d.appendChild(tip);
   if(typeof i18nNodes !== 'undefined' && s.firstChild) i18nNodes.push([s.firstChild, 'How upload works']);
 })();
+</script>
+<script>
+// S4-1(2026-09-04)：手機底部 CTA 先切到 Step 4 再捲到送出鈕（送出鈕只在 Step 4 可見）
+(function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps) StudioSteps.reveal(document.getElementById('quoteBtn')); _go.apply(this, arguments); }; })();
 </script>
 </body>
