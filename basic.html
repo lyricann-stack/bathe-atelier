@@ -27,7 +27,7 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
 </head>
 <body data-page="basic">
 <!-- 站上同一條導覽列（與其他頁完全一致，維持視覺連續性） -->
-<nav style="flex:none;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
+<nav data-site-nav="studio" style="flex:none;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
   <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:20px">
     <a href="index.html" style="text-decoration:none;color:#1b1a16;display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-style:normal;letter-spacing:.01em;font-weight:700;color:#9a7b43;font-size:16px">Atelier</span></a>
     <div style="display:flex;align-items:center;gap:26px" data-nav-links>
@@ -48,6 +48,7 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
     </div>
   </div>
 </nav>
+<script src="lib-site-nav.js"></script>
 <div class="studio-strip">
   <div>
     <div class="eyebrow">The Design Studio — Basic</div>
