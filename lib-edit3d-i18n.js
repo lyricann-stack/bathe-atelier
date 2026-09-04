@@ -396,6 +396,14 @@ const I18N = {
   '⚠ Please upload photos of a bathtub only. Basins, shower trays, or washbasins cannot be reliably detected and will be reconstructed as an incorrect bathtub shape.': ['⚠ 请仅上传浴缸照片——系统目前无法可靠辨识底盆/淋浴盆/洗手盆，这类照片仍会被重建成一个错误的浴缸模型', '⚠ กรุณาอัปโหลดเฉพาะรูปถ่ายอ่างอาบน้ำ — ระบบไม่สามารถแยกแยะอ่างล้างหน้า/ถาดอาบน้ำได้อย่างน่าเชื่อถือ ภาพเหล่านี้จะถูกสร้างเป็นโมเดลอ่างอาบน้ำที่ผิดพลาด', '⚠ 請僅上傳浴缸照片——系統目前無法可靠辨識底盆/淋浴盆/洗手盆，這類照片仍會被重建成一個錯誤的浴缸模型'],
   '💡 Include one photo taken square-on to the side, level with the rim. This lets us automatically recreate the side-wall profile shape.': ['💡 建议加拍一张正对侧面、与缸缘同高的照片——这样系统可以自动还原侧壁曲线造型', '💡 แนะนำให้ถ่ายภาพหนึ่งใบจากด้านข้างตรงๆ ระดับเดียวกับขอบอ่าง — จะช่วยให้ระบบคืนรูปทรงผนังด้านข้างได้อัตโนมัติ', '💡 建議加拍一張正對側面、與缸緣同高的照片——這樣系統可以自動還原側壁曲線造型'],
   '💡 Re-uploading the same photos may occasionally produce a slightly different result. If the shape looks off, try re-uploading or fine-tune it manually below.': ['💡 同一组照片重新上传，偶尔可能得到略有差异的结果——如果形状看起来不太对，可以试着重新上传，或在下方手动微调', '💡 การอัปโหลดรูปชุดเดิมซ้ำอาจได้ผลลัพธ์ที่แตกต่างเล็กน้อยในบางครั้ง — หากรูปทรงดูไม่ถูกต้อง ลองอัปโหลดใหม่ หรือปรับแต่งด้วยตนเองด้านล่าง', '💡 同一組照片重新上傳，偶爾可能得到略有差異的結果——如果形狀看起來不太對，可以試著重新上傳，或在下方手動微調'],
+  // C2d(2026-09-05) 工作室共用 UI 字串去 em dash
+  'Classic White, included': ['经典白（已包含）', 'สีขาวคลาสสิก (รวมอยู่แล้ว)', '經典白（已包含）'],
+  'No space limit: up to our maximum': ['空间不限 — 最大可至', 'ไม่จำกัดพื้นที่ — สูงสุดของเรา', '空間不限 — 最大可至'],
+  'Sized to your space: up to': ['依您的空间调整 — 最大可至', 'ปรับตามพื้นที่ของคุณ — สูงสุด', '依您的空間調整 — 最大可至'],
+  '❌ Something went wrong. Please try again, or email hello@batheatelier.com directly.': ['❌ 送出失败，请稍后再试，或直接来信 hello@batheatelier.com', '❌ ส่งไม่สำเร็จ กรุณาลองใหม่ หรืออีเมลมาที่ hello@batheatelier.com', '❌ 送出失敗，請稍後再試，或直接來信 hello@batheatelier.com'],
+  'The manufacturing CAD pack (dimensioned DXF three-views plus the full spec file) is emailed together with your firm quote after you submit your design below.': ['可制造的 CAD 包（含尺寸标注的 DXF 三视图＋完整规格文件）会在你于下方送出设计后，随正式报价一并通过 Email 发送。', 'ชุดไฟล์ CAD สำหรับการผลิต (DXF สามมุมมองพร้อมขนาด + ไฟล์สเปกฉบับเต็ม) จะถูกส่งทางอีเมลพร้อมใบเสนอราคา หลังจากคุณส่งแบบด้านล่าง', '可製造的 CAD 包（含尺寸標註的 DXF 三視圖＋完整規格檔）會在你於下方送出設計後，隨正式報價一併以 Email 寄出。'],
+  'AR preview currently supports iPhone/iPad. Android support is on our roadmap.': ['AR 预览目前支持 iPhone/iPad——Android 支持规划中。', 'ตัวอย่าง AR รองรับ iPhone/iPad ในขณะนี้ — การรองรับ Android อยู่ในแผนงาน', 'AR 預覽目前支援 iPhone/iPad——Android 支援規劃中。'],
+  'This design is too complex to share as a QR code. Try a simpler shape, or browse this page directly on your iPhone.': ['此设计过于复杂，无法生成 QR code 分享——请尝试简化造型，或直接用你的 iPhone 开启本页。', 'ดีไซน์นี้ซับซ้อนเกินกว่าจะแชร์เป็น QR code — ลองทำรูปทรงให้เรียบง่ายขึ้น หรือเปิดหน้านี้โดยตรงบน iPhone ของคุณ', '此設計過於複雜，無法生成 QR code 分享——請嘗試簡化造型，或直接用你的 iPhone 開啟本頁。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

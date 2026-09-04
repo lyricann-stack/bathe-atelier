@@ -156,7 +156,7 @@ function updateColorNote(){
   const el = document.getElementById('colorNote');
   if(!el || typeof PRICING === 'undefined') return;
   const std = (P.color || '').toLowerCase() === STD_COLOR;
-  el.textContent = std ? t('Classic White — included') : (t('Custom colour') + ' +USD $' + PRICING.color.toLocaleString('en-US'));
+  el.textContent = std ? t('Classic White, included') : (t('Custom colour') + ' +USD $' + PRICING.color.toLocaleString('en-US'));
 }
 
 // A6(2026-09-02)：客人改任何參數（滑桿／材質／顏色／選項）→ 解鎖詢價按鈕、清掉成功 banner

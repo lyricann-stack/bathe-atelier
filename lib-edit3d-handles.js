@@ -65,7 +65,7 @@ if(EDIT_MODE){ (function(){
     <h3>✎ Edge Editing</h3>
     ${_edgeTipHtml}
     <div id="rimGapWarn" class="tip" style="display:none;color:#b3541e">⚠ Inner bowl rim is outside / too close to the outer rim (min edge = wall thickness). Pull it back in.</div>
-    <div id="obliqueWarn" class="tip" style="display:none;color:#b3541e">⚠ <b>This looks like an angled / perspective photo</b> — the traced shape is the 3D silhouette, not the true rim outline. For an accurate shape, upload a straight <b>top-down</b> image, use <b>📐 Fix perspective</b> below, or send the photo to the concierge flow.<br><button id="perspFixBtn" style="margin-top:6px">📐 Fix perspective (click 4 rim points)</button></div>
+    <div id="obliqueWarn" class="tip" style="display:none;color:#b3541e">⚠ <b>This looks like an angled / perspective photo</b>. The traced shape is the 3D silhouette, not the true rim outline. For an accurate shape, upload a straight <b>top-down</b> image, use <b>📐 Fix perspective</b> below, or send the photo to the concierge flow.<br><button id="perspFixBtn" style="margin-top:6px">📐 Fix perspective (click 4 rim points)</button></div>
     <div id="nodePanel" style="display:none">
       <div class="tip" id="nodeEdgeLabel" style="font-weight:600"></div>
       <div class="row" id="rowA"><label id="labA">Node X (length)</label><input type="range" id="rNodeA" min="-1200" max="1200" step="1" value="0"><div class="val"><input id="nNodeA" value="0"><span id="unitA">mm</span></div></div>
@@ -76,7 +76,7 @@ if(EDIT_MODE){ (function(){
         <button id="delNodeBtn">🗑 Delete node (or double-click it)</button>
         <button id="resetOutlineBtn">↺ Reset all edits</button>
       </div>
-      <div class="tip">Deleting a node restores that region to its original curve. The outer shell can never cross inside the inner bowl — drags stop at the limit.</div>
+      <div class="tip">Deleting a node restores that region to its original curve. The outer shell can never cross inside the inner bowl. Drags stop at the limit.</div>
     </div>
   </div>`);
   // 缸緣造型（平面/圓弧/斜角）從隱藏的 ① 群組搬出來
@@ -431,12 +431,12 @@ if(EDIT_MODE){ (function(){
 
   // ---- 面板 ----
   const $ = id=>document.getElementById(id);
-  const TIP0 = 'Editable edges — <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b> — not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
+  const TIP0 = 'Editable edges: <b style="color:#9a7b43">outer rim</b> (gold, drag in any direction: sideways reshapes, <b>up/down changes local rim height</b>), <b style="color:#a3652f">inner bowl</b> (copper), <b style="color:#5c7f9c">base</b> (blue), <b style="color:#597f54">side profiles</b> (green: drag <b>out/in = bulge</b>, <b>up/down = move it along the wall</b>).<br>① Click an edge to <b>select</b> ② click again to <b>add a node</b> ③ <b>drag</b> to reshape. <b>Double-click the tub wall adds a side profile right there</b> — not just at the four centers. <b>Double-click a node deletes it</b> and the curve springs back.';
   function showNodePanel(){
     $('nodePanel').style.display = selNode ? 'block' : 'none';
     if(selNode){
       $('nodeEdgeLabel').textContent = '● ' + EDGE_DEF[selNode.edge].label +
-        (selNode.edge==='side' ? ' (whole shell)' : ' — node #'+selNode.i0);
+        (selNode.edge==='side' ? ' (whole shell)' : ', node #'+selNode.i0);
       $('rowD').style.display = selNode.edge==='outer' ? '' : 'none';
       if(selNode.edge==='side'){
         $('labA').textContent='Height position'; $('unitA').textContent='%';
@@ -464,7 +464,7 @@ if(EDIT_MODE){ (function(){
     }
     $('edgeTip').innerHTML = selectedEdge
       ? (selNode ? 'Drag the node on the model, or fine-tune below. <b>Double-click a node deletes it</b> and restores the curve. Outer shell stops at the inner-bowl limit automatically.'
-                 : ('<b>'+EDGE_DEF[edgeType(selectedEdge)].label+'</b> selected — click anywhere on it to <b>add a node</b>. Click another edge to switch.'))
+                 : ('<b>'+EDGE_DEF[edgeType(selectedEdge)].label+'</b> selected. Click anywhere on it to <b>add a node</b>. Click another edge to switch.'))
       : TIP0;
     // S5(2026-09-04)
     const _ed = $('edgeEditDetails'); if(_ed) _ed.open = !!selectedEdge;
@@ -956,9 +956,9 @@ if(EDIT_MODE){ (function(){
     window._lastObliqueScore = obScore;          // 無頭測試/門檻校準用
     if(obScore > OBLIQUE_TH){
       $('obliqueWarn').style.display = 'block';
-      $('edgeTip').innerHTML = '⚠ <b>Outline traced, but it may come from an angled photo</b> (front/back sides don\'t mirror). Treat the shape as approximate — see the warning below.';
+      $('edgeTip').innerHTML = '⚠ <b>Outline traced, but it may come from an angled photo</b> (front/back sides don\'t mirror). Treat the shape as approximate. See the warning below.';
     } else {
-      $('edgeTip').innerHTML = '✓ <b>Outline traced from your file.</b> Length/width use the current scale (confirm real dims!), depth & walls use defaults — refine everything with the edges and nodes below.';
+      $('edgeTip').innerHTML = '✓ <b>Outline traced from your file.</b> Length/width use the current scale (confirm real dims!), depth & walls use defaults. Refine everything with the edges and nodes below.';
     }
   }
   window.importTracedImage = importTracedImage;
@@ -1020,7 +1020,7 @@ if(EDIT_MODE){ (function(){
     '② Click the NEAR END of the outer rim (the other end of the length)',
     '③ Click the LEFT-MOST point of the outer rim',
     '④ Click the RIGHT-MOST point of the outer rim',
-    '✓ 4 points set — check the real dimensions below, then press "Flatten & trace". (Undo to re-place a point.)'
+    '✓ 4 points set. Check the real dimensions below, then press "Flatten & trace". (Undo to re-place a point.)'
   ];
   document.body.insertAdjacentHTML('beforeend', `
   <div id="perspOverlay" style="position:fixed;inset:0;background:rgba(24,20,14,.88);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px">
@@ -1120,7 +1120,7 @@ if(EDIT_MODE){ (function(){
       return false;
     }
     const warped = perspWarp(_lastPhotoSrc, pts, realL, realW);
-    if(!warped){ alert('⚠ Could not compute a perspective from these 4 points — they may be nearly collinear. Undo and re-place.'); return false; }
+    if(!warped){ alert('⚠ Could not compute a perspective from these 4 points. They may be nearly collinear. Undo and re-place.'); return false; }
     const savedSrc=_lastPhotoSrc, keepL=P.L;
     P.L = realL;
     window._lastObliqueScore = null;
@@ -1133,7 +1133,7 @@ if(EDIT_MODE){ (function(){
     if(typeof sanitizeBase==='function') sanitizeBase();
     _lastL=P.L; _lastW=P.W;
     syncUI(); buildTub();
-    $('edgeTip').innerHTML = '✓ <b>Perspective-corrected trace applied.</b> Outline flattened from your 4 rim points; length/width set to your real dimensions. Depth &amp; walls still use defaults — refine with the edges and nodes below.';
+    $('edgeTip').innerHTML = '✓ <b>Perspective-corrected trace applied.</b> Outline flattened from your 4 rim points; length/width set to your real dimensions. Depth &amp; walls still use defaults. Refine with the edges and nodes below.';
     return true;
   }
   window._perspFlattenAndTrace = perspFlattenAndTrace;     // 無頭測試用

@@ -618,7 +618,7 @@ async function sendQuote(btn){
     if(window.PAGE_TAG === 'design-studio-basic'){ btn.dataset.sent = '1'; }
   } catch(e){
     console.error(e);
-    show('#fdf3ee', '#e0b39a', '#8a4a2b', t('❌ Something went wrong — please try again, or email hello@batheatelier.com directly.'));
+    show('#fdf3ee', '#e0b39a', '#8a4a2b', t('❌ Something went wrong. Please try again, or email hello@batheatelier.com directly.'));
   }
   // A6(2026-09-02)：Basic 送出成功後按鈕保持鎖定並顯示 Submitted ✓，直到客人改參數
   // A6c(2026-09-02)：改既有文字節點而不是整個換掉，節點身份不變，i18nNodes 裡的條目才對得上
@@ -763,7 +763,7 @@ async function exportCadPackZip(btn){
     showDlToast(a.download);
   } catch(e){
     console.error(e);
-    alert(t('❌ Something went wrong — please try again, or email hello@batheatelier.com directly.'));
+    alert(t('❌ Something went wrong. Please try again, or email hello@batheatelier.com directly.'));
   }
   if(btn){
     btn.disabled = false;
@@ -777,7 +777,7 @@ function showCadGate(){
   const b = document.getElementById('quoteBanner');
   b.style.display = 'block';
   b.style.background = '#fdf8ee'; b.style.border = '1px solid #d9c48f'; b.style.color = '#6b5518';
-  b.textContent = t('The manufacturing CAD pack — dimensioned DXF three-views plus the full spec file — is emailed together with your firm quote after you submit your design below.');
+  b.textContent = t('The manufacturing CAD pack (dimensioned DXF three-views plus the full spec file) is emailed together with your firm quote after you submit your design below.');
   b.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
@@ -850,7 +850,7 @@ async function exportConceptPDF(btn){
     showDlToast(DESIGN_ID + '-concept.pdf');
   } catch(e){
     console.error(e);
-    alert(t('❌ Something went wrong — please try again, or email hello@batheatelier.com directly.'));
+    alert(t('❌ Something went wrong. Please try again, or email hello@batheatelier.com directly.'));
   }
   if(btn){
     btn.disabled = false;

@@ -84,8 +84,8 @@ let PROPS = [];
 let BRIEF_APPLIED = null;   // M9(2026-09-02)：走過精靈選卡後的五題答案快照，帶進詢價信／spec JSON／Concept PDF
 // M10(2026-09-02)：#spaceCap 提示文字抽成函式，applyProposal() 與 applyLang() 共用；兩軸皆到頂（不限）時改顯示絕對上限句
 function spaceCapText(capL, capW){
-  if(BRIEF.spL >= 2300 && BRIEF.spW >= 1300) return t('No space limit — up to our maximum') + ' 2200 × 1200 mm';
-  return t('Sized to your space — up to') + ' ' + capL + ' × ' + capW + ' mm';
+  if(BRIEF.spL >= 2300 && BRIEF.spW >= 1300) return t('No space limit: up to our maximum') + ' 2200 × 1200 mm';
+  return t('Sized to your space: up to') + ' ' + capL + ' × ' + capW + ' mm';
 }
 // Phase 5(2026-08-21)：修正wallface-test.html/photo2tub-app.html/medium.html既有的一個真實bug
 // (非本次引入，逐字沿用時原樣繼承)——EDIT_MODE(lib-edit3d-handles.js)把captureRenders monkey-patch
@@ -133,7 +133,7 @@ function renderProposalCards(){
   // M11(2026-09-02)：四款價格一致（皆 MTM）時，改在網格上方寫一句，卡內不重複；不一致時保留卡內各自價格分支
   const samePrice = PROPS.length > 0 && PROPS.every(p => p.price === PROPS[0].price);
   const pl = document.getElementById('propPriceLine');
-  if(pl) pl.textContent = samePrice ? (t('All four are Made-to-Measure') + ' — ' + fromStr(PROPS[0].price)) : '';
+  if(pl) pl.textContent = samePrice ? (t('All four are Made-to-Measure') + ': ' + fromStr(PROPS[0].price)) : '';
   const hidePrice = samePrice && !!pl;   // M11(2026-09-02)：頁面沒有 #propPriceLine（pro）時卡內仍印各卡價格，避免價格消失
   PROPS.forEach((p, i)=>{
     const card = document.createElement('div');

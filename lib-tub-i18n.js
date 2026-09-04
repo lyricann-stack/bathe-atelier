@@ -324,6 +324,13 @@ const I18N = {
   'USD $399 design fee, fully credited to any tier. Final price is confirmed on your firm quote.': ['USD $399 设计费——可全额折抵任一层级。最终价格以正式报价确认。', 'ค่าออกแบบ USD $399 — หักคืนเต็มจำนวนในทุกระดับ ราคาสุดท้ายยืนยันในใบเสนอราคา', 'USD $399 設計費——可全額折抵任一層級。最終價格以正式報價確認。'],
   'Viewing external CAD model. Adjust any parameter to return to the parametric model': ['外部 CAD 模型查看中 — 调整任何参数即可返回参数化模型', 'กำลังแสดงโมเดล CAD ภายนอก — ปรับพารามิเตอร์ใดก็ได้เพื่อกลับสู่โมเดลพาราเมตริก', '外部 CAD 模型檢視中 — 調整任何參數即可返回參數化模型'],
   'Android AR support is on our roadmap. For now, this works on iPhone/iPad.': ['Android 的 AR 支持已在规划中 — 目前仅支持 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนของเรา — ตอนนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援已在規劃中 — 目前僅支援 iPhone/iPad。'],
+  // C2d(2026-09-05) 工作室共用 UI 字串去 em dash
+  'Classic White, included': ['经典白（已包含）', 'สีขาวคลาสสิก (รวมอยู่แล้ว)', '經典白（已包含）'],
+  'No space limit: up to our maximum': ['空间不限 — 最大可至', 'ไม่จำกัดพื้นที่ — สูงสุดของเรา', '空間不限 — 最大可至'],
+  'Sized to your space: up to': ['依您的空间调整 — 最大可至', 'ปรับตามพื้นที่ของคุณ — สูงสุด', '依您的空間調整 — 最大可至'],
+  '❌ Something went wrong. Please try again, or email hello@batheatelier.com directly.': ['❌ 送出失败，请稍后再试，或直接来信 hello@batheatelier.com', '❌ ส่งไม่สำเร็จ กรุณาลองใหม่ หรืออีเมลมาที่ hello@batheatelier.com', '❌ 送出失敗，請稍後再試，或直接來信 hello@batheatelier.com'],
+  'The manufacturing CAD pack (dimensioned DXF three-views plus the full spec file) is emailed together with your firm quote after you submit your design below.': ['可制造的 CAD 包（含尺寸标注的 DXF 三视图＋完整规格文件）会在你于下方送出设计后，随正式报价一并通过 Email 发送。', 'ชุดไฟล์ CAD สำหรับการผลิต (DXF สามมุมมองพร้อมขนาด + ไฟล์สเปกฉบับเต็ม) จะถูกส่งทางอีเมลพร้อมใบเสนอราคา หลังจากคุณส่งแบบด้านล่าง', '可製造的 CAD 包（含尺寸標註的 DXF 三視圖＋完整規格檔）會在你於下方送出設計後，隨正式報價一併以 Email 寄出。'],
+  '⚠ Undercut on acrylic needs a split mould and hand-finished seams: high cost. Consider solid surface, or continue as premium bespoke.': ['⚠ 亚克力做倒扣需左右合模＋人工处理接缝，成本高。建议改用人造石，或按高价定制（Bespoke）继续。', '⚠ Undercut บนอะคริลิกต้องใช้แม่พิมพ์แยกซ้ายขวาและเก็บรอยต่อด้วยมือ — ต้นทุนสูง แนะนำโซลิดเซอร์เฟซ หรือทำต่อแบบ Bespoke พรีเมียม', '⚠ 壓克力做倒扣需左右合模＋人工處理接縫，成本高。建議改用人造石，或按高價客製（Bespoke）繼續。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

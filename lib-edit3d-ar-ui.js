@@ -73,7 +73,7 @@ function decodeShareSpecParam(param){
 
 async function launchARSameDevice(){
   if(!isIOSDevice()){
-    alert(t('AR preview currently supports iPhone/iPad — Android support is on our roadmap.'));
+    alert(t('AR preview currently supports iPhone/iPad. Android support is on our roadmap.'));
     return;
   }
   try {
@@ -102,7 +102,7 @@ function renderShareQR(){
   if(!share.ok){
     imgEl.style.display = 'none';
     errEl.style.display = 'block';
-    errEl.textContent = t('This design is too complex to share as a QR code — try a simpler shape, or browse this page directly on your iPhone.');
+    errEl.textContent = t('This design is too complex to share as a QR code. Try a simpler shape, or browse this page directly on your iPhone.');
     return;
   }
   try {
@@ -115,7 +115,7 @@ function renderShareQR(){
     console.error(err);
     imgEl.style.display = 'none';
     errEl.style.display = 'block';
-    errEl.textContent = t('This design is too complex to share as a QR code — try a simpler shape, or browse this page directly on your iPhone.');
+    errEl.textContent = t('This design is too complex to share as a QR code. Try a simpler shape, or browse this page directly on your iPhone.');
   }
 }
 

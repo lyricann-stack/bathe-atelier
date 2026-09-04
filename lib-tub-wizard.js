@@ -75,8 +75,8 @@ let PROPS = [];
 let BRIEF_APPLIED = null;   // A1(2026-09-02)：客人選定提案當下的五題答案快照（之後改滑桿不影響），供詢價信／PDF 帶入
 // W1(2026-09-02)：#spaceCap 提示文字抽成函式，applyProposal() 與 applyLang() 共用；兩軸皆到頂（不限）時改顯示絕對上限句
 function spaceCapText(capL, capW){
-  if(BRIEF.spL >= 2300 && BRIEF.spW >= 1300) return t('No space limit — up to our maximum') + ' 2200 × 1200 mm';
-  return t('Sized to your space — up to') + ' ' + capL + ' × ' + capW + ' mm';
+  if(BRIEF.spL >= 2300 && BRIEF.spW >= 1300) return t('No space limit: up to our maximum') + ' 2200 × 1200 mm';
+  return t('Sized to your space: up to') + ' ' + capL + ' × ' + capW + ' mm';
 }
 function generateProposals(){
   const T = briefTargets();
@@ -123,7 +123,7 @@ function renderProposalCards(){
   // A3(2026-09-02)：四款價格一致（皆 MTM）時，改在網格上方寫一句，卡內不重複；不一致時保留卡內各自價格分支
   const samePrice = PROPS.length > 0 && PROPS.every(p => p.price === PROPS[0].price);
   const pl = document.getElementById('propPriceLine');
-  if(pl) pl.textContent = samePrice ? (t('All four are Made-to-Measure') + ' — ' + fromStr(PROPS[0].price)) : '';
+  if(pl) pl.textContent = samePrice ? (t('All four are Made-to-Measure') + ': ' + fromStr(PROPS[0].price)) : '';
   PROPS.forEach((p, i)=>{
     const card = document.createElement('div');
     card.className = 'prop-card';
