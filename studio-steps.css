@@ -48,3 +48,11 @@ body.ss-on #panel > button.preset{display:none}
 .wz-q{margin-bottom:14px}
 .wz-n{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#9a7b43;color:#fff;font-size:11px;font-weight:600;align-items:center;justify-content:center;margin-right:6px;vertical-align:middle}
 body.ss-on #panel > #wizModal .rim-label{margin-top:0}
+/* S10(2026-09-04)：手機——3D 至少 40vh、選項按鈕換行、步驟列對齊 12px 內距 */
+@media (max-width:700px){
+  body.ss-on #viewer{height:40vh;min-height:240px}
+  body.ss-on .drain-btns, body.ss-on .shape-btns, body.ss-on .ss-opts{flex-wrap:wrap}
+  body.ss-on .drain-btns button{flex:1 1 45%}
+  body.ss-on #ssBar{margin:-12px -12px 12px}
+  body.ss-on #panel > #wizModal .sk-box{width:auto}
+}
