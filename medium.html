@@ -17,6 +17,7 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/USDZExporter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="shipping-rates.js"></script>
+<link rel="stylesheet" href="studio-steps.css">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; }
   /* 2026-09-02：曾短暫改成 min-height:100vh + overflow-y:auto 想解決「內容被推出視窗外
@@ -654,7 +655,7 @@
 
 <script>
   // 三版本設定（必須在 lib 之前）——佇列項9(2026-08-21)Medium切共用核心
-  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_EMAIL_OPTIONAL=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true;
+  window.PAGE_ID_PREFIX='BA-M'; window.PAGE_TAG='design-studio-medium'; window.PAGE_CAD_GATE=true; window.PAGE_EMAIL_OPTIONAL=true; window.PAGE_QUOTE_FEEDBACK=true; window.PAGE_SPEC_COMPACT=true; window.PAGE_STEPS=true;
 </script>
 <!-- Phase 5(2026-08-20)先讓pro.html換底Edit3D共用核心(lib-edit3d-*.js)，佇列項9(2026-08-21)Medium比照
      切換。順序要求同pro.html：wallmount在geometry之前；handles在orbit/boot之前；不載入Phase 7/8
@@ -679,6 +680,7 @@
 <script src="lib-edit3d-ar-ui.js"></script>
 <script src="lib-edit3d-photocompose.js"></script>
 <script src="lib-tub-basic-mobile.js"></script>
+<script src="lib-studio-steps.js"></script>
 <script>
 // 08裁定1a(2026-08-22)：T5照片分析（簡易圈選版）下放Medium，逐字複製自pro.html，零修改。
 const _ph = { img:null, strokes:[], cur:null, scale:1 };

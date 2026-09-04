@@ -334,6 +334,13 @@ const I18N = {
   // S4-0c(2026-09-04) Pro 新增：Your details 提示句與 email 被擋新句，逐字複製自 lib-tub-i18n.js
   'We reply to this address with your quote.': ['我们会用这个 Email 回复您的报价。', 'เราจะตอบกลับใบเสนอราคาของคุณไปยังอีเมลนี้', '我們會用這個 Email 回覆您的報價。'],
   'Please enter your email so we can reply with your quote.': ['请填写 Email，我们才能回复您的报价。', 'กรุณากรอกอีเมลของคุณ เพื่อให้เราตอบกลับพร้อมใบเสนอราคา', '請填寫 Email，我們才能回覆您的報價。'],
+  // S1(2026-09-04) 三工作室新增：步驟骨架指示器／導覽文案，兩套字典逐字相同；泰文機翻待校
+  'Step': ['步骤', 'ขั้นตอน', '步驟'],
+  'of': ['共', 'จาก', '共'],
+  'Back': ['上一步', 'ก่อนหน้า', '上一步'],
+  'Next': ['下一步', 'ถัดไป', '下一步'],
+  "Skip, I'll set it myself": ['略过，我自己设定', 'ข้าม ฉันจะตั้งค่าเอง', '略過，我自己設定'],
+  'Guided design': ['引导设计', 'ออกแบบพร้อมไกด์', '引導設計'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {
@@ -391,5 +398,6 @@ function applyLang(){
   if(typeof refreshQuoteBanner === 'function') refreshQuoteBanner();
   if(typeof BRIEF_APPLIED !== 'undefined' && BRIEF_APPLIED){ const sc=document.getElementById('spaceCap'); const r=document.getElementById('rL'), w=document.getElementById('rW'); if(sc && r && w) sc.textContent = (typeof spaceCapText === 'function') ? spaceCapText(r.max, w.max) : (t('Sized to your space — up to') + ' ' + r.max + ' × ' + w.max + ' mm'); }   // M10(2026-09-02)：改呼叫 spaceCapText 統一兩軸不限文案
   if(typeof refreshDimsInner === 'function') refreshDimsInner();   // M10(2026-09-02)
+  if(typeof StudioSteps !== 'undefined') StudioSteps.render();   // S1(2026-09-04)：步驟指示器語言切換時重繪
 }
 // 語言完全交由站上導覽列的 langSel 控制（見檔尾接線），設計器不再有自己的語言選項
