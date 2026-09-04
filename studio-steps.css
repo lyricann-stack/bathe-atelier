@@ -1,5 +1,9 @@
 /* studio-steps.css — S1(2026-09-04)：三工作室共用的步驟骨架樣式，只用既有色票。搭配 lib-studio-steps.js。 */
 #panel > .ss-hide, .btns .ss-hide{display:none !important}
+/* S1(2026-09-04) 補：規格 CSS 清單只列了 #panel 直系子元素與工具列，沒列 #ssNav 的
+   #ssBack／#ssNext——但 render() 明確要求「cur 是 steps[0] 時 ss-hide」，兩者是 #ssNav
+   的子元素而非 #panel 直系子元素，套用同一支 ss-hide class 需要這條選擇器才會真的隱藏 */
+#ssNav > .ss-hide{display:none !important}
 body.ss-on #panel{display:flex;flex-direction:column}
 #ssBar{position:sticky;top:0;z-index:5;background:#faf8f2;margin:-14px -14px 12px;padding:10px 14px;border:0;border-bottom:1px solid #ddd8cc;border-radius:0}
 .ss-top{display:flex;justify-content:space-between;align-items:center}
