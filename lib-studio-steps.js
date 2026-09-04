@@ -94,7 +94,12 @@
         const dot = document.createElement('span');
         dot.className = 'ss-dot' + (s === cur ? ' on' : '') + (s < cur ? ' done' : '');
         dot.setAttribute('data-go', String(s));
+        // L4(2026-09-05)：無障礙——鍵盤可達＋朗讀文字
+        dot.setAttribute('role', 'button');
+        dot.setAttribute('tabindex', '0');
+        dot.setAttribute('aria-label', t('Step') + ' ' + (posSteps.indexOf(s) + 1));
         dot.addEventListener('click', function(){ go(s); });
+        dot.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); go(s); } });
         dotsWrap.appendChild(dot);
       });
     }
@@ -175,6 +180,7 @@
     multiStep = steps.length > 1;
     // S8a(2026-09-04)：單步模式也要初始化子步（Basic 若哪天拿掉主步驟仍可用）
     Array.prototype.forEach.call(panel.querySelectorAll(':scope > [data-substeps]'), initSubsteps);
+    applyA11y();   // L4(2026-09-05)：單步／多步都要補無障礙屬性
     if(!multiStep) return;
     if(!document.getElementById('ssBar')){
       document.body.classList.add('ss-on');
@@ -192,6 +198,7 @@
     multiStep = steps.length > 1;
     // S8a(2026-09-04)：單步模式也要初始化子步（Basic 若哪天拿掉主步驟仍可用）
     Array.prototype.forEach.call(panel.querySelectorAll(':scope > [data-substeps]'), initSubsteps);
+    applyA11y();   // L4(2026-09-05)：單步／多步都要補無障礙屬性
     // steps.length <= 1 → 單步模式：不插入任何 DOM、不加任何 class，只暴露 API。
     if(!multiStep) return;
     document.body.classList.add('ss-on');
@@ -232,7 +239,12 @@
         const dot = document.createElement('span');
         dot.className = 'ss-dot' + (s === n ? ' on' : '') + (s < n ? ' done' : '');
         dot.setAttribute('data-go', String(s));
+        // L4(2026-09-05)：無障礙——鍵盤可達＋朗讀文字
+        dot.setAttribute('role', 'button');
+        dot.setAttribute('tabindex', '0');
+        dot.setAttribute('aria-label', t('Question') + ' ' + (subs.indexOf(s) + 1));
         dot.addEventListener('click', function(){ subGo(container, s); });
+        dot.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); subGo(container, s); } });
         dotsWrap.appendChild(dot);
       });
     }
@@ -292,6 +304,37 @@
     if(Number.isNaN(n)) return false;
     subGo(container, n);
     return reveal(container);
+  }
+
+  // L4(2026-09-05)：無障礙——鍵盤／螢幕閱讀器替代。只補屬性與 keydown，不改既有點擊行為。
+  function applyA11y(){
+    // 滑桿與數字框：無 aria-label 者補同列 label 文字
+    Array.prototype.forEach.call(panel.querySelectorAll('.row'), function(row){
+      const lbl = row.querySelector('label');
+      const labelText = lbl ? lbl.textContent.trim() : '';
+      if(!labelText) return;
+      const range = row.querySelector('input[type=range]');
+      if(range && !range.hasAttribute('aria-label')) range.setAttribute('aria-label', labelText);
+      const valInput = row.querySelector('.val input');
+      if(valInput && !valInput.hasAttribute('aria-label')) valInput.setAttribute('aria-label', labelText);
+    });
+    // 色票：補按鈕語意＋鍵盤 Enter/Space 觸發既有 click 行為
+    Array.prototype.forEach.call(panel.querySelectorAll('.sw'), function(sw){
+      if(sw.getAttribute('role') === 'button') return;
+      sw.setAttribute('role', 'button');
+      sw.setAttribute('tabindex', '0');
+      const title = sw.getAttribute('title');
+      if(title) sw.setAttribute('aria-label', title);
+      sw.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); sw.click(); }
+      });
+    });
+    // 步驟列：地標角色
+    const ssBar = document.getElementById('ssBar');
+    if(ssBar && ssBar.getAttribute('role') !== 'navigation'){
+      ssBar.setAttribute('role', 'navigation');
+      ssBar.setAttribute('aria-label', 'Design steps');
+    }
   }
 
   // 選項按鈕：點擊→同組 active＋設 #<data-target>.value；不 dispatch 事件（避免觸發 unlockQuoteBtn）。

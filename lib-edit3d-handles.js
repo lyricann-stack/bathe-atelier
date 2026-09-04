@@ -55,6 +55,8 @@ if(EDIT_MODE){ (function(){
   });
   // S5(2026-09-04)：頁面設 PAGE_EDGE_COLLAPSED 時把說明收進 <details>，選到邊線才展開；inspire 未設＝原樣
   const _edgeTipHtml = (window.PAGE_EDGE_COLLAPSED === true) ? '<details id="edgeEditDetails"><summary>How edge editing works</summary><div class="tip" id="edgeTip"></div></details>' : '<div class="tip" id="edgeTip"></div>';
+  // L4(2026-09-05)：頁面設 PAGE_EDGE_SELECT 時加下拉選邊線＋按鈕加節點，鍵盤／螢幕閱讀器可操作 Edge Editing；inspire 未設＝無 select
+  const _edgeSelectHtml = (window.PAGE_EDGE_SELECT === true) ? '<div class="row" id="edgeSelectRow"><label for="edgeSelect">Select an edge</label><select id="edgeSelect"><option value="">Choose…</option><option value="outer">Outer rim edge</option><option value="inner">Inner bowl edge</option><option value="base">Base edge</option><option value="side_0">Side profile</option></select><button type="button" id="edgeAddNodeBtn">Add a node here</button></div>' : '';
   panel.insertAdjacentHTML('afterbegin', `
   <div class="group" id="editIntro">
     <h3>⬆ Upload → 3D</h3>
@@ -66,6 +68,7 @@ if(EDIT_MODE){ (function(){
     ${_edgeTipHtml}
     <div id="rimGapWarn" class="tip" style="display:none;color:#b3541e">⚠ Inner bowl rim is outside / too close to the outer rim (min edge = wall thickness). Pull it back in.</div>
     <div id="obliqueWarn" class="tip" style="display:none;color:#b3541e">⚠ <b>This looks like an angled / perspective photo</b>. The traced shape is the 3D silhouette, not the true rim outline. For an accurate shape, upload a straight <b>top-down</b> image, use <b>📐 Fix perspective</b> below, or send the photo to the concierge flow.<br><button id="perspFixBtn" style="margin-top:6px">📐 Fix perspective (click 4 rim points)</button></div>
+    ${_edgeSelectHtml}
     <div id="nodePanel" style="display:none">
       <div class="tip" id="nodeEdgeLabel" style="font-weight:600"></div>
       <div class="row" id="rowA"><label id="labA">Node X (length)</label><input type="range" id="rNodeA" min="-1200" max="1200" step="1" value="0"><div class="val"><input id="nNodeA" value="0"><span id="unitA">mm</span></div></div>
@@ -470,6 +473,25 @@ if(EDIT_MODE){ (function(){
     const _ed = $('edgeEditDetails'); if(_ed) _ed.open = !!selectedEdge;
     if(selectedEdge && window.PAGE_EDGE_COLLAPSED === true && window.StudioSteps && typeof StudioSteps.reveal === 'function') StudioSteps.reveal($('edgeEditGroup'));
     syncNodePanel();
+  }
+  // L4(2026-09-05)：邊線下拉＋加節點按鈕（PAGE_EDGE_SELECT 旗標守門，鍵盤／螢幕閱讀器可操作 Edge Editing）
+  if(window.PAGE_EDGE_SELECT === true){
+    const edgeSelect = $('edgeSelect');
+    if(edgeSelect) edgeSelect.addEventListener('change', ()=>{
+      selectedEdge = edgeSelect.value || null;
+      Object.keys(hiTubes).forEach(k=>{ hiTubes[k].material.opacity = k===selectedEdge ? 0.95 : 0; });
+      showNodePanel();
+    });
+    const edgeAddNodeBtn = $('edgeAddNodeBtn');
+    if(edgeAddNodeBtn) edgeAddNodeBtn.addEventListener('click', ()=>{
+      if(selectedEdge && tubes[selectedEdge]){
+        const g = tubes[selectedEdge].geometry;
+        g.computeBoundingSphere();
+        const p = g.boundingSphere.center.clone();
+        tubes[selectedEdge].localToWorld(p);
+        addNode(selectedEdge, p);
+      }
+    });
   }
   function rRawAt(nd){
     const p = outMM()[nd.i0];
