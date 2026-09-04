@@ -295,6 +295,8 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
 <script src="lib-studio-steps.js"></script>
 <script>
 // S2(2026-09-04)：手機底部 CTA 先切到 Step 4 再捲到送出鈕（送出鈕只在 Step 4 可見）
-(function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps) StudioSteps.reveal(document.getElementById('quoteBtn')); _go.apply(this, arguments); }; })();
+// S8b(2026-09-04) 補：Your details 已拆五題子步，email 欄位可能被子步藏住（display:none 時
+// 原生 focus() 會失敗），改呼叫 revealSub 直接切到 email 那一題（內部含 reveal 切主步驟）
+(function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps){ const em = document.getElementById('custEmail'); if(em && StudioSteps.revealSub) StudioSteps.revealSub(em); else StudioSteps.reveal(document.getElementById('quoteBtn')); } _go.apply(this, arguments); }; })();
 </script>
 </body>
