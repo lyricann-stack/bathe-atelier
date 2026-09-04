@@ -289,12 +289,35 @@
       <div id="colorNote" class="tip"></div>
       <div class="chk" style="margin-top:10px"><input type="checkbox" id="waterToggle"><label for="waterToggle">Show water level</label></div>
     </div>
-    <div class="group" data-keep="1" data-step="4" data-step-order="2">
+    <div class="group" data-keep="1" data-step="4" data-step-order="2" data-substeps>
       <h3>Your details</h3>
-      <div class="tip">We reply to this address with your quote.</div>
-      <input type="text" id="custName" placeholder="Customer name">
-      <input type="email" id="custEmail" placeholder="Email *">
-      <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
+      <div class="yd-q" data-substep="1">
+        <div class="yd-label">What do you do?</div>
+        <div class="ss-opts" data-target="custRole"><button type="button" data-val="designer">Bathroom designer</button><button type="button" data-val="architect">Architect</button><button type="button" data-val="other">Other</button></div>
+        <input type="hidden" id="custRole" value="">
+        <div class="tip">So we send the right level of detail.</div>
+      </div>
+      <div class="yd-q" data-substep="2">
+        <div class="yd-label">Any previous experience with custom baths?</div>
+        <div class="ss-opts" data-target="custExp"><button type="button" data-val="first">First time</button><button type="button" data-val="some">Ordered custom before</button><button type="button" data-val="trade">Trade, I do this regularly</button></div>
+        <input type="hidden" id="custExp" value="">
+        <div class="tip">Optional. It helps us pitch the quote at the right level.</div>
+      </div>
+      <div class="yd-q" data-substep="3">
+        <div class="yd-label">Customer name</div>
+        <input type="text" id="custName" placeholder="Customer name">
+        <div class="tip">The name we put on the quote.</div>
+      </div>
+      <div class="yd-q" data-substep="4">
+        <div class="yd-label">Email</div>
+        <input type="email" id="custEmail" placeholder="Email *">
+        <div class="tip">We reply to this address with your quote.</div>
+      </div>
+      <div class="yd-q" data-substep="5">
+        <div class="yd-label">Any notes?</div>
+        <input type="text" id="custNote" placeholder="Notes (e.g. overflow drain required)">
+        <div class="tip">Anything the designer should know before quoting.</div>
+      </div>
     </div>
     <div class="group" data-keep="1" data-step="4" data-step-order="1">
       <h3>Live Specifications</h3>
@@ -535,6 +558,8 @@
 </script>
 <script>
 // S4-1(2026-09-04)：手機底部 CTA 先切到 Step 4 再捲到送出鈕（送出鈕只在 Step 4 可見）
-(function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps) StudioSteps.reveal(document.getElementById('quoteBtn')); _go.apply(this, arguments); }; })();
+// S8d(2026-09-04) 補：Your details 已拆五題子步，email 欄位可能被子步藏住（display:none 時
+// 原生 focus() 會失敗），改呼叫 revealSub 直接切到 email 那一題（內部含 reveal 切主步驟）
+(function(){ if(typeof mobileCtaGo !== 'function') return; const _go = mobileCtaGo; window.mobileCtaGo = function(){ if(window.StudioSteps){ const em = document.getElementById('custEmail'); if(em && StudioSteps.revealSub) StudioSteps.revealSub(em); else StudioSteps.reveal(document.getElementById('quoteBtn')); } _go.apply(this, arguments); }; })();
 </script>
 </body>
