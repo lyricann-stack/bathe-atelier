@@ -310,6 +310,20 @@ const I18N = {
   // S9a(2026-09-04) 三工作室新增：Step 0 文案
   'Answer 5 quick questions. We size four tubs to your space and body; pick one and adjust it, or skip and set everything yourself.': ['回答5个快速问题。我们会依您的空间与身型量身设计四款浴缸；挑一款调整，或跳过自己设定所有细节。', 'ตอบคำถามสั้นๆ 5 ข้อ เราจะออกแบบอ่างอาบน้ำ 4 แบบให้เหมาะกับพื้นที่และสรีระของคุณ เลือกหนึ่งแบบมาปรับแต่ง หรือข้ามไปตั้งค่าทุกอย่างด้วยตัวเอง', '回答5個快速問題。我們會依您的空間與身型量身設計四款浴缸；挑一款調整，或跳過自己設定所有細節。'],
   'We design four tubs around you': ['我们为您量身设计四款浴缸', 'เราออกแบบอ่างอาบน้ำ 4 แบบเพื่อคุณ', '我們為您量身設計四款浴缸'],
+  // C2a(2026-09-05) Basic 文案去 em dash／白話
+  'The Design Studio: Basic': ['设计工作室 — Basic', 'สตูดิโอออกแบบ — Basic', '設計工作室 — Basic'],
+  'No tools to learn. We design four tubs for your space and body, you pick one and adjust size & colour.': ['不用学工具 — 我们依您的空间与身形设计四款浴缸，您选一款并调整尺寸与颜色。', 'ไม่ต้องเรียนรู้เครื่องมือใด ๆ — เราออกแบบอ่างอาบน้ำสี่แบบตามพื้นที่และสัดส่วนร่างกายของคุณ คุณเลือกหนึ่งแบบแล้วปรับขนาดและสี', '不用學工具 — 我們依您的空間與身形設計四款浴缸，您選一款並調整尺寸與顏色。'],
+  'Redesign: answer again': ['重新设计 — 再答一次', 'ออกแบบใหม่ — ตอบคำถามอีกครั้ง', '重新設計 — 再答一次'],
+  'Built around your space and body. Pick one, then fine-tune it.': ['依你的空间与身形而生——选一款，再细调。', 'ออกแบบตามพื้นที่และสรีระของคุณ — เลือกหนึ่งแบบแล้วปรับต่อ', '依你的空間與身形而生——選一款，再細調。'],
+  "Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one. Everything stays adjustable.": ['已按四周各留 50mm 与主要使用者身高设定尺寸。选一款——所有参数仍可调整。', 'ปรับขนาดตามพื้นที่ (เว้นข้างละ 50 มม.) และส่วนสูงผู้ใช้หลัก เลือกหนึ่งแบบ — ทุกค่ายังปรับได้', '已按四周各留 50mm 與主要使用者身高設定尺寸。選一款——所有參數仍可調整。'],
+  '✨ Guided design: answer 5 questions, get 4 tailored tubs': ['✨ 引导设计——回答 5 个问题，获得 4 款量身方案', '✨ ออกแบบพร้อมไกด์ — ตอบ 5 ข้อ รับอ่าง 4 แบบ', '✨ 引導設計——回答 5 個問題，獲得 4 款量身方案'],
+  '⚠ Interior length under 950mm: only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).': ['⚠ 内部长度不足 950mm——只适合坐姿／蹲姿使用（脚到臀约 900mm）。', '⚠ ความยาวภายในต่ำกว่า 950มม. — เหมาะกับการอาบแบบนั่ง/นั่งยองเท่านั้น (ขาถึงสะโพก ≈ 900มม.)', '⚠ 內部長度不足 950mm——只適合坐姿／蹲姿使用（腳到臀約 900mm）。'],
+  '⚠ Wall thickness below 5mm between inner and outer shells: adjust base sizes or arc R.': ['⚠ 内外缸之间壁厚不足 5mm——请调整底部尺寸或弧度 R。', '⚠ ความหนาผนังระหว่างเปลือกในและนอกต่ำกว่า 5 มม. — โปรดปรับขนาดฐานหรือรัศมี R', '⚠ 內外缸之間壁厚不足 5mm——請調整底部尺寸或弧度 R。'],
+  'Make it exclusive: mould retired after your tub, with certificate': ['升级为专属版（模具在您的浴缸后退役＋证书）', 'อัปเกรดเป็นรุ่นพิเศษเฉพาะคุณ (ปลดระวางแม่พิมพ์หลังผลิตอ่างของคุณ + ใบรับรอง)', '升級為專屬版（模具在您的浴缸後退役＋證書）'],
+  'Door-to-door estimate, confirmed on your firm quote.': ['含门到门运费；正式报价时确认。', 'ประมาณการแบบส่งถึงบ้าน — ยืนยันในใบเสนอราคา', '含門到門運費；正式報價時確認。'],
+  'USD $399 design fee, fully credited to any tier. Final price is confirmed on your firm quote.': ['USD $399 设计费——可全额折抵任一层级。最终价格以正式报价确认。', 'ค่าออกแบบ USD $399 — หักคืนเต็มจำนวนในทุกระดับ ราคาสุดท้ายยืนยันในใบเสนอราคา', 'USD $399 設計費——可全額折抵任一層級。最終價格以正式報價確認。'],
+  'Viewing external CAD model. Adjust any parameter to return to the parametric model': ['外部 CAD 模型查看中 — 调整任何参数即可返回参数化模型', 'กำลังแสดงโมเดล CAD ภายนอก — ปรับพารามิเตอร์ใดก็ได้เพื่อกลับสู่โมเดลพาราเมตริก', '外部 CAD 模型檢視中 — 調整任何參數即可返回參數化模型'],
+  'Android AR support is on our roadmap. For now, this works on iPhone/iPad.': ['Android 的 AR 支持已在规划中 — 目前仅支持 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนของเรา — ตอนนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援已在規劃中 — 目前僅支援 iPhone/iPad。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

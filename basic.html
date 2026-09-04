@@ -6,7 +6,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="alternate icon" href="assets/favicon.ico">
 <meta name="robots" content="noindex">
-<title>Design Studio · Basic — Four Tubs Designed Around You | Bathe Atelier</title>
+<title>Design Studio · Basic: Four Tubs Designed Around You | Bathe Atelier</title>
 <meta name="description" content="Answer five questions and get four bathtub proposals sized to your space and body. Pick one, adjust size and colour, get a firm quote.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,13 +53,13 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
 <script src="lib-site-nav.js"></script>
 <div class="studio-strip">
   <div>
-    <div class="eyebrow">The Design Studio — Basic</div>
+    <div class="eyebrow">The Design Studio: Basic</div>
     <h1>Answer 5 questions. Get 4 tubs designed around you.</h1>
-    <div class="sub">No tools to learn — we design four tubs for your space and body, you pick one and adjust size &amp; colour.</div>
+    <div class="sub">No tools to learn. We design four tubs for your space and body, you pick one and adjust size &amp; colour.</div>
   </div>
   <div class="btns">
     <!-- D2(2026-09-02)：手機版三顆按鈕改短字，桌面顯示長字 -->
-    <button class="btn btn-upl" onclick="openWizard()">✨ <span class="btn-long">Redesign — answer again</span><span class="btn-short">Redesign</span></button>
+    <button class="btn btn-upl" onclick="openWizard()">✨ <span class="btn-long">Redesign: answer again</span><span class="btn-short">Redesign</span></button>
     <button class="btn btn-dxf" data-step-show="4" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
     <!-- 2026-09-02，Lyric要求：AR預覽下放到Basic版(原本只有Medium/Pro有)。Basic用的是舊版
          lib-tub-*引擎，但tubGroup/DESIGN_ID/THREE.DoubleSide用法跟lib-edit3d-*核心相容，
@@ -115,11 +115,11 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
         </div>
         <div id="wizP" style="display:none">
           <h2>Your four proposals</h2>
-          <div class="sk-sub">Built around your space and body — pick one, then fine-tune it.</div>
+          <div class="sk-sub">Built around your space and body. Pick one, then fine-tune it.</div>
           <!-- A3(2026-09-02)：四款價格一致時的統一價格句（卡內不重複） -->
           <div class="tip" id="propPriceLine" style="margin:-4px 0 10px"></div>
           <div id="propGrid"></div>
-          <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one — everything stays adjustable.</div>
+          <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one. Everything stays adjustable.</div>
           <div class="sk-actions">
             <button class="cancel" onclick="wizBack()">← Change answers</button>
             <button class="cancel" onclick="closeWizard()">Cancel</button>
@@ -127,7 +127,7 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
         </div>
       </div>
     </div>
-    <button class="preset" data-step="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <button class="preset" data-step="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design: answer 5 questions, get 4 tailored tubs</button>
     <div class="group" data-step="1">
       <h3>Dimensions (mm)</h3>
       <div class="row"><label>Overall length</label><input type="range" id="rL" min="1200" max="2200" step="10" value="1600"><div class="val"><input id="nL" value="1600"><span>mm</span></div></div>
@@ -135,10 +135,10 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
       <!-- S2(2026-09-02) Basic v2：外部長寬滑桿下即時顯示內部尺寸與深度 -->
       <div id="dimsInner" class="tip"></div>
       <div id="warn">⚠ Invalid parameters: interior space too small, please adjust</div>
-      <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
+      <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm: only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
       <!-- A2(2026-09-02)：選定提案後顯示長寬滑桿已按客人空間收斂上限 -->
       <div id="spaceCap" class="tip" style="display:none"></div>
-      <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
+      <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells: adjust base sizes or arc R.</div>
     </div>
     <div class="group" data-step="2">
       <h3>Material & Colour</h3>
@@ -224,7 +224,7 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
       <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
       <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer">
         <input type="checkbox" id="optOneOfOne" style="margin-top:2px;accent-color:#9a7b43">
-        <span>Make it exclusive — mould retired after your tub, with certificate</span>
+        <span>Make it exclusive: mould retired after your tub, with certificate</span>
       </label>
       <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Options</div>
       <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:5px;cursor:pointer">
@@ -248,17 +248,17 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
         <div id="shipEst" style="display:none;margin-top:9px;font-size:13.5px">
           <div style="display:flex;justify-content:space-between"><span style="color:#8a8478">Est. shipping</span><b id="shipVal"></b></div>
           <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="color:#8a8478">Est. total</span><b id="totVal" style="color:#9a7b43"></b></div>
-          <div class="tip" style="margin-top:6px">Door-to-door estimate — confirmed on your firm quote.</div>
+          <div class="tip" style="margin-top:6px">Door-to-door estimate, confirmed on your firm quote.</div>
         </div>
       </div>
-      <div class="tip" style="margin-bottom:10px">USD $399 design fee — fully credited to any tier. Final price is confirmed on your firm quote.</div>
+      <div class="tip" style="margin-bottom:10px">USD $399 design fee, fully credited to any tier. Final price is confirmed on your firm quote.</div>
       <button id="quoteBtn" onclick="sendQuote(this)" style="width:100%;background:#1b1a16;color:#f4f1ea;border:none;padding:14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer">Submit design & get a firm quote →</button>
       <div id="quoteBanner" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5"></div>
     </div>
   </div>
   <div id="viewer">
     <canvas id="canvas3d"></canvas>
-    <div id="extBanner">Viewing external CAD model — adjust any parameter to return to the parametric model</div>
+    <div id="extBanner">Viewing external CAD model. Adjust any parameter to return to the parametric model</div>
     <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
   </div>
 </main>
@@ -280,7 +280,7 @@ body.ss-on .studio-strip .btns:not(:has(.btn:not(.ss-hide))){display:none}
       <div class="sk-sub">Scan with an iPhone or iPad to view this design in AR.</div>
       <img id="arQrImg" style="width:220px;height:220px;margin:10px auto;display:block">
       <div id="arQrError" class="tip" style="display:none;color:#b3541e"></div>
-      <div class="tip">Android AR support is on our roadmap — for now, this works on iPhone/iPad.</div>
+      <div class="tip">Android AR support is on our roadmap. For now, this works on iPhone/iPad.</div>
     </div>
     <div class="sk-actions"><button class="cancel" onclick="closeARPreview()">Close</button></div>
   </div>
