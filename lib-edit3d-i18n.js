@@ -368,6 +368,28 @@ const I18N = {
   // S9a(2026-09-04) 三工作室新增：Step 0 文案
   'Answer 5 quick questions. We size four tubs to your space and body; pick one and adjust it, or skip and set everything yourself.': ['回答5个快速问题。我们会依您的空间与身型量身设计四款浴缸；挑一款调整，或跳过自己设定所有细节。', 'ตอบคำถามสั้นๆ 5 ข้อ เราจะออกแบบอ่างอาบน้ำ 4 แบบให้เหมาะกับพื้นที่และสรีระของคุณ เลือกหนึ่งแบบมาปรับแต่ง หรือข้ามไปตั้งค่าทุกอย่างด้วยตัวเอง', '回答5個快速問題。我們會依您的空間與身型量身設計四款浴缸；挑一款調整，或跳過自己設定所有細節。'],
   'We design four tubs around you': ['我们为您量身设计四款浴缸', 'เราออกแบบอ่างอาบน้ำ 4 แบบเพื่อคุณ', '我們為您量身設計四款浴缸'],
+  // C2b(2026-09-05) Medium 文案去 em dash／白話（與 Basic 相同句沿用 lib-tub-i18n.js 譯文）
+  'Built around your space and body. Pick one, then fine-tune it.': ['依你的空间与身形而生——选一款，再细调。', 'ออกแบบตามพื้นที่และสรีระของคุณ — เลือกหนึ่งแบบแล้วปรับต่อ', '依你的空間與身形而生——選一款，再細調。'],
+  "Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one. Everything stays adjustable.": ['已按四周各留 50mm 与主要使用者身高设定尺寸。选一款——所有参数仍可调整。', 'ปรับขนาดตามพื้นที่ (เว้นข้างละ 50 มม.) และส่วนสูงผู้ใช้หลัก เลือกหนึ่งแบบ — ทุกค่ายังปรับได้', '已按四周各留 50mm 與主要使用者身高設定尺寸。選一款——所有參數仍可調整。'],
+  '✨ Guided design: answer 5 questions, get 4 tailored tubs': ['✨ 引导设计——回答 5 个问题，获得 4 款量身方案', '✨ ออกแบบพร้อมไกด์ — ตอบ 5 ข้อ รับอ่าง 4 แบบ', '✨ 引導設計——回答 5 個問題，獲得 4 款量身方案'],
+  '⚠ Interior length under 950mm: only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).': ['⚠ 内部长度不足 950mm——只适合坐姿／蹲姿使用（脚到臀约 900mm）。', '⚠ ความยาวภายในต่ำกว่า 950มม. — เหมาะกับการอาบแบบนั่ง/นั่งยองเท่านั้น (ขาถึงสะโพก ≈ 900มม.)', '⚠ 內部長度不足 950mm——只適合坐姿／蹲姿使用（腳到臀約 900mm）。'],
+  '⚠ Wall thickness below 5mm between inner and outer shells: adjust base sizes or arc R.': ['⚠ 内外缸之间壁厚不足 5mm——请调整底部尺寸或弧度 R。', '⚠ ความหนาผนังระหว่างเปลือกในและนอกต่ำกว่า 5 มม. — โปรดปรับขนาดฐานหรือรัศมี R', '⚠ 內外缸之間壁厚不足 5mm——請調整底部尺寸或弧度 R。'],
+  'Make it exclusive: mould retired after your tub, with certificate': ['升级为专属版（模具在您的浴缸后退役＋证书）', 'อัปเกรดเป็นรุ่นพิเศษเฉพาะคุณ (ปลดระวางแม่พิมพ์หลังผลิตอ่างของคุณ + ใบรับรอง)', '升級為專屬版（模具在您的浴缸後退役＋證書）'],
+  'Door-to-door estimate, confirmed on your firm quote.': ['含门到门运费；正式报价时确认。', 'ประมาณการแบบส่งถึงบ้าน — ยืนยันในใบเสนอราคา', '含門到門運費；正式報價時確認。'],
+  'USD $399 design fee, fully credited to any tier. Final price is confirmed on your firm quote.': ['USD $399 设计费——可全额折抵任一层级。最终价格以正式报价确认。', 'ค่าออกแบบ USD $399 — หักคืนเต็มจำนวนในทุกระดับ ราคาสุดท้ายยืนยันในใบเสนอราคา', 'USD $399 設計費——可全額折抵任一層級。最終價格以正式報價確認。'],
+  'Viewing external CAD model. Adjust any parameter to return to the parametric model': ['外部 CAD 模型查看中 — 调整任何参数即可返回参数化模型', 'กำลังแสดงโมเดล CAD ภายนอก — ปรับพารามิเตอร์ใดก็ได้เพื่อกลับสู่โมเดลพาราเมตริก', '外部 CAD 模型檢視中 — 調整任何參數即可返回參數化模型'],
+  'Android AR support is on our roadmap. For now, this works on iPhone/iPad.': ['Android 的 AR 支持已在规划中 — 目前仅支持 iPhone/iPad。', 'การรองรับ AR บน Android อยู่ในแผนของเรา — ตอนนี้ใช้ได้กับ iPhone/iPad เท่านั้น', 'Android 的 AR 支援已在規劃中 — 目前僅支援 iPhone/iPad。'],
+  'The Design Studio: Medium': ['设计工作室 — Medium', 'สตูดิโอออกแบบ — Medium', '設計工作室 — Medium'],
+  'Sculpt it yourself. Drag the edges in 3D, pick material & colour, get a firm quote.': ['自己动手雕塑 — 在 3D 中拖曳边缘塑形，挑选材质与颜色，取得正式报价。', 'ปั้นแต่งด้วยตัวคุณเอง — ลากขอบในโหมด 3D เลือกวัสดุและสี แล้วรับใบเสนอราคาที่ชัดเจน', '自己動手雕塑 — 在 3D 中拖曳邊緣塑形，挑選材質與顏色，取得正式報價。'],
+  'Inner wall R: length section': ['内缸侧弧 R（长边剖面）', 'R ผนังใน (หน้าตัดด้านยาว)', '內缸側弧 R（長邊剖面）'],
+  'Inner wall R: width section': ['内缸侧弧 R（短边剖面）', 'R ผนังใน (หน้าตัดด้านสั้น)', '內缸側弧 R（短邊剖面）'],
+  'Outer wall R: length section': ['外缸侧弧 R（长边剖面）', 'R ผนังนอก (หน้าตัดด้านยาว)', '外缸側弧 R（長邊剖面）'],
+  'Outer wall R: width section': ['外缸侧弧 R（短边剖面）', 'R ผนังนอก (หน้าตัดด้านสั้น)', '外缸側弧 R（短邊剖面）'],
+  'Arc / S-curve run from the tapered base edge up to the rim (width section as reference). Smaller R = more curved. All R values are annotated on the CAD drawing. The factory reads them straight off. Sketched profiles are auto-fitted to arcs where possible.': ['圆弧／S 曲线从收缩后的缸底边起、连到缸缘（以宽度方向剖面为基准）。R 越小越弯。所有 R 值都会标注在 CAD 图上，工厂直接照图开模。手绘剖面会尽可能自动拟合成圆弧。', 'ส่วนโค้ง / เส้น S เริ่มจากขอบฐาน (หลังสอบเข้า) ขึ้นไปถึงขอบอ่าง (อ้างอิงหน้าตัดด้านกว้าง) R เล็ก = โค้งมาก ค่า R ทุกค่าถูกระบุบนแบบ CAD — โรงงานอ่านได้โดยตรง โปรไฟล์ที่วาดเองจะถูกฟิตเป็นส่วนโค้งอัตโนมัติเท่าที่ทำได้', '圓弧／S 曲線從收縮後的缸底邊起、連到缸緣（以寬度方向剖面為基準）。R 越小越彎。所有 R 值都會標註在 CAD 圖上，工廠直接照圖開模。手繪剖面會盡可能自動擬合成圓弧。'],
+  'Allow undercut (bulge beyond rim, split mould: stone resin / premium)': ['允许倒扣（外鼓超过缸口，需左右合模：人造石/高价款）', 'อนุญาต undercut (ผนังป่องเกินปากอ่าง — แม่พิมพ์แยกซ้ายขวา: โซลิดเซอร์เฟซ/พรีเมียม)', '允許倒扣（外鼓超過缸口，需左右合模：人造石/高價款）'],
+  '⚠ Undercut on acrylic needs a split mould and hand-finished seams: high cost. Consider solid surface, or continue as premium bespoke.': ['⚠ 亚克力做倒扣需左右合模＋人工处理接缝，成本高。建议改用人造石，或按高价定制（Bespoke）继续。', '⚠ Undercut บนอะคริลิกต้องใช้แม่พิมพ์แยกซ้ายขวาและเก็บรอยต่อด้วยมือ — ต้นทุนสูง แนะนำโซลิดเซอร์เฟซ หรือทำต่อแบบ Bespoke พรีเมียม', '⚠ 壓克力做倒扣需左右合模＋人工處理接縫，成本高。建議改用人造石，或按高價客製（Bespoke）繼續。'],
+  'Draw a one-of-a-kind bathtub. Sketch lines are auto-smoothed into clean curves and built into a 3D model. All dimension parameters remain adjustable afterwards.': ['画出独一无二的浴缸 — 系统会自动把手绘线条转成流畅曲线并建成 3D 模型，之后仍可调整所有尺寸参数。', 'วาดอ่างที่มีเพียงหนึ่งเดียว — เส้นที่วาดจะถูกปรับให้เรียบและสร้างเป็นโมเดล 3D อัตโนมัติ และยังปรับขนาดทุกค่าได้ภายหลัง', '畫出獨一無二的浴缸 — 系統會自動把手繪線條轉成流暢曲線並建成 3D 模型，之後仍可調整所有尺寸參數。'],
+  'Sizing here is visual only. For true-to-scale placement, use AR.': ['此处大小仅为视觉示意——要看真实尺寸请用 AR。', 'ขนาดในภาพเป็นเพียงภาพประกอบ — หากต้องการขนาดจริงโปรดใช้ AR', '此處大小僅為視覺示意——要看真實尺寸請用 AR。'],
 };
 // 含 HTML 標記的區塊：id → [英文, 简中, 泰文, 繁中]
 const I18N_HTML = {

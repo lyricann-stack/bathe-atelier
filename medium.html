@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="alternate icon" href="assets/favicon.ico">
-<title>Design Studio · Medium — Edit Your Bathtub in 3D | Bathe Atelier</title>
-<meta name="description" content="Sketch any bathtub shape and sculpt it live in 3D. Made-to-measure from USD $2,490 in premium acrylic or solid surface — free watermarked concept PDF, manufacturing CAD pack with your firm quote. The Bathe Atelier Design Studio.">
+<title>Design Studio · Medium: Edit Your Bathtub in 3D | Bathe Atelier</title>
+<meta name="description" content="Sketch any bathtub shape and sculpt it live in 3D. Made-to-measure from USD $2,490 in premium acrylic or solid surface. Free watermarked concept PDF, manufacturing CAD pack with your firm quote. The Bathe Atelier Design Studio.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
@@ -303,9 +303,9 @@
 <!-- 標題帶：沿用原 Design Studio 的頁面語氣 -->
 <div class="studio-strip">
   <div>
-    <div class="eyebrow">The Design Studio — Medium</div>
+    <div class="eyebrow">The Design Studio: Medium</div>
     <h1>Shape it. Watch it turn.</h1>
-    <div class="sub">Sculpt it yourself — drag the edges in 3D, pick material & colour, get a firm quote.</div>
+    <div class="sub">Sculpt it yourself. Drag the edges in 3D, pick material & colour, get a firm quote.</div>
   </div>
   <div class="btns">
     <button class="btn btn-dxf" data-keep="1" data-step-show="4" onclick="exportConceptPDF(this)">⬇ <span class="btn-long">Concept PDF (free)</span><span class="btn-short">PDF</span></button>
@@ -367,10 +367,10 @@
         </div>
         <div id="wizP" style="display:none">
           <h2>Your four proposals</h2>
-          <div class="sk-sub">Built around your space and body — pick one, then fine-tune it.</div>
+          <div class="sk-sub">Built around your space and body. Pick one, then fine-tune it.</div>
           <div class="tip" id="propPriceLine" style="margin:-4px 0 10px"></div>
           <div id="propGrid"></div>
-          <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one — everything stays adjustable.</div>
+          <div class="tip" style="margin-top:10px">Sized for your space with 50mm clearance per side, and for the main bather's height. Pick one. Everything stays adjustable.</div>
           <div class="sk-actions">
             <button class="cancel" onclick="wizBack()">← Change answers</button>
             <button class="cancel" onclick="closeWizard()">Cancel</button>
@@ -389,7 +389,7 @@
         <option value="wall">Wall-mounted</option>
       </select>
     </div>
-    <button class="preset" data-keep="1" data-step="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design — answer 5 questions, get 4 tailored tubs</button>
+    <button class="preset" data-keep="1" data-step="1" style="margin:0 0 12px;padding:11px" onclick="openWizard()">✨ Guided design: answer 5 questions, get 4 tailored tubs</button>
     <div class="group">
       <h3>Tub Shape (Freestanding)</h3>
       <div class="shape-btns">
@@ -428,8 +428,8 @@
       <div class="row" id="obLRow"><label>Outer base length</label><input type="range" id="rObL" min="600" max="2000" step="2" value="1190"><div class="val"><input id="nObL" value="1190"><span>mm</span></div></div>
       <div class="row" id="obWRow"><label>Outer base width</label><input type="range" id="rObW" min="300" max="1000" step="2" value="600"><div class="val"><input id="nObW" value="600"><span>mm</span></div></div>
       <div id="warn">⚠ Invalid parameters: interior space too small, please adjust</div>
-      <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm — only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
-      <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells — adjust base sizes or arc R.</div>
+      <div id="lenWarn" class="tip" style="display:none;color:#b3541e">⚠ Interior length under 950mm: only suitable for seated / crouched bathing (leg-to-hip ≈ 900mm).</div>
+      <div id="thinWarn" class="tip" style="display:none;color:#b3541e">⚠ Wall thickness below 5mm between inner and outer shells: adjust base sizes or arc R.</div>
     </div>
     <div class="group">
       <h3>Asymmetry Parameters</h3>
@@ -445,23 +445,23 @@
         <button data-wallmode="arc" onclick="setWallMode('arc',this)">Arc R</button>
         <button data-wallmode="s" onclick="setWallMode('s',this)">S-curve (2 arcs)</button>
       </div>
-      <div class="row" id="riLRow" style="margin-top:10px"><label>Inner wall R — length section</label><input type="range" id="rRiL" min="300" max="5000" step="1" value="1001"><div class="val"><input id="nRiL" value="1001"><span>mm</span></div></div>
-      <div class="row" id="riWRow"><label>Inner wall R — width section</label><input type="range" id="rRiW" min="300" max="5000" step="1" value="1152"><div class="val"><input id="nRiW" value="1152"><span>mm</span></div></div>
-      <div class="row" id="roLRow"><label>Outer wall R — length section</label><input type="range" id="rRoL" min="300" max="5000" step="1" value="887"><div class="val"><input id="nRoL" value="887"><span>mm</span></div></div>
-      <div class="row" id="roWRow"><label>Outer wall R — width section</label><input type="range" id="rRoW" min="300" max="5000" step="1" value="1743"><div class="val"><input id="nRoW" value="1743"><span>mm</span></div></div>
+      <div class="row" id="riLRow" style="margin-top:10px"><label>Inner wall R: length section</label><input type="range" id="rRiL" min="300" max="5000" step="1" value="1001"><div class="val"><input id="nRiL" value="1001"><span>mm</span></div></div>
+      <div class="row" id="riWRow"><label>Inner wall R: width section</label><input type="range" id="rRiW" min="300" max="5000" step="1" value="1152"><div class="val"><input id="nRiW" value="1152"><span>mm</span></div></div>
+      <div class="row" id="roLRow"><label>Outer wall R: length section</label><input type="range" id="rRoL" min="300" max="5000" step="1" value="887"><div class="val"><input id="nRoL" value="887"><span>mm</span></div></div>
+      <div class="row" id="roWRow"><label>Outer wall R: width section</label><input type="range" id="rRoW" min="300" max="5000" step="1" value="1743"><div class="val"><input id="nRoW" value="1743"><span>mm</span></div></div>
       <div class="row" id="wallRRow" style="display:none;margin-top:10px"><label>Side wall arc R</label><input type="range" id="rWR" min="600" max="4000" step="50" value="2000"><div class="val"><input id="nWR" value="2000"><span>mm</span></div></div>
       <div class="row" id="wallR1Row" style="display:none;margin-top:10px"><label>Lower arc R1</label><input type="range" id="rWR1" min="600" max="4000" step="50" value="2000"><div class="val"><input id="nWR1" value="2000"><span>mm</span></div></div>
       <div class="row" id="wallR2Row" style="display:none"><label>Upper arc R2 (reversed)</label><input type="range" id="rWR2" min="600" max="4000" step="50" value="1200"><div class="val"><input id="nWR2" value="1200"><span>mm</span></div></div>
       <div class="row" id="wallMidRow" style="display:none"><label>S join height</label><input type="range" id="rWM" min="20" max="80" step="5" value="55"><div class="val"><input id="nWM" value="55"><span>%</span></div></div>
-      <div class="tip">Arc / S-curve run from the tapered base edge up to the rim (width section as reference). Smaller R = more curved. All R values are annotated on the CAD drawing — the factory reads them straight off. Sketched profiles are auto-fitted to arcs where possible.</div>
+      <div class="tip">Arc / S-curve run from the tapered base edge up to the rim (width section as reference). Smaller R = more curved. All R values are annotated on the CAD drawing. The factory reads them straight off. Sketched profiles are auto-fitted to arcs where possible.</div>
       <div class="chk" id="skirtChk" style="margin-top:10px"><input type="checkbox" id="skirtToggle"><label for="skirtToggle">Pedestal skirt base (Oneida-style)</label></div>
       <div class="row" id="skirtHRow" style="display:none;margin-top:10px"><label>Skirt height</label><input type="range" id="rSkH" min="80" max="300" step="10" value="180"><div class="val"><input id="nSkH" value="180"><span>mm</span></div></div>
       <div class="row" id="skirtWRow" style="display:none"><label>Waist width</label><input type="range" id="rSkW" min="45" max="90" step="1" value="58"><div class="val"><input id="nSkW" value="58"><span>%</span></div></div>
       <div class="row" id="skirtRRow" style="display:none"><label>Skirt arc R</label><input type="range" id="rSkR" min="300" max="1500" step="25" value="400"><div class="val"><input id="nSkR" value="400"><span>mm</span></div></div>
       <div class="tip" id="skirtTip" style="display:none">Outer shell only: skirt foot width = Base taper, tucks in to the waist, then the wall profile continues to the rim. The inner bowl stays a normal bowl.</div>
-      <div class="chk" style="margin-top:10px"><input type="checkbox" id="undercutToggle"><label for="undercutToggle">Allow undercut (bulge beyond rim — split mould: stone resin / premium)</label></div>
+      <div class="chk" style="margin-top:10px"><input type="checkbox" id="undercutToggle"><label for="undercutToggle">Allow undercut (bulge beyond rim, split mould: stone resin / premium)</label></div>
       <div class="tip">Vertical demoulding cannot have undercuts. Unchecked = walls auto-limited to never bulge beyond the rim (standard acrylic)</div>
-      <div id="undercutWarn" class="tip" style="display:none;color:#b3541e">⚠ Undercut on acrylic needs a split mould and hand-finished seams — high cost. Consider solid surface, or continue as premium bespoke.</div>
+      <div id="undercutWarn" class="tip" style="display:none;color:#b3541e">⚠ Undercut on acrylic needs a split mould and hand-finished seams: high cost. Consider solid surface, or continue as premium bespoke.</div>
     </div>
     <div class="group">
       <h3>Drain & Floor Slope</h3>
@@ -544,7 +544,7 @@
       <div id="tierDesc" class="tip" style="margin-bottom:8px"></div>
       <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer">
         <input type="checkbox" id="optOneOfOne" style="margin-top:2px;accent-color:#9a7b43">
-        <span>Make it exclusive — mould retired after your tub, with certificate</span>
+        <span>Make it exclusive: mould retired after your tub, with certificate</span>
       </label>
       <div style="font-size:12.5px;color:#8a8478;margin-bottom:5px">Options</div>
       <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:5px;cursor:pointer">
@@ -568,10 +568,10 @@
         <div id="shipEst" style="display:none;margin-top:9px;font-size:13.5px">
           <div style="display:flex;justify-content:space-between"><span style="color:#8a8478">Est. shipping</span><b id="shipVal"></b></div>
           <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="color:#8a8478">Est. total</span><b id="totVal" style="color:#9a7b43"></b></div>
-          <div class="tip" style="margin-top:6px">Door-to-door estimate — confirmed on your firm quote.</div>
+          <div class="tip" style="margin-top:6px">Door-to-door estimate, confirmed on your firm quote.</div>
         </div>
       </div>
-      <div class="tip" style="margin-bottom:10px">USD $399 design fee — fully credited to any tier. Final price is confirmed on your firm quote.</div>
+      <div class="tip" style="margin-bottom:10px">USD $399 design fee, fully credited to any tier. Final price is confirmed on your firm quote.</div>
       <button id="quoteBtn" onclick="sendQuote(this)" style="width:100%;background:#1b1a16;color:#f4f1ea;border:none;padding:14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer">Submit design & get a firm quote →</button>
       <div id="quoteBanner" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5"></div>
     </div>
@@ -584,7 +584,7 @@
   </div>
   <div id="viewer">
     <canvas id="canvas3d"></canvas>
-    <div id="extBanner">Viewing external CAD model — adjust any parameter to return to the parametric model</div>
+    <div id="extBanner">Viewing external CAD model. Adjust any parameter to return to the parametric model</div>
     <div id="hint">Drag = 360° free orbit (incl. bottom view) | Scroll = zoom</div>
   </div>
 </main>
@@ -598,7 +598,7 @@
 <div id="sketchModal">
   <div class="sk-box">
     <h2>✏️ Sketch Your Bathtub Shape</h2>
-    <div class="sk-sub">Draw a one-of-a-kind bathtub — sketch lines are auto-smoothed into clean curves and built into a 3D model. All dimension parameters remain adjustable afterwards.</div>
+    <div class="sk-sub">Draw a one-of-a-kind bathtub. Sketch lines are auto-smoothed into clean curves and built into a 3D model. All dimension parameters remain adjustable afterwards.</div>
     <div class="sk-flex">
       <div class="sk-col">
         <h4>① Top-View Rim Shape (required)</h4>
@@ -664,7 +664,7 @@
       <div class="sk-sub">Scan with an iPhone or iPad to view this design in AR.</div>
       <img id="arQrImg" style="width:220px;height:220px;margin:10px auto;display:block">
       <div id="arQrError" class="tip" style="display:none;color:#b3541e"></div>
-      <div class="tip">Android AR support is on our roadmap — for now, this works on iPhone/iPad.</div>
+      <div class="tip">Android AR support is on our roadmap. For now, this works on iPhone/iPad.</div>
     </div>
     <div class="sk-actions"><button class="cancel" onclick="closeARPreview()">Close</button></div>
   </div>
@@ -685,7 +685,7 @@
       <canvas id="pcCanvas" style="max-width:100%;cursor:move;touch-action:none"></canvas>
     </div>
     <div id="pcTip" class="tip" style="margin-top:6px"></div>
-    <div class="tip" style="margin-top:4px">Sizing here is visual only — for true-to-scale placement, use AR.<a href="javascript:void(0)" onclick="pcSwitchToAR()" style="color:#c99a4a;margin-inline-start:5px">📱 View in AR instead</a></div>
+    <div class="tip" style="margin-top:4px">Sizing here is visual only. For true-to-scale placement, use AR.<a href="javascript:void(0)" onclick="pcSwitchToAR()" style="color:#c99a4a;margin-inline-start:5px">📱 View in AR instead</a></div>
     <div id="pcStatus" class="tip" style="margin-top:4px"></div>
     <div class="sk-actions">
       <button class="cancel" onclick="closePhotoCompose()">Close</button>
@@ -760,7 +760,7 @@ function attachPhoto(){
   photoRedraw();
   window.EXTRA_QUOTE_ATTACH = [[DESIGN_ID + '_site-photo.jpg', phCv.toDataURL('image/jpeg', 0.85)]];
   window.EXTRA_QUOTE_NOTE = (document.getElementById('photoNote').value || '').replace(/[<>]/g,'');
-  document.getElementById('photoStatus').textContent = '✔ Attached — it will be sent with your design inquiry.';
+  document.getElementById('photoStatus').textContent = '✔ Attached. It will be sent with your design inquiry.';
   setTimeout(closePhoto, 700);
   // M14(2026-09-02)：附上後把視線帶到送出詢價按鈕（M1 後 ⑧ 可見）
   // S3(2026-09-04)：先切到 Step 4 再捲
