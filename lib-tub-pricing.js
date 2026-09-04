@@ -31,7 +31,7 @@ function updatePrice(){
   document.getElementById('tierDesc').textContent = t(TIER_DESC[pp.tk]);
   document.getElementById('basinPriceLbl').textContent = '+$' + PRICING.basin[mi].toLocaleString('en-US');
   document.getElementById('priceRows').innerHTML = pp.parts.map((p,i)=>
-    `<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#8a8478">${p[0]}</span><span>${i ? '+' : ''}$${p[1].toLocaleString('en-US')}</span></div>`).join('');
+    `<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#66614f">${p[0]}</span><span>${i ? '+' : ''}$${p[1].toLocaleString('en-US')}</span></div>`).join('');
   document.getElementById('fromTotal').textContent = fromStr(pp.total);
   updateShipping();
 }
