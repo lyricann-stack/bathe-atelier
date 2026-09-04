@@ -592,6 +592,10 @@ async function sendQuote(btn){
     fd.append('options', optList.join('; ') || 'none');
     fd.append('est_total', shipR != null ? 'from USD $' + (pp.total + shipR).toLocaleString('en-US') : '-');
     fd.append('estimate_range', 'from USD $' + pp.total.toLocaleString('en-US') + ' + shipping (tier pricing per 2026-07 structure; $399 design fee credited)');
+    // S8e(2026-09-04)：Your details 前兩題（選項制），頁面沒有欄位時送 (not asked)
+    const _role = document.getElementById('custRole'), _exp = document.getElementById('custExp');
+    fd.append('cust_role', _role ? (_role.value || '(not given)') : '(not asked)');
+    fd.append('cust_experience', _exp ? (_exp.value || '(not given)') : '(not asked)');
     // M4(2026-09-02)：Medium 詢價主旨帶頁面與編號，業務一眼分流；其他頁沿用舊主旨
     // S4-0f(2026-09-04)：Pro 主旨比照 Medium 帶頁面與編號；inspire 等其他頁沿用舊句
     const subj = window.PAGE_TAG === 'design-studio-medium'
@@ -618,7 +622,9 @@ async function sendQuote(btn){
         手繪俯視輪廓_normalized: P.customPts, 手繪內缸口輪廓_normalized: P.customPtsInner, 手繪側牆剖面_k: P.customProfile },
       計算規格: { 滿水容量_L: +s.fullVol.toFixed(1), 估計重量_kg: +s.weight.toFixed(1) },
       // M9(2026-09-02)：五題答案（走過精靈才有值；JSON.stringify 會自動略過 undefined）
-      需求問答: (typeof BRIEF_APPLIED !== 'undefined') ? BRIEF_APPLIED : undefined
+      需求問答: (typeof BRIEF_APPLIED !== 'undefined') ? BRIEF_APPLIED : undefined,
+      // S8e(2026-09-04)：Your details 前兩題身份/經驗，沒走過該欄位時 undefined（JSON.stringify 略過）
+      客戶身份: (typeof _role !== 'undefined' && _role) ? { role: _role.value || null, experience: _exp ? (_exp.value || null) : null } : undefined
     };
     fd.append('attachment', new Blob([JSON.stringify(spec, null, 2)], {type:'application/json'}), 'design-spec.json');
     // 六角度 3D 渲染圖（郵件用 1200×900 JPEG，總量約 1MB）；截圖失敗不影響送單
