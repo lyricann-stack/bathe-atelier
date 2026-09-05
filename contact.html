@@ -17,6 +17,7 @@
 <meta name="twitter:card" content="summary">
 </head>
 <body>
+<script src="lib-site-nav.js"></script>
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,27 +34,19 @@
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#1b1a16;cursor:pointer;border:3px solid #f4f1ea;box-shadow:0 2px 8px rgba(0,0,0,.25)}
   @keyframes hintPulse{0%,100%{opacity:.45}50%{opacity:.95}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  footer{border-top:1px solid #ddd8cc;padding:56px clamp(18px,4vw,56px) 64px}
+  .foot{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:28px 56px;justify-content:space-between;align-items:flex-start}
+  .foot .brandline{max-width:44ch}
+  .foot .brandline b{display:block;font-size:15px;font-weight:700;margin-bottom:10px}
+  .foot .brandline p{font-size:13px;line-height:1.7;color:#6d685d}
+  .foot .brandline a{color:#9a7b43;font-weight:600}
+  .foot .cols{display:flex;gap:clamp(28px,5vw,72px)}
+  .foot .col span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9a7b43;font-weight:700;margin-bottom:12px}
+  .foot .col a{display:block;font-size:13px;color:#6d685d;padding:4px 0;transition:color .2s}
+  .foot .col a:hover{color:#1b1a16}
+  .legal{max-width:1280px;margin:40px auto 0;padding-top:20px;border-top:1px solid #ddd8cc;font-size:12px;color:#6d685d}
 </style>
 </helmet>
-<nav style="position:sticky;top:0;z-index:60;height:70px;display:flex;align-items:center;background:rgba(244,241,234,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ddd8cc">
-  <div style="width:100%;max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:18px">
-    <a href="index.html" style="text-decoration:none;color:#1b1a16;display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-style:normal;letter-spacing:.01em;font-weight:700;color:#9a7b43;font-size:16px">Atelier</span></a>
-    <div style="display:flex;align-items:center;gap:26px">
-      <a href="materials.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">Materials</a>
-      <a href="how-it-works.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">How it works</a>
-      <a href="designers.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">For designers</a>
-      <a href="portfolio.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">Portfolio</a>
-      <a href="guides.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">Guides</a>
-      <a href="customize.html" style="text-decoration:none;color:#4a463d;font-size:14px;font-weight:400">Design studio</a>
-    </div>
-    <div style="display:flex;align-items:center;gap:14px">
-      <select id="langSel" aria-label="Language" style="appearance:none;-webkit-appearance:none;background:transparent;border:1px solid #ddd8cc;border-radius:999px;padding:7px 14px;font-size:12.5px;color:#4a463d;cursor:pointer">
-        <option value="en">EN</option><option value="zh">简中</option><option value="th">ไทย</option>
-      </select>
-      <a href="customize.html" style="text-decoration:none;background:#1b1a16;color:#f4f1ea;padding:11px 20px;border-radius:999px;font-size:13px;font-weight:600">Design my bathtub</a>
-    </div>
-  </div>
-</nav>
 <header style="max-width:1280px;margin:0 auto;padding:110px clamp(20px,5vw,56px) 10px">
   <div style="font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#9a7b43;font-weight:600">Start your design</div>
   <h1 style="font-family:'Hanken Grotesk','Noto Sans TC',sans-serif;font-weight:700;line-height:1.02;letter-spacing:-.01em;font-size:clamp(38px,5.6vw,74px);margin:16px 0 18px;max-width:15ch">Draw us the bathtub you want.</h1>
@@ -90,27 +83,33 @@
     </div>
   </div>
 </section>
-<footer style="padding:clamp(48px,7vw,90px) clamp(20px,5vw,56px) 40px">
-  <div style="max-width:1280px;margin:0 auto">
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px;border-bottom:1px solid #ddd8cc;padding-bottom:34px">
-      <div>
-        <div style="display:flex;align-items:baseline;gap:9px;letter-spacing:.28em;font-size:15px;font-weight:600">BATHE<span style="font-style:normal;letter-spacing:.01em;font-weight:700;color:#9a7b43;font-size:16px">Atelier</span></div>
-        <p style="color:#6d685d;margin-top:12px;max-width:32ch;font-size:14.5px">Bespoke bathtubs in acrylic &amp; solid surface, made one at a time in our own factories in China &amp; Thailand. Delivered worldwide.</p>
-        <p style="margin-top:12px;font-size:14.5px">hello@batheatelier.com</p>
-      </div>
-      <div>
-        <h5 style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#9a7b43;margin-bottom:14px;font-weight:600">Explore</h5>
-        <a href="materials.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Materials</a><a href="how-it-works.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">How it works</a><a href="designers.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">For designers</a><a href="portfolio.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Portfolio</a>
-      </div>
-      <div>
-        <h5 style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#9a7b43;margin-bottom:14px;font-weight:600">More</h5>
-        <a href="customize.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Design studio</a><a href="guides.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Guides</a><a href="materials-guide.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Materials guide</a><a href="choosing-your-material.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Choosing your material</a><a href="contact.html" style="display:block;color:#4a463d;text-decoration:none;padding:5px 0;font-size:14.5px">Contact</a>
-      </div>
+<footer>
+  <div class="foot">
+    <div class="brandline">
+      <b>Bathe Atelier</b>
+      <p>Bespoke bathtubs in acrylic &amp; solid surface, made one at a time in our own ateliers. Delivered worldwide.<br><a href="mailto:hello@batheatelier.com">hello@batheatelier.com</a></p>
     </div>
-    <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:22px;font-size:12.5px;color:#8a8478">
-      <span>© 2026 Bathe Atelier: part of Bathe Atelier</span><span>Made one at a time in our own ateliers · Delivered worldwide</span><span>· <a href="privacy.html" style="text-decoration:none">Privacy</a> · <a href="terms.html" style="text-decoration:none">Terms</a></span>
+    <div class="cols">
+      <div class="col">
+        <span>Explore</span>
+        <a href="atelier-way.html">The Atelier Way</a>
+        <a href="collection.html">Collection</a>
+        <a href="materials.html">Materials</a>
+        <a href="how-it-works.html">How it works</a>
+        <a href="guides.html">Guides</a>
+      </div>
+      <div class="col">
+        <span>Start</span>
+        <a href="home-motion.html#studio">Start designing</a>
+      </div>
+      <div class="col">
+        <span>Legal</span>
+        <a href="privacy.html">Privacy policy</a>
+        <a href="terms.html">Terms and conditions</a>
+      </div>
     </div>
   </div>
+  <div class="legal">© 2026 Bathe Atelier · Made one at a time</div>
 </footer>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
