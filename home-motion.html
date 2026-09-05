@@ -35,8 +35,8 @@
      Bright-studio renders (製程五圖_提示詞_亮底版.md), so the card now reads
      as an inset framed photo sequence rather than a separate dark section. */
   .filmwrap{padding:0 clamp(14px,3vw,40px) 10vh}
-  .build{position:relative;height:600vh;max-width:1360px;margin:0 auto}
-  @media(max-width:720px){.build{height:460vh}}
+  .build{position:relative;height:900vh;max-width:1360px;margin:0 auto}
+  @media(max-width:720px){.build{height:700vh}}
   .stage{position:sticky;top:88px;height:calc(100vh - 132px);min-height:520px;border-radius:26px;
     overflow:hidden;display:flex;align-items:flex-end;box-shadow:0 30px 70px -30px rgba(16,16,16,.18);
     border:1px solid var(--line)}
@@ -174,6 +174,12 @@
   <div class="stage">
     <div class="plates" id="plates">
       <div class="plate" style="background-image:url(assets/make/make-1-sheet-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-06-clamped-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-07-first-rise-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-08-bubble-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-09-pull-begins-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-10-half-pulled-light.jpg)"></div>
+      <div class="plate" style="background-image:url(assets/make/make-11-fully-pulled-light.jpg)"></div>
       <div class="plate" style="background-image:url(assets/make/make-2-formed-light.jpg)"></div>
       <div class="plate" style="background-image:url(assets/make/make-3-reinforced-light.jpg)"></div>
       <div class="plate" style="background-image:url(assets/make/make-4-polished-light.jpg)"></div>
@@ -198,8 +204,8 @@
       </article>
       <article class="cap" data-i="1">
         <div class="eyebrow">02: The pull</div>
-        <h2>One pull, one piece</h2>
-        <p>Heated until it gives, then drawn down in a single vacuum pull. The waste flange stays on for now: proof it came out of the sheet whole, with nothing joined.</p>
+        <h2>Heated, inflated, then pulled down</h2>
+        <p>The sheet is clamped and heated until it softens, blown up into a bubble, then drawn down by vacuum into the mould in one continuous pull. The waste flange stays on for now: proof it came out of the sheet whole.</p>
       </article>
       <article class="cap" data-i="2">
         <div class="eyebrow">03: The reinforcement</div>
@@ -368,10 +374,11 @@
     }
     wrap.style.transform='scale('+lerp(1.05,1.0,b).toFixed(4)+')';
 
-    var idx=Math.min(N-1,Math.round(pos));
+    var CAP_OF=[0,1,1,1,1,1,1,1,2,3,4];
+    var idx=Math.min(N-1,Math.round(pos)); var ci=CAP_OF[idx]!==undefined?CAP_OF[idx]:idx;
     for(var j=0;j<caps.length;j++){
-      caps[j].classList.toggle('on', j===idx && o>0.85);
-      if(ticks[j]) ticks[j].classList.toggle('on', j<=idx && o>0.85);
+      caps[j].classList.toggle('on', j===ci && o>0.85);
+      if(ticks[j]) ticks[j].classList.toggle('on', j<=ci && o>0.85);
     }
     cta.classList.toggle('on', b>0.88);
   }
